@@ -1,4 +1,4 @@
-import { CountryCode } from "./Country";
+import { CountryCode } from "./country";
 import { SessionType } from "./sessionType";
 import { SubscriptionType } from "./enums";
 

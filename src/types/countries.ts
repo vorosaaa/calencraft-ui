@@ -1,4 +1,4 @@
-import { CountryType } from "./Country";
+import { CountryType } from "./country";
 import { CountryCode, Currency } from "./enums";
 
 export const countries: readonly CountryType[] = [
