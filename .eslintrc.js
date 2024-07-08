@@ -1,6 +1,6 @@
 module.exports = {
+  ignorePatterns: ["**/*.eslintrc.js"],
   env: {
-    es2021: true,
     node: true,
   },
   extends: [
@@ -11,8 +11,8 @@ module.exports = {
   overrides: [],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: "latest",
     sourceType: "module",
+    project: "./tsconfig.json"
   },
   plugins: ["react", "@typescript-eslint"],
   rules: {
