@@ -1,4 +1,4 @@
-import { CountryCode } from "./enums";
+import { CountryCode, Currency } from "./enums";
 
 export type CountryType = {
   code: CountryCode;
