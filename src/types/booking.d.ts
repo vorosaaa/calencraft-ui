@@ -1,4 +1,4 @@
-import { SessionType } from "./SessionType";
+import { SessionType } from "./sessionType";
 
 export type ReducedBooking = {
   date: string;

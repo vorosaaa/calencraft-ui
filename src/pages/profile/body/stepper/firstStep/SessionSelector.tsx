@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import { SessionType } from "../../../../../types/SessionType";
+import { SessionType } from "../../../../../types/sessionType";
 import { ArrowForward } from "@mui/icons-material";
 import { SessionContainer } from "../../../../editor/sessionEditor/firstStep/SessionContainer";
 

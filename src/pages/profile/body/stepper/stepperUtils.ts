@@ -1,6 +1,6 @@
 import { BookingResponse } from "../../../../types/booking";
 import { BookingType } from "../../../../types/enums";
-import { SessionType } from "../../../../types/SessionType";
+import { SessionType } from "../../../../types/sessionType";
 
 export const getTimeInMinutes = (time: string): number => {
   const [hour, minute] = time.split(":").map((part) => parseInt(part));

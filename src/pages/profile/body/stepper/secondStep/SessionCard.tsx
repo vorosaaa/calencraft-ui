@@ -9,7 +9,7 @@ import {
   styled,
 } from "@mui/material";
 import { useState } from "react";
-import { SessionType } from "../../../../../types/SessionType";
+import { SessionType } from "../../../../../types/sessionType";
 import { useTranslation } from "react-i18next";
 
 interface SessionCardProps {

@@ -2,7 +2,7 @@ import { BookyDatePicker } from "./BookyDatePicker";
 import { TimeSlots } from "./slot/TimeSlots";
 import { useQuery } from "react-query";
 import { getAvailablePlaces } from "../../../../../api/userApi";
-import { SessionType } from "../../../../../types/SessionType";
+import { SessionType } from "../../../../../types/sessionType";
 import { Button, Container, Typography } from "@mui/material";
 import { UserProfile } from "../../../../../types/user";
 import { useState } from "react";

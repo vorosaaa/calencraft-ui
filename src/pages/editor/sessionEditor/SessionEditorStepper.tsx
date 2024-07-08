@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCheckMobileScreen } from "../../../hooks/screenHook";
-import { SessionType } from "../../../types/SessionType";
+import { SessionType } from "../../../types/sessionType";
 import {
   Container,
   Grid,

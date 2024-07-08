@@ -6,7 +6,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { SessionType } from "../../../../types/SessionType";
+import { SessionType } from "../../../../types/sessionType";
 import { NavigatorContainer } from "../../css/ProfileEditor.css";
 import { useTranslation } from "react-i18next";
 import { colors } from "../../../../theme/colors";

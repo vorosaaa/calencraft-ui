@@ -1,4 +1,4 @@
-import { SessionType } from "../../../types/SessionType";
+import { SessionType } from "../../../types/sessionType";
 
 // Utility function to adjust start and end times based on the key and value provided
 export const adjustTimes = (
