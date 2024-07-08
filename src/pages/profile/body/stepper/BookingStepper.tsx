@@ -2,7 +2,7 @@ import { Box, Step, StepContent, StepLabel, Stepper } from "@mui/material";
 import { useEffect, useState } from "react";
 import { SessionSelector } from "./firstStep/SessionSelector";
 import { useCheckMobileScreen } from "../../../../hooks/screenHook";
-import { SessionType } from "../../../../types/SessionType";
+import { SessionType } from "../../../../types/sessionType";
 import { DateSelector } from "./secondStep/DateSelector";
 import { UserForm } from "./thirdStep/UserForm";
 import { VerificationPage } from "./fourthStep/Verification";

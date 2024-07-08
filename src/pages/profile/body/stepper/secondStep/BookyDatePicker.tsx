@@ -1,7 +1,7 @@
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { useTranslation } from "react-i18next";
-import { SessionType } from "../../../../../types/SessionType";
+import { SessionType } from "../../../../../types/sessionType";
 
 type Props = {
   selectedSession: SessionType;

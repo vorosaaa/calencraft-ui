@@ -1,5 +1,5 @@
-import { CountryCode } from "./Country";
-import { SessionType } from "./SessionType";
+import { CountryCode } from "./country";
+import { SessionType } from "./sessionType";
 import { SubscriptionType } from "./enums";
 
 export type UserAtom = {

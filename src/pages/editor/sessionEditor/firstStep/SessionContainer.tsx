@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { SessionType } from "../../../../types/SessionType";
+import { SessionType } from "../../../../types/sessionType";
 import { TypeContainer } from "../../../../components/sessionContainer/IconedContainer.css";
 import { Avatar, Chip, Typography } from "@mui/material";
 import { countries } from "../../../../types/countries";

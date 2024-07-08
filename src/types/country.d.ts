@@ -1,3 +1,5 @@
+import { CountryCode, Currency } from "./enums";
+
 export type CountryType = {
   code: CountryCode;
   label: string;

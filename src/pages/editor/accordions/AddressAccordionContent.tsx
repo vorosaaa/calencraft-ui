@@ -2,7 +2,7 @@ import React from "react";
 import { Autocomplete, Box, Grid, TextField } from "@mui/material";
 import { Address } from "../../../types/user";
 import { useTranslation } from "react-i18next";
-import { CountryType } from "../../../types/Country";
+import { CountryType } from "../../../types/country";
 import { countries } from "../../../types/countries";
 
 type Props = {

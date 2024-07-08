@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import { IconedContainer } from "../../../../components/sessionContainer/IconedContainer";
 import { Add, ArrowForward } from "@mui/icons-material";
-import { SessionType } from "../../../../types/SessionType";
+import { SessionType } from "../../../../types/sessionType";
 import { useTranslation } from "react-i18next";
 
 type Props = {

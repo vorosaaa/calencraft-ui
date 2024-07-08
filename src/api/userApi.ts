@@ -1,5 +1,5 @@
 import { ReducedBooking } from "../types/booking";
-import { SessionType } from "../types/SessionType";
+import { SessionType } from "../types/sessionType";
 import { CountryCode } from "../types/enums";
 import { UserProfile } from "../types/user";
 import axiosClient from "./axiosClient";
