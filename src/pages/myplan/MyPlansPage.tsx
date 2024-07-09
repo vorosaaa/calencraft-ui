@@ -8,10 +8,9 @@ import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/authHook";
+import { config } from "../../config/config";
 
-const stripePromise = loadStripe(
-  process.env.REACT_APP_STRIPE_PUBLIC_KEY || "public",
-);
+const stripePromise = loadStripe(config.SERVER_URL);
 const options: StripeElementsOptions = {
   mode: "setup",
   currency: "huf",

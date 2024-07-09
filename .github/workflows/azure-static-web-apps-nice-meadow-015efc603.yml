@@ -11,6 +11,9 @@ on:
 
 env:
   CI: false
+  REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
+  REACT_APP_NODE_ENV: ${{ secrets.REACT_APP_NODE_ENV }}
+  REACT_APP_STRIPE_PUBLIC_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLIC_KEY }}
 
 jobs:
   build_and_deploy_job:
