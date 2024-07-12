@@ -81,7 +81,7 @@ export const Footer = () => {
           }}
         >
           {/* Add your company logo */}
-          <Logo src="/images/new.svg" alt="Company Logo" />
+          <Logo src="/calencraft.png" alt="Company Logo" />
           <Typography variant="body2">
             {t("footer.copyright", { character: "&copy;" })}
           </Typography>
