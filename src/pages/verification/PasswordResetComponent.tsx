@@ -22,7 +22,7 @@ export const PasswordResetComponent = ({
   const [emptyPasswordError, setEmptyPasswordError] = useState(false);
 
   const onSubmit = () => {
-    const isPasswordSimple = password.length < 8 || !containsNumbers(password);
+    const isPasswordSimple = !validatePassword(password);
     const isPasswordMismatch = password !== confirmPassword;
     const isPasswordEmpty = !password;
     setEmptyPasswordError(isPasswordEmpty);
@@ -82,6 +82,7 @@ export const PasswordResetComponent = ({
   );
 };
 
-const containsNumbers = (str: string) => {
-  return /\d/.test(str);
+export const validatePassword = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d.,-]{8,}$/;
+  return passwordRegex.test(password);
 };
