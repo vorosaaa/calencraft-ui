@@ -1,5 +1,5 @@
-import { BookingResponse } from "../../../../types/booking";
-import { BookingType } from "../../../../types/enums";
+import { ProviderBooking, ProviderBreak } from "../../../../types/booking";
+import { BookingType, BreakType } from "../../../../types/enums";
 import { SessionType } from "../../../../types/sessionType";
 
 export const getTimeInMinutes = (time: string): number => {
@@ -31,10 +31,10 @@ export const isDayAvailable = (
 
 export const hasBookingConflict = (
   startTime: Date,
-  bookings: BookingResponse[],
+  bookings: ProviderBooking[],
   sessionType: SessionType,
 ): boolean => {
-  return bookings.some((booking: BookingResponse) => {
+  return bookings.some((booking: ProviderBooking) => {
     const bookingDate = new Date(booking.date); // Get the booking date
     const [bookingStartHour, bookingStartMinute] = booking.startTime
       .split(":")
@@ -79,14 +79,71 @@ export const hasBookingConflict = (
   });
 };
 
-export const hasBreakConflict = (time: Date, breaks: any[]): boolean => {
-  return breaks.some((breakItem: any) => {
-    const breakStart = new Date(breakItem.from).getTime();
-    const breakEnd = new Date(breakItem.to).getTime();
+export const hasTemporaryBreakConflict = (
+  time: Date,
+  breaks: ProviderBreak[],
+): boolean => {
+  return breaks.some((breakItem: ProviderBreak) => {
+    if (breakItem.type === BreakType.REGULAR) return false;
+
+    const startTime = new Date(Number(breakItem.from));
+    const endTime = new Date(Number(breakItem.to));
+
+    // Parse startTime and endTime
+    const [startHours, startMinutes] = breakItem.startTime
+      .split(":")
+      .map(Number);
+    const [endHours, endMinutes] = breakItem.endTime.split(":").map(Number);
+
+    startTime.setHours(startHours, startMinutes, 0, 0);
+    endTime.setHours(endHours, endMinutes, 0, 0);
+
+    // Get currentTime in milliseconds for comparison
     const currentTimeInMilliseconds = time.getTime();
+    // Check if currentTime is within the break's start and end times
     return (
-      currentTimeInMilliseconds >= breakStart &&
-      currentTimeInMilliseconds < breakEnd
+      currentTimeInMilliseconds >= startTime.getTime() &&
+      currentTimeInMilliseconds < endTime.getTime()
+    );
+  });
+};
+
+export const hasRegularBreakConflict = (
+  time: Date,
+  breaks: ProviderBreak[],
+): boolean => {
+  const daysOfWeek = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+  const currentDay = daysOfWeek[time.getDay()];
+  const currentTimeInMilliseconds = time.getTime();
+
+  return breaks.some((breakItem: ProviderBreak) => {
+    if (breakItem.type !== "REGULAR" || !breakItem.days.includes(currentDay)) {
+      return false;
+    }
+
+    const breakStartDate = new Date(time);
+    const [startHours, startMinutes] = breakItem.startTime
+      .split(":")
+      .map(Number);
+    breakStartDate.setHours(startHours, startMinutes, 0, 0);
+    const breakStartInMilliseconds = breakStartDate.getTime();
+
+    const breakEndDate = new Date(time);
+    const [endHours, endMinutes] = breakItem.endTime.split(":").map(Number);
+    breakEndDate.setHours(endHours, endMinutes, 0, 0);
+    const breakEndInMilliseconds = breakEndDate.getTime();
+
+    return (
+      currentTimeInMilliseconds >= breakStartInMilliseconds &&
+      currentTimeInMilliseconds < breakEndInMilliseconds
     );
   });
 };
@@ -135,3 +192,9 @@ export const calculateEndTime = (
 
   return `${formattedEndHour}:${formattedEndMinute}`;
 };
+
+export const isTempBreakConflict = (
+  date: Date,
+  timeInMinutes: number,
+  breaks: ProviderBreak[],
+) => hasTemporaryBreakConflict(createCurrentTime(date, timeInMinutes), breaks);

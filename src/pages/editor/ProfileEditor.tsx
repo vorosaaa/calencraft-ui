@@ -150,6 +150,7 @@ export const ProfileEditor = () => {
     if (!formData) return;
     const form = new FormData();
     form.append("name", formData.name);
+    form.append("phoneNumber", formData.phoneNumber);
     form.append("address", JSON.stringify(formData.address));
     form.append("coverPosition", formData.coverPosition);
     if (formData.isProvider) {

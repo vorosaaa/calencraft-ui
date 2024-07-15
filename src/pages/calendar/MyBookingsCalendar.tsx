@@ -17,6 +17,8 @@ import { CalendarEvent, CustomEvent } from "./CustomEvent";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { BreakStateType } from "../../types/breakStateType";
 import { Box } from "@mui/material";
+import { useCheckMobileScreen } from "../../hooks/screenHook";
+import { BookingType } from "../../types/enums";
 
 // MyCalendar Component
 const locales = {
@@ -58,6 +60,7 @@ export const MyBookingsCalendar = ({
   setDateRange,
   onBookingClick,
 }: Props) => {
+  const isMobile = useCheckMobileScreen();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
 
   useEffect(() => {
@@ -129,7 +132,7 @@ export const MyBookingsCalendar = ({
             />
           ),
         }}
-        defaultView="week"
+        defaultView={isMobile ? "day" : "week"}
         localizer={localizer}
         onRangeChange={handleRangeChange}
       />
@@ -160,7 +163,8 @@ const convertBookingsToEvents = (
     return {
       id: booking.id,
       title:
-        calendarType === "user" || booking.sessionType.type === "GROUP"
+        calendarType === "user" ||
+        booking.sessionType.type === BookingType.GROUP
           ? booking.sessionType.name
           : `${booking.users[0].name}: ${booking.sessionType.name}`,
       start: start,
@@ -243,58 +247,28 @@ const generateTemporaryEvents = (
         events.push(createEvent(currentDate, breakItem));
       }
     } else {
-      // Multi-day temporary break
+      let time: undefined | string = undefined;
       if (isSameDay(breakFrom, currentDate)) {
-        // Start day of the break
-        events.push(
-          createSplitEvent(
-            currentDate,
-            breakItem,
-            startTime!,
-            "23:59:59",
-            "start",
-          ),
-        );
+        time = startTime;
       } else if (isSameDay(breakTo, currentDate)) {
-        // End day of the break
-        events.push(
-          createSplitEvent(currentDate, breakItem, "00:00:00", endTime!, "end"),
-        );
-      } else {
-        // Full day in between start and end
-        events.push(createAllDayEvent(currentDate, breakItem));
+        time = endTime;
       }
+      events.push(createAllDayEvent(currentDate, breakItem, time));
     }
   }
-};
-
-const createSplitEvent = (
-  date: Date,
-  breakItem: BreakStateType,
-  startTime: string,
-  endTime: string,
-  suffix: string,
-): CalendarEvent => {
-  const formattedDate = format(date, "yyyy-MM-dd");
-  return {
-    id: `${formattedDate}-${breakItem.name}-${suffix}`,
-    title: breakItem.name,
-    start: parseISO(`${formattedDate}T${startTime}`),
-    end: parseISO(`${formattedDate}T${endTime}`),
-    type: breakItem.type,
-    allDay: false,
-  };
 };
 
 const createAllDayEvent = (
   date: Date,
   breakItem: BreakStateType,
+  time?: string,
 ): CalendarEvent => {
+  const formattedDate = format(date, "yyyy-MM-dd");
   return {
-    id: `${format(date, "yyyy-MM-dd")}-${breakItem.name}-full`,
-    title: breakItem.name,
-    start: new Date(date),
-    end: new Date(date),
+    id: `${formattedDate}-${breakItem.name}`,
+    title: breakItem.name + (time ? ` (${time})` : ""),
+    start: parseISO(`${formattedDate}T00:00:00`),
+    end: parseISO(`${formattedDate}T23:59:59`),
     type: breakItem.type,
     allDay: true,
   };

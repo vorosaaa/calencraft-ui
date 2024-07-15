@@ -10,6 +10,7 @@ import {
 import { ToolbarProps, Views } from "react-big-calendar";
 import { BookingToggleButton } from "./BookingToggleButton";
 import { useTranslation } from "react-i18next";
+import { useCheckMobileScreen } from "../../hooks/screenHook";
 
 type CustomToolbarProps = {
   isProvider: boolean;
@@ -17,17 +18,21 @@ type CustomToolbarProps = {
   setCalendarType: (str: "provider" | "user") => void;
 } & ToolbarProps;
 
-export const CustomToolbar = ({
-  isProvider,
-  calendarType,
-  view,
-  label,
-  setCalendarType,
-  onNavigate,
-  onView,
-}: CustomToolbarProps) => {
+export const CustomToolbar = (props: CustomToolbarProps) => {
+  const {
+    isProvider,
+    calendarType,
+    view,
+    label,
+    setCalendarType,
+    onNavigate,
+    onView,
+  } = props;
   const { t } = useTranslation();
-  return (
+  const isMobile = useCheckMobileScreen();
+  return isMobile ? (
+    <MobileToolbar {...props} />
+  ) : (
     <Toolbar
       disableGutters
       sx={{
@@ -88,7 +93,78 @@ export const CustomToolbar = ({
         >
           {t("calendar.day")}
         </Button>
-        {<BookingToggleButton />}
+        <BookingToggleButton />
+      </div>
+    </Toolbar>
+  );
+};
+
+const MobileToolbar = ({
+  isProvider,
+  calendarType,
+  view,
+  label,
+  setCalendarType,
+  onNavigate,
+  onView,
+}: CustomToolbarProps) => {
+  const { t } = useTranslation();
+  return (
+    <Toolbar
+      disableGutters
+      sx={{
+        marginBottom: "16px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      {isProvider && (
+        <FormControl fullWidth size="small">
+          <InputLabel id="user-type-label">{t("calendar.view")}</InputLabel>
+          <Select
+            labelId="user-type-label"
+            id="usertypeselector"
+            value={calendarType}
+            label={t("calendar.view")}
+            onChange={(e) =>
+              setCalendarType(e.target.value as "provider" | "user")
+            }
+          >
+            <MenuItem value="user">{t("calendar.client_view")}</MenuItem>
+            <MenuItem value="provider">{t("calendar.provider_view")}</MenuItem>
+          </Select>
+        </FormControl>
+      )}
+      <Typography variant="h6">{label}</Typography>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <Button
+          variant={view === Views.MONTH ? "contained" : "outlined"}
+          onClick={() => onView(Views.MONTH)}
+        >
+          {t("calendar.month")}
+        </Button>
+        <Button
+          variant={view === Views.DAY ? "contained" : "outlined"}
+          onClick={() => onView(Views.DAY)}
+        >
+          {t("calendar.day")}
+        </Button>
+        <Button variant="outlined" onClick={() => onNavigate("PREV")}>
+          {"<"}
+        </Button>
+        <Button onClick={() => onNavigate("TODAY")}>
+          {t("calendar.today")}
+        </Button>
+        <Button variant="outlined" onClick={() => onNavigate("NEXT")}>
+          {">"}
+        </Button>
       </div>
     </Toolbar>
   );
