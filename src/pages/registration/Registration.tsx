@@ -174,6 +174,7 @@ export const RegistrationForm = ({
         )}
       </DialogContent>
       <RegistrationFooter
+        form={formState}
         currentStep={currentStep}
         handleClose={handleClose}
         handleBack={handleBack}

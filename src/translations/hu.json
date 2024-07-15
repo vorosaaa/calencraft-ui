@@ -321,7 +321,7 @@
   },
   "registration": {
     "title": "Regisztráció",
-    "question": "Miként szeretnéd használni az oldalt?",
+    "question": "Hogyan szeretnéd használni az oldalt?",
     "user": "Felhasználóként",
     "provider": "Szolgáltatóként",
     "name": "Név",
