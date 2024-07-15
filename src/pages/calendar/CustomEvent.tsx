@@ -1,7 +1,7 @@
 import { Button, Container, Popover, Typography } from "@mui/material";
 import { CalendarProps, Event } from "react-big-calendar";
 import { colors } from "../../theme/colors";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export type CalendarEvent = {
@@ -22,7 +22,6 @@ export const CustomEvent = ({
 }: Props) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [color, setColor] = useState(colors.midnightBlue);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (event.type === "REGULAR" || event.type === "TEMPORARY") return;
@@ -36,18 +35,18 @@ export const CustomEvent = ({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  useEffect(() => {
+  const color = useMemo(() => {
     switch (event.type) {
       case "PRIVATE":
       case "GROUP":
-        setColor(colors.navyBlue);
-        break;
+        return colors.navyBlue;
       case "REGULAR":
       case "TEMPORARY":
-        setColor(colors.primaryGreen);
-        break;
+        return colors.steelBlue;
+      default:
+        return colors.steelBlue; // Assuming there's a default color
     }
-  }, []);
+  }, [event.type]);
   return (
     <Container
       disableGutters

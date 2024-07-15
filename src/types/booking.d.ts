@@ -1,3 +1,4 @@
+import { BookingType, BreakType } from "./enums";
 import { SessionType } from "./sessionType";
 
 export type ReducedBooking = {
@@ -13,7 +14,7 @@ export type BookingResponse = {
   users: { id: string; name: string }[];
   sessionType: {
     name: string;
-    type: "PRIVATE" | "GROUP";
+    type: BookingType;
     maxCapacity: number;
     description: string;
     price: number;
@@ -38,4 +39,29 @@ export type BookingState = {
   selectedDate?: Date;
   selectedStartTime?: string;
   selectedSession?: SessionType;
+};
+
+export type ProviderBookingResponse = {
+  bookings: ProviderBooking[];
+  breaks: ProviderBreak[];
+};
+
+export type ProviderBooking = {
+  date: number;
+  endTime: string;
+  startTime: string;
+  users: { id: string; name: string }[];
+  sessionType: {
+    name: string;
+    maxCapacity: number;
+  };
+};
+
+export type ProviderBreak = {
+  days: string[];
+  endTime: string;
+  startTime: string;
+  to: string;
+  from: string;
+  type: BreakType;
 };

@@ -1,7 +1,7 @@
 import { BookyDatePicker } from "./BookyDatePicker";
 import { TimeSlots } from "./slot/TimeSlots";
 import { useQuery } from "react-query";
-import { getAvailablePlaces } from "../../../../../api/userApi";
+import { getProviderBookings } from "../../../../../api/userApi";
 import { SessionType } from "../../../../../types/sessionType";
 import { Button, Container, Typography } from "@mui/material";
 import { UserProfile } from "../../../../../types/user";
@@ -12,13 +12,19 @@ import {
   formatTime,
   getTimeInMinutes,
   hasBookingConflict,
-  hasBreakConflict,
   hasGroupSessionConflict,
+  hasRegularBreakConflict,
+  hasTemporaryBreakConflict,
   isDayAvailable,
+  isTempBreakConflict,
 } from "../stepperUtils";
 import { NavigatorContainer } from "../css/BookingStepper.css";
 import { t } from "i18next";
-import { BookingState } from "../../../../../types/booking";
+import {
+  BookingState,
+  ProviderBooking,
+  ProviderBookingResponse,
+} from "../../../../../types/booking";
 import { TimeSlot } from "../../../../../types/timeSlot";
 import { SessionCard } from "./SessionCard";
 import { BookingType } from "../../../../../types/enums";
@@ -52,7 +58,7 @@ export const DateSelector = ({
   // Get bookings and breaks for the selected day and provider
   useQuery(
     ["providerBookings", { id: provider.id, date: date.getTime() }],
-    () => getAvailablePlaces({ id: provider.id, date: date.getTime() }),
+    () => getProviderBookings({ id: provider.id, date: date.getTime() }),
     {
       onSuccess: (data) => generatePossibleStartTimes(data),
     },
@@ -64,63 +70,90 @@ export const DateSelector = ({
     handleBack();
   };
 
-  const generatePossibleStartTimes = (data: any) => {
+  /**
+   * Generates possible start times based on the selected session and available data.
+   * @param data - The provider booking response data.
+   */
+  const generatePossibleStartTimes = (data: ProviderBookingResponse) => {
     if (!booking) {
       console.error("Unpossible error");
       return;
     }
 
-    const { startTime, endTime, lengthInMinutes, days } = selectedSession;
+    const {
+      startTime,
+      endTime,
+      lengthInMinutes,
+      days,
+      type,
+      name,
+      maxCapacity,
+    } = selectedSession;
     const { bookings, breaks } = data;
 
     const startTimeInMinutes = getTimeInMinutes(startTime);
     const endTimeInMinutes = getTimeInMinutes(endTime);
 
-    const possibleTimes: TimeSlot[] = [];
     const step = 15;
+    const possibleTimes: TimeSlot[] = [];
 
+    if (
+      isTempBreakConflict(date, startTimeInMinutes, breaks) &&
+      isTempBreakConflict(date, endTimeInMinutes, breaks)
+    ) {
+      setPossibleStartTimes(possibleTimes);
+      return;
+    }
     for (
       let i = startTimeInMinutes;
       i <= endTimeInMinutes - lengthInMinutes;
       i += step
     ) {
       const currentTime = createCurrentTime(date, i);
+      if (!isDayAvailable(currentTime, days)) continue;
 
-      if (isDayAvailable(currentTime, days)) {
-        const bookingConflicts = hasBookingConflict(
-          currentTime,
-          bookings,
-          selectedSession,
+      const regularBreakConflict = hasRegularBreakConflict(currentTime, breaks);
+      const temporaryBreakConflict = hasTemporaryBreakConflict(
+        currentTime,
+        breaks,
+      );
+      const bookingConflicts = hasBookingConflict(
+        currentTime,
+        bookings,
+        selectedSession,
+      );
+      const groupSessionConflict = hasGroupSessionConflict(
+        currentTime,
+        selectedSession,
+        allSessionTypes,
+      );
+
+      let users = 0;
+      let free = false;
+
+      if (
+        !bookingConflicts &&
+        !regularBreakConflict &&
+        !temporaryBreakConflict &&
+        !groupSessionConflict
+      ) {
+        free = true;
+      } else if (type === BookingType.GROUP) {
+        const groupBookings = bookings.filter(
+          (booking: ProviderBooking) =>
+            booking.sessionType.name === name &&
+            booking.startTime === formatTime(currentTime),
         );
-        const breakConflicts = hasBreakConflict(currentTime, breaks);
-        const groupSessionConflict = hasGroupSessionConflict(
-          currentTime,
-          selectedSession,
-          allSessionTypes,
-        );
+        users = groupBookings.length > 0 ? groupBookings[0].users.length : 0;
+        free = users < maxCapacity!;
+      }
 
-        let users = 0;
-        let free = false;
-
-        if (!bookingConflicts && !breakConflicts && !groupSessionConflict) {
-          free = true;
-        } else if (selectedSession.type === BookingType.GROUP) {
-          const groupBookings = bookings.filter(
-            (booking: any) =>
-              booking.sessionType.name === selectedSession.name &&
-              booking.startTime === formatTime(currentTime),
-          );
-          users = groupBookings.length > 0 ? groupBookings[0].users.length : 0;
-          free = users < selectedSession.maxCapacity!;
-        }
-
-        if (free || selectedSession.type === "GROUP") {
-          possibleTimes.push({
-            startTime: formatTime(currentTime),
-            users,
-            free,
-          });
-        }
+      if (free || type === BookingType.GROUP) {
+        possibleTimes.push({
+          startTime: formatTime(currentTime),
+          users,
+          free,
+        });
       }
     }
     setPossibleStartTimes(possibleTimes);

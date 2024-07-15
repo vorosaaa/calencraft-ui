@@ -79,7 +79,7 @@ export const Calendar = () => {
 
   return (
     <Container sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-      {bookingView === "calendar" && !isMobile ? (
+      {bookingView === "calendar" || isMobile ? (
         <MyBookingsCalendar
           handleCancellation={handleCancellation}
           onBookingClick={onBookingClick}
