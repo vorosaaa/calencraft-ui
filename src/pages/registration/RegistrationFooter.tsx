@@ -1,8 +1,10 @@
 import { Box, Button, DialogActions, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
+import { FormState } from "./Registration";
 
 type FooterProps = {
+  form: FormState;
   currentStep: number;
   handleClose: () => void;
   handleBack: () => void;
@@ -10,6 +12,7 @@ type FooterProps = {
 };
 
 export const RegistrationFooter = ({
+  form,
   currentStep,
   handleClose,
   handleBack,
@@ -18,6 +21,8 @@ export const RegistrationFooter = ({
   const isMobile = useCheckMobileScreen();
 
   const { t } = useTranslation();
+  const isDisabled =
+    !form.accepted || !form.email || !form.name || !form.password;
   return (
     <DialogActions
       sx={{
@@ -39,7 +44,12 @@ export const RegistrationFooter = ({
           <Button onClick={handleBack} color="primary">
             <Typography>{t("registration.back")}</Typography>
           </Button>
-          <Button onClick={handleSubmit} color="primary" variant="contained">
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+            disabled={isDisabled}
+          >
             <Typography>{t("registration.register")}</Typography>
           </Button>
         </Box>

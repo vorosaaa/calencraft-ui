@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/authHook";
 import { config } from "../../config/config";
 
-const stripePromise = loadStripe(config.SERVER_URL);
+const stripePromise = loadStripe(config.STRIPE_PUBLIC_KEY);
 const options: StripeElementsOptions = {
   mode: "setup",
   currency: "huf",

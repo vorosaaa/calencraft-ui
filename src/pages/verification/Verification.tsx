@@ -119,12 +119,10 @@ export const VerificationModal: React.FC = () => {
       maxWidth="sm"
       fullScreen={isMobile}
     >
-      <DialogTitle>
-        <Typography>
-          {originalMode === VerificationMode.FORGOT_PASSWORD
-            ? t("verification.title_password_reset")
-            : t("verification.title_verification")}
-        </Typography>
+      <DialogTitle variant="h5">
+        {originalMode === VerificationMode.FORGOT_PASSWORD
+          ? t("verification.title_password_reset")
+          : t("verification.title_verification")}
       </DialogTitle>
       <DialogContent sx={{ p: isMobile ? 1 : 3 }}>
         {mode === VerificationMode.FORGOT_PASSWORD && (

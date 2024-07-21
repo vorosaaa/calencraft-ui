@@ -145,7 +145,7 @@ export const DateSelector = ({
             booking.startTime === formatTime(currentTime),
         );
         users = groupBookings.length > 0 ? groupBookings[0].users.length : 0;
-        free = users < maxCapacity!;
+        free = users < (maxCapacity || 1);
       }
 
       if (free || type === BookingType.GROUP) {

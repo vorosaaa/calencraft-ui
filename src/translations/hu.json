@@ -321,7 +321,7 @@
   },
   "registration": {
     "title": "Regisztráció",
-    "question": "Miként szeretnéd használni az oldalt?",
+    "question": "Hogyan szeretnéd használni az oldalt?",
     "user": "Felhasználóként",
     "provider": "Szolgáltatóként",
     "name": "Név",
@@ -375,7 +375,7 @@
     "privacyPolicy": "Adatvédelmi irányelvek",
     "aboutUs": "Rólunk",
     "contactInformation": "Kapcsolatfelvétel",
-    "contactName": "Vörös Attila",
+    "contactName": "Vörös Attila e.v.",
     "contactEmail": "hello@calencraft.com",
     "copyright": "Copyright © calencraft.com minden jog fenntartva."
   },

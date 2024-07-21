@@ -36,8 +36,8 @@ export const CodeVerificationComponent = ({
       <div
         style={{
           display: "flex",
-          marginBottom: 16,
-          marginTop: 16,
+          marginBottom: 24,
+          marginTop: 24,
         }}
       >
         <MultipleTextInput
