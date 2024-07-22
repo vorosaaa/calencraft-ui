@@ -9,6 +9,7 @@ import { TermsOfServicePage } from "../pages/termsofservice/TermsOfServicePage";
 import { PrivacyPolicyPage } from "../pages/privacypolicy/PrivacyPolicyPage";
 import { AboutUsPage } from "../pages/aboutus/AboutPage";
 import { Calendar } from "../pages/calendar/Calendar";
+import { ContactPage } from "../pages/contact/ContactPage";
 
 export const BookyRoutes = () => {
   return (
@@ -22,7 +23,7 @@ export const BookyRoutes = () => {
       <Route path="/termsofservice" element={<TermsOfServicePage />} />
       <Route path="/privacy" element={<PrivacyPolicyPage />} />
       <Route path="/about" element={<AboutUsPage />} />
-
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/booking/:id" element={<BookingDetails />} />
     </Routes>
   );

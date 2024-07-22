@@ -1,4 +1,10 @@
 {
+  "contact": {
+    "title": "Contact Details",
+    "name": "Attila Vörös enterprising individual",
+    "email": "hello@calencraft.com",
+    "tax_number": "Tax number: 90299649-1-26"
+  },
   "development": {
     "title": "Under development",
     "description": "The website is under development. Until it's not finished, you can use all the functions without any fees.",

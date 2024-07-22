@@ -1,13 +1,5 @@
-import React from "react";
-import {
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemProps,
-  Typography,
-} from "@mui/material";
-import { Logo, Root, StyledListItemText } from "./Footer.css";
+import { Container, Grid, Typography } from "@mui/material";
+import { Logo, Root } from "./Footer.css";
 import { useNavigate } from "react-router-dom";
 import { useBackgroundHook } from "../../hooks/backgroundHook";
 import { useTranslation } from "react-i18next";
@@ -27,50 +19,34 @@ export const Footer = () => {
     >
       <Container sx={{ marginBottom: 2 }} maxWidth="lg">
         {/* Upper Container */}
-        <Container maxWidth="lg">
-          <Grid container spacing={3}>
-            {/* Our Company */}
-            <Grid item xs={12} sm={6}>
-              <Typography variant="h6">{t("footer.company")}</Typography>
-              <List>
-                <StyledItem
-                  label={t("footer.termsOfService")}
-                  onClick={() => navigate("/termsofservice")}
-                />
-                <StyledItem
-                  label={t("footer.privacyPolicy")}
-                  onClick={() => navigate("/privacy")}
-                />
-                {/*<StyledItem
-                  label={t("footer.aboutUs")}
-                  onClick={() => navigate("/about")}
-                />*/}
-              </List>
-            </Grid>
-            {/* Contact Information */}
-            <Grid item xs={12} sm={6}>
-              <Typography variant="h6">
+        <Grid container spacing={3}>
+          {/* Our Company */}
+          <Grid item xs={12} sm={4}>
+            <div onClick={() => navigate("/termsofservice")}>
+              <Typography sx={{ cursor: "pointer" }} variant="h6">
+                {t("footer.termsOfService")}
+              </Typography>
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <div onClick={() => navigate("/privacy")}>
+              <Typography sx={{ cursor: "pointer" }} variant="h6">
+                {t("footer.privacyPolicy")}
+              </Typography>
+            </div>
+          </Grid>
+          {/* Contact Information */}
+          <Grid item xs={12} sm={4}>
+            <div onClick={() => navigate("/contact")}>
+              <Typography sx={{ cursor: "pointer" }} variant="h6">
                 {t("footer.contactInformation")}
               </Typography>
-              <List>
-                <Item>
-                  <StyledListItemText
-                    sx={{ cursor: "text" }}
-                    primary={t("footer.contactName")}
-                  />
-                </Item>
-                <Item>
-                  <StyledListItemText
-                    sx={{ cursor: "text" }}
-                    primary={t("footer.contactEmail")}
-                  />
-                </Item>
-              </List>
-            </Grid>
+            </div>
           </Grid>
-        </Container>
+        </Grid>
         {/* Lower Container */}
         <Container
+          disableGutters
           maxWidth="lg"
           sx={{
             marginTop: 2,
@@ -88,23 +64,5 @@ export const Footer = () => {
         </Container>
       </Container>
     </Root>
-  );
-};
-
-const Item = ({ children, ...props }: ListItemProps) => {
-  return (
-    <ListItem disableGutters disablePadding {...props}>
-      {children}
-    </ListItem>
-  );
-};
-
-type ItemProps = { label: string; onClick: () => void };
-
-const StyledItem = ({ label, onClick }: ItemProps) => {
-  return (
-    <Item onClick={onClick}>
-      <StyledListItemText primary={label} />
-    </Item>
   );
 };
