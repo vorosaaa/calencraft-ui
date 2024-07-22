@@ -1,4 +1,10 @@
 {
+  "contact": {
+    "title": "Kapcsolatfelvétel",
+    "name": "Vörös Attila egyéni vállalkozó",
+    "email": "hello@calencraft.com",
+    "tax_number": "Adószám: 90299649-1-26"
+  },
   "development": {
     "title": "Fejlesztés alatt",
     "description": "Az weboldal fejlesztés alatt van. Amíg nincs kész, díj nélkül használhatod a Calencraft nyújtotta szolgáltatásokat.",
