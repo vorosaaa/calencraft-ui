@@ -14,12 +14,13 @@ import {
 } from "@mui/material";
 import { deleteSubscription, subscribe } from "../../api/paymentApi";
 import { SubscriptionType } from "../../types/enums";
-import { getAsTitle } from "../../utils/stringUtils";
 import { AnimatedCheckmark } from "../../components/animated/checkmark/AnimatedCheckmark";
 import { colors } from "../../theme/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { enqueueError, enqueueSuccess } from "../../enqueueHelper";
 import { useTranslation } from "react-i18next";
+import { AddressForm } from "./AddressForm";
+import { useMe } from "../../queries/queries";
 
 type Props = {
   type: SubscriptionType;
@@ -87,11 +88,17 @@ type PaymentProps = {
 
 const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const { t } = useTranslation();
+  const { data } = useMe();
   const [successOpen, setSuccessOpen] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const queryClient = useQueryClient();
-
+  const [address, setAddress] = useState<any>({
+    country: "",
+    postal_code: "",
+    city: "",
+    line1: "",
+  });
   const { mutate, isLoading } = useMutation(subscribe, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries("me");
@@ -108,7 +115,20 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
       subscriptionType: type,
       stripe,
       elements,
+      address,
     });
+
+  useEffect(() => {
+    if (!data) return;
+    const { city, country, zipCode, street } = data.user.address;
+    setAddress({
+      city,
+      country,
+      postal_code: zipCode,
+      line1: street,
+    });
+  }, [data]);
+
   return (
     <Container disableGutters>
       <Backdrop
@@ -147,7 +167,9 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
       </Typography>
       <Paper elevation={8} sx={{ p: 2, mb: 2 }}>
         <PaymentElement />
+        <AddressForm address={address} onAddressChange={setAddress} />
       </Paper>
+
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Button color="inherit" onClick={handleBack}>
           {t("subscriptions.details.cancel")}
