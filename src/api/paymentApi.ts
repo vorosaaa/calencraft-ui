@@ -1,17 +1,13 @@
 import { Stripe, StripeElements } from "@stripe/stripe-js";
 import { SubscriptionType } from "../types/enums";
 import axiosClient from "./axiosClient";
+import { Address } from "../types/user";
 
 type SubscriptionProp = {
   subscriptionType: SubscriptionType;
   elements: StripeElements | null;
   stripe: Stripe | null;
-  address: {
-    city: string;
-    country: string;
-    postal_code: string;
-    line1: string;
-  };
+  address: Address;
 };
 
 const getSecret = async () => {
@@ -35,12 +31,6 @@ export const subscribe = async ({
 }: SubscriptionProp) => {
   // Check if elements and stripe are initialized
   if (!elements || !stripe) throw new Error("Wrong init values");
-  const addr = {
-    city: address.city,
-    country: address.country,
-    zipCode: address.postal_code,
-    street: address.line1,
-  };
 
   try {
     // Trigger form validation and wallet collection
@@ -68,7 +58,7 @@ export const subscribe = async ({
     const body = {
       subscriptionType,
       setupIntentId: setupIntent.id,
-      address: addr,
+      address,
     };
 
     // Send a request to create the subscription

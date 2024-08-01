@@ -6,11 +6,13 @@ import { CountryType } from "../../../types/country";
 import { countries } from "../../../types/countries";
 
 type Props = {
-  address: Address;
+  name: string;
+  address: Address | null;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const AddressAccordionContent = ({
+  name,
   address,
   handleInputChange,
 }: Props) => {
@@ -18,16 +20,15 @@ export const AddressAccordionContent = ({
 
   const setCountry = (country: CountryType | null) => {
     const event = {
-      target: { name: "address.country", value: country?.code || null },
+      target: { name: name + ".country", value: country?.code || null },
     } as React.ChangeEvent<HTMLInputElement>;
-
     handleInputChange(event);
   };
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} lg={6}>
         <Autocomplete
-          value={countries.find((counrty) => counrty.code === address.country)}
+          value={countries.find((counrty) => counrty.code === address?.country)}
           autoHighlight
           onChange={(_event, newValue: CountryType | null) =>
             setCountry(newValue)
@@ -53,7 +54,7 @@ export const AddressAccordionContent = ({
           renderInput={(params) => (
             <TextField
               {...params}
-              name="address.country"
+              name={`${name}.country`}
               label={t("editor.country")}
               inputProps={{
                 ...params.inputProps,
@@ -68,8 +69,8 @@ export const AddressAccordionContent = ({
           variant="outlined"
           fullWidth
           label={t("editor.zip")}
-          name="address.zipCode"
-          value={address.zipCode}
+          name={`${name}.zipCode`}
+          value={address?.zipCode}
           onChange={handleInputChange}
         />
       </Grid>
@@ -78,8 +79,8 @@ export const AddressAccordionContent = ({
           variant="outlined"
           fullWidth
           label={t("editor.city")}
-          name="address.city"
-          value={address.city}
+          name={`${name}.city`}
+          value={address?.city}
           onChange={handleInputChange}
         />
       </Grid>
@@ -88,8 +89,8 @@ export const AddressAccordionContent = ({
           variant="outlined"
           fullWidth
           label={t("editor.street")}
-          name="address.street"
-          value={address.street}
+          name={`${name}.street`}
+          value={address?.street}
           onChange={handleInputChange}
         />
       </Grid>

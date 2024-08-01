@@ -122,6 +122,16 @@ export const ProfileEditor = () => {
           [addressField]: value,
         },
       });
+    } else if (name.startsWith("billingAddress.")) {
+      const addressField = name.split(".")[1];
+
+      setFormData({
+        ...data,
+        billingAddress: {
+          ...data?.billingAddress,
+          [addressField]: value,
+        },
+      });
     } else {
       setFormData({
         ...data,
@@ -154,6 +164,7 @@ export const ProfileEditor = () => {
     form.append("address", JSON.stringify(formData.address));
     form.append("coverPosition", formData.coverPosition);
     if (formData.isProvider) {
+      form.append("billingAddress", JSON.stringify(formData.billingAddress));
       form.append("description", formData.description);
       form.append("serviceCategory", formData.serviceCategory);
     }
@@ -188,6 +199,7 @@ export const ProfileEditor = () => {
         description: meData.user.description,
         coverUrl: meData.user.coverUrl,
         address: meData.user.address,
+        billingAddress: meData.user.billingAddress,
       });
     }
   }, [meData]);

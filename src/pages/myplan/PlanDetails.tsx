@@ -19,8 +19,9 @@ import { colors } from "../../theme/colors";
 import { useEffect, useState } from "react";
 import { enqueueError, enqueueSuccess } from "../../enqueueHelper";
 import { useTranslation } from "react-i18next";
-import { AddressForm } from "./AddressForm";
 import { useMe } from "../../queries/queries";
+import { AddressAccordionContent } from "../editor/accordions/AddressAccordionContent";
+import { Address } from "../../types/user";
 
 type Props = {
   type: SubscriptionType;
@@ -93,12 +94,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const queryClient = useQueryClient();
-  const [address, setAddress] = useState<any>({
-    country: "",
-    postal_code: "",
-    city: "",
-    line1: "",
-  });
+  const [address, setAddress] = useState<Address | undefined>();
   const { mutate, isLoading } = useMutation(subscribe, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries("me");
@@ -110,25 +106,33 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
 
-  const handleSubscription = async () =>
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const addressField = name.split(".")[1];
+    setAddress({ ...address, [addressField]: value });
+  };
+
+  const handleSubscription = async () => {
+    if (!stripe || !elements || !address) return;
     mutate({
       subscriptionType: type,
       stripe,
       elements,
       address,
     });
-
+  };
   useEffect(() => {
     if (!data) return;
-    const { city, country, zipCode, street } = data.user.address;
+    const { city, country, zipCode, street } = data.user.billingAddress
+      ? data.user.billingAddress
+      : data.user.address;
     setAddress({
       city,
       country,
-      postal_code: zipCode,
-      line1: street,
+      zipCode,
+      street,
     });
   }, [data]);
-
   return (
     <Container disableGutters>
       <Backdrop
@@ -166,8 +170,18 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
         {t(`subscriptions.details.${type}`)}
       </Typography>
       <Paper elevation={8} sx={{ p: 2, mb: 2 }}>
-        <PaymentElement />
-        <AddressForm address={address} onAddressChange={setAddress} />
+        <PaymentElement
+          options={{
+            fields: { billingDetails: { address: { country: "never" } } },
+          }}
+        />
+        {address && (
+          <AddressAccordionContent
+            name="address"
+            address={address}
+            handleInputChange={handleAddressChange}
+          />
+        )}
       </Paper>
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>

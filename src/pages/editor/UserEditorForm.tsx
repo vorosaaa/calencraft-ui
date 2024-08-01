@@ -70,6 +70,7 @@ export const UserEditorForm = ({
       )}
       {address && (
         <AddressAccordionContent
+          name="address"
           address={address}
           handleInputChange={handleInputChange}
         />
