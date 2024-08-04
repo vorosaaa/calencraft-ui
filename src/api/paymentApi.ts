@@ -1,11 +1,13 @@
 import { Stripe, StripeElements } from "@stripe/stripe-js";
 import { SubscriptionType } from "../types/enums";
 import axiosClient from "./axiosClient";
+import { Address } from "../types/user";
 
 type SubscriptionProp = {
   subscriptionType: SubscriptionType;
   elements: StripeElements | null;
   stripe: Stripe | null;
+  address: Address;
 };
 
 const getSecret = async () => {
@@ -25,7 +27,9 @@ export const subscribe = async ({
   subscriptionType,
   elements,
   stripe,
+  address,
 }: SubscriptionProp) => {
+  // Check if elements and stripe are initialized
   if (!elements || !stripe) throw new Error("Wrong init values");
 
   try {
@@ -34,14 +38,15 @@ export const subscribe = async ({
     if (submitError) {
       throw new Error("Failed to submit");
     }
-
+    // Get the client secret for the setup intent
     const { client_secret } = await getSecret();
+
     // Use the clientSecret and Elements instance to confirm the setup
     const { setupIntent, error } = await stripe.confirmSetup({
       elements,
       clientSecret: client_secret,
       confirmParams: {
-        return_url: "https://example.com",
+        return_url: "https://calencraft.com",
       },
       redirect: "if_required",
     });
@@ -49,17 +54,26 @@ export const subscribe = async ({
       throw new Error("Failed to confirm SetupIntent");
     }
 
+    // Prepare the request body for subscription creation
     const body = {
       subscriptionType,
       setupIntentId: setupIntent.id,
+      address,
     };
-    const subscriptionResponse = await axiosClient.post(`api/payment`, body);
 
-    if (!subscriptionResponse.data) {
+    // Send a request to create the subscription
+    const { data: subscriptionData } = await axiosClient.post(
+      `api/payment`,
+      body,
+    );
+
+    // Check if the subscription creation was successful
+    if (!subscriptionData) {
       throw new Error("Failed to create subscription");
     }
 
-    return subscriptionResponse.data;
+    // Return the subscription data
+    return subscriptionData;
   } catch (error) {
     console.error(error);
   }

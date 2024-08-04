@@ -1,7 +1,10 @@
 import {
   Button,
+  Checkbox,
+  Collapse,
   Container,
   Divider,
+  FormControlLabel,
   Grid,
   IconButton,
   Menu,
@@ -12,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { EmailStatus } from "../../types/enums";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { AddressAccordionContent } from "./accordions/AddressAccordionContent";
 import { ProviderPersonalContent } from "./accordions/ProviderPersonalContent";
 import { EmailEditor } from "./emailEditor/EmailEditor";
@@ -92,11 +95,37 @@ const FormEditor = ({
     subscriptionType,
     name,
     description,
+    address,
+    billingAddress,
     serviceCategory,
     phoneNumber,
-    address,
     emailStatus,
   } = formData;
+  const [isBillingAddressDifferent, setIsBillingAddressDifferent] =
+    useState(false);
+
+  // Effect to set the default state of the checkbox
+  useEffect(() => {
+    if (
+      billingAddress &&
+      JSON.stringify(address) !== JSON.stringify(billingAddress)
+    ) {
+      setIsBillingAddressDifferent(true);
+    }
+  }, [address, billingAddress]);
+
+  // Handle checkbox change
+  const handleCheckboxChange = (event: any) => {
+    const isChecked = event.target.checked;
+    setIsBillingAddressDifferent(isChecked);
+    if (!isChecked) {
+      handleInputChange({
+        ...event,
+        target: { name: "billingAddress", value: billingAddress || address },
+      });
+    }
+  };
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
@@ -147,10 +176,30 @@ const FormEditor = ({
       )}
       {address && (
         <AddressAccordionContent
+          name="address"
           address={address}
           handleInputChange={handleInputChange}
         />
       )}
+      <FormControlLabel
+        sx={{ mt: 2 }}
+        control={
+          <Checkbox
+            checked={isBillingAddressDifferent}
+            onChange={handleCheckboxChange}
+            name="billingAddressCheckbox"
+            color="primary"
+          />
+        }
+        label={t("editor.billing_address_info")}
+      />
+      <Collapse in={isBillingAddressDifferent}>
+        <AddressAccordionContent
+          name="billingAddress"
+          address={billingAddress}
+          handleInputChange={handleInputChange}
+        />
+      </Collapse>
 
       <div
         style={{

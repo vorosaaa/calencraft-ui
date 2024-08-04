@@ -173,6 +173,7 @@
     "service_type": "Szolgáltatás típusa",
     "add_goal": "Cél hozzáadása",
     "address": "Cím",
+    "billing_address_info": "Különböző számlázási cím megadása",
     "country": "Ország",
     "zip": "Irányítószám",
     "city": "Város",

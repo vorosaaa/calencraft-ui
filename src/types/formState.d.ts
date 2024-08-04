@@ -9,6 +9,7 @@ export type FormState = {
   coverUrl: string;
   coverPosition: string;
   address?: Address;
+  billingAddress?: Address;
   phoneNumber: string;
   subscriptionType?: SubscriptionType;
 };
