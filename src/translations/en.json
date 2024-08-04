@@ -175,6 +175,7 @@
     "zip": "ZIP Code",
     "city": "City",
     "street": "Street",
+    "billing_address_info": "Billing address differs from home address",
     "select_session": "Service",
     "edit_session": "Basic Details",
     "details_session": "Details",

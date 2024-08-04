@@ -176,11 +176,13 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
           }}
         />
         {address && (
-          <AddressAccordionContent
-            name="address"
-            address={address}
-            handleInputChange={handleAddressChange}
-          />
+          <Container disableGutters sx={{ mt: 3 }}>
+            <AddressAccordionContent
+              name="address"
+              address={address}
+              handleInputChange={handleAddressChange}
+            />
+          </Container>
         )}
       </Paper>
 

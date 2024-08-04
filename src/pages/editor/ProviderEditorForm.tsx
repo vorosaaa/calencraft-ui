@@ -121,7 +121,7 @@ const FormEditor = ({
     if (!isChecked) {
       handleInputChange({
         ...event,
-        target: { name: "billingAddress", value: address },
+        target: { name: "billingAddress", value: billingAddress || address },
       });
     }
   };
@@ -182,6 +182,7 @@ const FormEditor = ({
         />
       )}
       <FormControlLabel
+        sx={{ mt: 2 }}
         control={
           <Checkbox
             checked={isBillingAddressDifferent}
@@ -190,7 +191,7 @@ const FormEditor = ({
             color="primary"
           />
         }
-        label="Billing address differs from home address"
+        label={t("editor.billing_address_info")}
       />
       <Collapse in={isBillingAddressDifferent}>
         <AddressAccordionContent
