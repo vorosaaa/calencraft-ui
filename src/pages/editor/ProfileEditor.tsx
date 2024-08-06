@@ -82,16 +82,19 @@ export const ProfileEditor = () => {
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
 
-  const { mutate: removeAccount } = useMutation(deleteUser, {
-    onSuccess: (data: any) => {
-      removeAuth();
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      enqueueSuccess(t(`messages.success.${data.message}`));
-      navigate("/");
+  const { mutate: removeAccount, isLoading: isDeleteLoading } = useMutation(
+    deleteUser,
+    {
+      onSuccess: (data: any) => {
+        removeAuth();
+        queryClient.invalidateQueries({ queryKey: ["me"] });
+        enqueueSuccess(t(`messages.success.${data.message}`));
+        navigate("/");
+      },
+      onError: (error: any) =>
+        enqueueError(t(`messages.errors.${error.response.data.message}`)),
     },
-    onError: (error: any) =>
-      enqueueError(t(`messages.errors.${error.response.data.message}`)),
-  });
+  );
 
   //Handlers and functions
   const openVerificationModal = () => {
@@ -225,6 +228,7 @@ export const ProfileEditor = () => {
       />
       {meData.user.isProvider ? (
         <ProviderEditorForm
+          isDeleteLoading={isDeleteLoading}
           activeTab={activeTab}
           formData={formData}
           handleDeleteOpen={() => setDeleteOpen(true)}
@@ -236,6 +240,7 @@ export const ProfileEditor = () => {
         />
       ) : (
         <UserEditorForm
+          isDeleteLoading={isDeleteLoading}
           formData={formData}
           handleDeleteOpen={() => setDeleteOpen(true)}
           openVerificationModal={openVerificationModal}
