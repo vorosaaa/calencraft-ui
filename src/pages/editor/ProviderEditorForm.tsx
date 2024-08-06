@@ -6,9 +6,6 @@ import {
   Divider,
   FormControlLabel,
   Grid,
-  IconButton,
-  Menu,
-  MenuItem,
   SelectChangeEvent,
   Tab,
   Tabs,
@@ -25,11 +22,12 @@ import { useTranslation } from "react-i18next";
 import { BreakEditorStepper } from "./breakEditor/BreakEditorStepper";
 import { FormState } from "../../types/formState";
 import { useNavigate } from "react-router-dom";
-import { MoreHoriz } from "@mui/icons-material";
+import { FormFooter } from "./FormFooter";
 
 type Props = {
   activeTab: number;
   formData: FormState;
+  isDeleteLoading: boolean;
   handleDeleteOpen: () => void;
   setActiveTab: (newValue: number) => void;
   openVerificationModal: () => void;
@@ -82,6 +80,7 @@ export const ProviderEditorForm = (props: Props) => {
 
 const FormEditor = ({
   formData,
+  isDeleteLoading,
   handleDeleteOpen,
   openVerificationModal,
   handleInputChange,
@@ -90,7 +89,6 @@ const FormEditor = ({
 }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const {
     subscriptionType,
     name,
@@ -124,17 +122,6 @@ const FormEditor = ({
         target: { name: "billingAddress", value: billingAddress || address },
       });
     }
-  };
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
-    setAnchorEl(event.currentTarget);
-
-  const handleClose = () => setAnchorEl(null);
-  const handleRemoveAccount = () => {
-    handleDeleteOpen();
-    handleClose();
   };
 
   return (
@@ -194,7 +181,7 @@ const FormEditor = ({
         label={t("editor.billing_address_info")}
       />
       <Collapse in={isBillingAddressDifferent}>
-        {billingAddress && (
+        {address && (
           <AddressAccordionContent
             name="billingAddress"
             address={billingAddress}
@@ -202,50 +189,11 @@ const FormEditor = ({
           />
         )}
       </Collapse>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "16px",
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{ paddingX: 6 }}
-          color="primary"
-          onClick={handleSubmit}
-        >
-          {t("editor.submit")}
-        </Button>
-        <div>
-          <IconButton
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          >
-            <MoreHoriz />
-          </IconButton>
-          <Menu
-            id="account-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            sx={{
-              "& .MuiPaper-root": {
-                // Targets the Paper component inside the Menu
-                bgcolor: "error.main", // Sets the background color to the theme's error color
-                color: "common.white", // Sets the text color to white
-              },
-            }}
-          >
-            <MenuItem onClick={handleRemoveAccount}>
-              {t("editor.remove")}
-            </MenuItem>
-          </Menu>
-        </div>
-      </div>
+      <FormFooter
+        isDeleteLoading={isDeleteLoading}
+        handleSubmit={handleSubmit}
+        handleDeleteOpen={handleDeleteOpen}
+      />
     </Container>
   );
 };
