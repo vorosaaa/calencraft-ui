@@ -194,11 +194,13 @@ const FormEditor = ({
         label={t("editor.billing_address_info")}
       />
       <Collapse in={isBillingAddressDifferent}>
-        <AddressAccordionContent
-          name="billingAddress"
-          address={billingAddress}
-          handleInputChange={handleInputChange}
-        />
+        {billingAddress && (
+          <AddressAccordionContent
+            name="billingAddress"
+            address={billingAddress}
+            handleInputChange={handleInputChange}
+          />
+        )}
       </Collapse>
 
       <div
