@@ -47,6 +47,13 @@ export const subscribe = async ({
       clientSecret: client_secret,
       confirmParams: {
         return_url: "https://calencraft.com",
+        payment_method_data: {
+          billing_details: {
+            address: {
+              country: address.country,
+            },
+          },
+        },
       },
       redirect: "if_required",
     });

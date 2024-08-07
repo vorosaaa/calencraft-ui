@@ -159,6 +159,7 @@
       "add_new_section": "Új bekezdés hozzáadása",
       "save": "Mentés"
     },
+    "required": "Kötelező mező",
     "fixed_time": "Fix, egyszeri időpont. A szolgáltatás csak egyszer elérhető az intervallumban.",
     "phone_number": "Telefonszám",
     "no_plan": "Nincs aktív előfizetésed. A profilod nem lesz látható mások számára.",

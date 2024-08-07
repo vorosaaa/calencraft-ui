@@ -8,12 +8,14 @@ import { countries } from "../../../types/countries";
 type Props = {
   name: string;
   address: Address | null;
+  hasMissingFields?: boolean;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const AddressAccordionContent = ({
   name,
   address,
+  hasMissingFields,
   handleInputChange,
 }: Props) => {
   const { t } = useTranslation();
@@ -56,6 +58,12 @@ export const AddressAccordionContent = ({
               {...params}
               name={`${name}.country`}
               label={t("editor.country")}
+              error={!address?.country && hasMissingFields}
+              helperText={
+                !address?.country && hasMissingFields
+                  ? t("editor.required")
+                  : undefined
+              }
               inputProps={{
                 ...params.inputProps,
                 autoComplete: "new-password", // disable autocomplete and autofill
@@ -72,6 +80,12 @@ export const AddressAccordionContent = ({
           name={`${name}.zipCode`}
           value={address?.zipCode}
           onChange={handleInputChange}
+          error={!address?.zipCode && hasMissingFields}
+          helperText={
+            !address?.zipCode && hasMissingFields
+              ? t("editor.required")
+              : undefined
+          }
         />
       </Grid>
       <Grid item xs={6}>
@@ -82,6 +96,12 @@ export const AddressAccordionContent = ({
           name={`${name}.city`}
           value={address?.city}
           onChange={handleInputChange}
+          error={!address?.city && hasMissingFields}
+          helperText={
+            !address?.city && hasMissingFields
+              ? t("editor.required")
+              : undefined
+          }
         />
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -92,6 +112,12 @@ export const AddressAccordionContent = ({
           name={`${name}.street`}
           value={address?.street}
           onChange={handleInputChange}
+          error={!address?.street && hasMissingFields}
+          helperText={
+            !address?.street && hasMissingFields
+              ? t("editor.required")
+              : undefined
+          }
         />
       </Grid>
     </Grid>
