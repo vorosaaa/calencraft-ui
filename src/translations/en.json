@@ -157,6 +157,7 @@
       "add_new_section": "Add new section",
       "save": "Save"
     },
+    "required": "This field is required",
     "fixed_time": "Fixed, one time occasion. The service will be available only once in the interval.",
     "phone_number": "Phone Number",
     "no_plan": "You do not have an active subscription. Other users will not see your profile.",

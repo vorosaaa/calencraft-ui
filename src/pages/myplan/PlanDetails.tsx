@@ -95,6 +95,8 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const elements = useElements();
   const queryClient = useQueryClient();
   const [address, setAddress] = useState<Address | undefined>();
+  const [hasMissingFields, setHasMissingFields] = useState(false);
+
   const { mutate, isLoading } = useMutation(subscribe, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries("me");
@@ -112,8 +114,21 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
     setAddress({ ...address, [addressField]: value });
   };
 
+  const checkForMissingFields = () => {
+    return (
+      !address?.country ||
+      !address?.zipCode ||
+      !address?.city ||
+      !address?.street
+    );
+  };
+
   const handleSubscription = async () => {
     if (!stripe || !elements || !address) return;
+    if (checkForMissingFields()) {
+      setHasMissingFields(true);
+      return;
+    }
     mutate({
       subscriptionType: type,
       stripe,
@@ -180,6 +195,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
             <AddressAccordionContent
               name="address"
               address={address}
+              hasMissingFields={hasMissingFields}
               handleInputChange={handleAddressChange}
             />
           </Container>
