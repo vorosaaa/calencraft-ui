@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 type Props = {
   text?: string;
   style?: React.CSSProperties;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 } & React.DOMAttributes<HTMLDivElement>;
 
 export const IconedContainer = ({ text, children, style, onClick }: Props) => {

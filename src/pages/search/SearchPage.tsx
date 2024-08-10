@@ -3,7 +3,6 @@ import { Fragment, useEffect, useState } from "react";
 import { SearchContainer } from "./css/ProviderList.css";
 import { ProviderTable } from "./ProviderTable";
 import { useQuery } from "react-query";
-import { getProviders } from "../../api/userApi";
 import { View } from "../login/Login.css";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
@@ -11,6 +10,7 @@ import { ServiceCategory, CountryCode } from "../../types/enums";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { countries } from "../../types/countries";
 import { useLocation } from "../../hooks/locationHook";
+import { getProviders } from "../../api/providerApi";
 
 export const SearchPage = () => {
   const isMobile = useCheckMobileScreen();

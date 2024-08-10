@@ -18,6 +18,8 @@
   },
   "messages": {
     "success": {
+      "BREAK_DELETED": "A szünet sikeresen törölve",
+      "SESSION_DELETED": "Sikeres törlés",
       "USER_DELETED": "A fiók sikeresen törölve",
       "REG_SUCCESS": "Sikeres regisztráció! Kérjük, ellenőrizze az e-mailjét a fiók megerősítéséhez.",
       "LOGIN_SUCCESS": "Sikeres bejelentkezés",
@@ -128,6 +130,7 @@
     "sunday": "Vasárnap"
   },
   "service_types": {
+    "null": "",
     "HEALTHCARE": "Egészségügy",
     "BEAUTY": "Szépség",
     "FITNESS": "Fitnesz",
@@ -159,8 +162,12 @@
       "add_new_section": "Új bekezdés hozzáadása",
       "save": "Mentés"
     },
+    "confirm_delete": "Törlés megerősítése",
+    "are_you_sure": "Biztosan törölni szeretné ezt az elemet: {{item}}?",
+    "delete": "Törlés",
+    "cancel": "Mégse",
     "required": "Kötelező mező",
-    "fixed_time": "Fix, egyszeri időpont. A szolgáltatás csak egyszer elérhető az intervallumban.",
+    "fixed_time": "Fix, egyszeri időpont. A szolgáltatás csak egyszer elérhető az intervallumban. Például: csoportos óra 16:00-18:00. Ellenkező esetben több óra is előfordulhat a nap folyamán.",
     "phone_number": "Telefonszám",
     "no_plan": "Nincs aktív előfizetésed. A profilod nem lesz látható mások számára.",
     "verify_email": "Erősítsd meg az e-mail címed",

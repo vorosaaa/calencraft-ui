@@ -18,6 +18,8 @@
   },
   "messages": {
     "success": {
+      "BREAK_DELETED": "Break successfully deleted",
+      "SESSION_DELETED": "Successful deletion",
       "USER_DELETED": "Account successfully deleted",
       "REG_SUCCESS": "Registration successful! Please check your email to verify your account.",
       "LOGIN_SUCCESS": "Logged in successfully",
@@ -126,6 +128,7 @@
     "sunday": "Sunday"
   },
   "service_types": {
+    "null": "",
     "HEALTHCARE": "Healthcare",
     "BEAUTY": "Beauty",
     "FITNESS": "Fitness",
@@ -157,6 +160,10 @@
       "add_new_section": "Add new section",
       "save": "Save"
     },
+    "confirm_delete": "Confirm deletion",
+    "are_you_sure": "Are you sure you want to delete this item: {{item}}?",
+    "delete": "Delete",
+    "cancel": "Cancel",
     "required": "This field is required",
     "fixed_time": "Fixed, one time occasion. The service will be available only once in the interval.",
     "phone_number": "Phone Number",

@@ -13,7 +13,7 @@ import {
 import { SessionSelector } from "./firstStep/SessionSelector";
 import { Details } from "./thirdStep/Details";
 import { useMutation, useQueryClient } from "react-query";
-import { savesTypes } from "../../../api/userApi";
+import { deleteType, savesTypes } from "../../../api/providerApi";
 import { SessionForm } from "./secondStep/SessionForm";
 import { useTranslation } from "react-i18next";
 import { RepeatType } from "../../../types/enums";
@@ -53,6 +53,16 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
     useState<SessionType>(initialType);
 
   const { data } = useMe();
+  const { mutate: deleteSessionType } = useMutation(deleteType, {
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      data.success
+        ? enqueueSuccess(t(`messages.success.${data.message}`))
+        : enqueueError(t(`messages.errors.${data.message}`));
+    },
+    onError: (error: any) =>
+      enqueueError(t(`messages.errors.${error.response.data.message}`)),
+  });
   const { mutate: saveType } = useMutation(savesTypes, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
@@ -80,6 +90,11 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
   const onSessionClick = (type: SessionType) => {
     setSelectedSession(type);
     handleNext();
+  };
+
+  const handleDelete = (type: SessionType) => {
+    if (!type.id) return;
+    deleteSessionType(type.id);
   };
 
   const handleSessionDataChange = (
@@ -132,6 +147,7 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
         return (
           <SessionSelector
             sessionTypes={data.user.sessionTypes}
+            onDelete={handleDelete}
             onClick={onSessionClick}
             handleAddNew={handleAddNew}
           />
