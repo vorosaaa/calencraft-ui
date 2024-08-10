@@ -10,7 +10,7 @@ import {
   Stepper,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "react-query";
-import { saveBreaks } from "../../../api/userApi";
+import { deleteBreak, saveBreaks } from "../../../api/providerApi";
 import { useTranslation } from "react-i18next";
 import { BreakSelector } from "./firstStep/BreakSelector";
 import { BreakStateType } from "../../../types/breakStateType";
@@ -48,6 +48,16 @@ export const BreakEditorStepper = () => {
     useState<BreakStateType>(initialType);
 
   const { data } = useMe();
+  const { mutate: deleteBreakType } = useMutation(deleteBreak, {
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      data.success
+        ? enqueueSuccess(t(`messages.success.${data.message}`))
+        : enqueueError(t(`messages.errors.${data.message}`));
+    },
+    onError: (error: any) =>
+      enqueueError(t(`messages.errors.${error.response.data.message}`)),
+  });
   const { mutate } = useMutation(saveBreaks, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
@@ -137,6 +147,10 @@ export const BreakEditorStepper = () => {
       [key]: value,
     }));
   };
+  const handleDelete = (br: BreakStateType) => {
+    if (!br.id) return;
+    deleteBreakType(br.id);
+  };
 
   const handleSubmit = () => mutate(selectedBreak);
 
@@ -146,6 +160,7 @@ export const BreakEditorStepper = () => {
         return (
           <BreakSelector
             breaks={data.user.breaks}
+            onDelete={handleDelete}
             onClick={onBreakSelect}
             handleAddNew={handleAddNew}
           />
