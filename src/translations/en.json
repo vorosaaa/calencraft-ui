@@ -209,6 +209,8 @@
     "back": "Back",
     "next": "Next",
     "submit": "Save",
+    "share": "Share",
+    "shared": "Link copied",
     "remove": "Remove account",
     "add_break": "New Break",
     "select_break": "Breaks",
