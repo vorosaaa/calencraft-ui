@@ -10,12 +10,14 @@ import { PrivacyPolicyPage } from "../pages/privacypolicy/PrivacyPolicyPage";
 import { AboutUsPage } from "../pages/aboutus/AboutPage";
 import { Calendar } from "../pages/calendar/Calendar";
 import { ContactPage } from "../pages/contact/ContactPage";
+import { NewBookingPage } from "../pages/admin/booking/NewBookingPage";
 
 export const BookyRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="/admin/booking" element={<NewBookingPage />} />
       <Route path="/profile/:id" element={<ProfilePage />} />
       <Route path="/myprofile" element={<ProfileEditor />} />
       <Route path="/calendar" element={<Calendar />} />

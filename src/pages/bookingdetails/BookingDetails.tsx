@@ -57,7 +57,7 @@ export const BookingDetails = () => {
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Card elevation={2}>
-        <CardHeader title={booking.sessionType.name} />
+        <CardHeader title={booking.name} />
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -71,7 +71,7 @@ export const BookingDetails = () => {
                 {booking.sessionType.description}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                {t("bookingDetails.price")}: {booking.sessionType.price}
+                {t("bookingDetails.price")}: {booking.price}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>

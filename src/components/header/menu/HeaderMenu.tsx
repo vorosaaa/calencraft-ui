@@ -36,7 +36,10 @@ export const BrowserMenu = ({
       { text: "header.book", url: "/search" },
       isLoggedIn() && { text: "header.calendar", url: "/calendar" },
       isLoggedIn() &&
-        data?.user?.isProvider && { text: "header.pricing", url: "/myplan" },
+        data?.user?.isProvider && {
+          text: "header.new_booking",
+          url: "/admin/booking",
+        },
     ].filter(Boolean);
   }, [isLoggedIn, data]);
 
@@ -46,7 +49,7 @@ export const BrowserMenu = ({
         <Button
           key={page.text}
           onClick={() => onClick(page.url)}
-          sx={{ my: 2, color: "white", display: "block" }}
+          sx={{ my: 2, color: "white" }}
         >
           {t(page.text)}
         </Button>

@@ -10,19 +10,28 @@ export type ReducedBooking = {
 
 export type BookingResponse = {
   id: string;
+  name: string;
+  price: number;
   provider: { id: string; name: string };
   users: { id: string; name: string }[];
   sessionType: {
-    name: string;
     type: BookingType;
     maxCapacity: number;
     description: string;
-    price: number;
     lengthInMinutes: number;
   };
   date: number;
   startTime: string;
   endTime: string;
+};
+
+export type ManualBookingRequest = {
+  name: string;
+  date: number;
+  startTime: string;
+  endTime: string;
+  price: number;
+  users: { name: string; email: string }[];
 };
 
 export type BookingRequest = {
@@ -47,12 +56,12 @@ export type ProviderBookingResponse = {
 };
 
 export type ProviderBooking = {
+  name: string;
   date: number;
   endTime: string;
   startTime: string;
   users: { id: string; name: string }[];
   sessionType: {
-    name: string;
     maxCapacity: number;
   };
 };

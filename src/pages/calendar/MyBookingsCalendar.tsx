@@ -164,12 +164,13 @@ const convertBookingsToEvents = (
       id: booking.id,
       title:
         calendarType === "user" ||
+        !booking.sessionType ||
         booking.sessionType.type === BookingType.GROUP
-          ? booking.sessionType.name
-          : `${booking.users[0].name}: ${booking.sessionType.name}`,
+          ? booking.name
+          : `${booking.users[0].name}: ${booking.name}`,
       start: start,
       end: end,
-      type: booking.sessionType.type,
+      type: booking.sessionType?.type,
     };
   });
 };

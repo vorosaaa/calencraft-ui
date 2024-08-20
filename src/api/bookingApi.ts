@@ -1,8 +1,17 @@
-import { BookingRequest, BookingResponse } from "../types/booking";
+import {
+  BookingRequest,
+  BookingResponse,
+  ManualBookingRequest,
+} from "../types/booking";
 import axiosClient from "./axiosClient";
 
 export const confirmBooking = async (request: BookingRequest) => {
   const response = await axiosClient.post(`api/booking`, request);
+  return response.data;
+};
+
+export const createManualBooking = async (request: ManualBookingRequest) => {
+  const response = await axiosClient.post(`api/booking/manual`, request);
   return response.data;
 };
 
