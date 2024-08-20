@@ -1,4 +1,17 @@
 {
+  "booking": {
+    "required": "Kötelező mező",
+    "title": "Foglalás létrehozása",
+    "name": "Név",
+    "email": "Email",
+    "startTime": "Kezdő időpont",
+    "endTime": "Befejező időpont",
+    "date": "Dátum",
+    "price": "Ár",
+    "users": "Résztvevők",
+    "userName": "Név",
+    "create": "Foglalás létrehozása"
+  },
   "contact": {
     "title": "Kapcsolatfelvétel",
     "name": "Vörös Attila egyéni vállalkozó",
@@ -29,6 +42,7 @@
       "BOOKINGS_FOUND": "Foglalások megtalálva",
       "BOOKINGS_FOUND_USER": "Foglalások megtalálva a felhasználó számára",
       "REGISTERED_FOR_SESSION": "Sikeres jelentkezés az alkalomra",
+      "BOOKING_CREATED": "Foglalás létrehozva",
       "SUBSCRIPTION_CREATED": "Előfizetés létrehozva",
       "SUBSCRIPTION_UPDATED": "Előfizetés frissítve",
       "SUBSCRIPTION_CANCELLED": "Előfizetés lemondva",
@@ -381,7 +395,8 @@
     "pricing": "Előfizetésem",
     "calendar": "Naptáram",
     "login": "Belépés",
-    "register": "Regisztráció"
+    "register": "Regisztráció",
+    "new_booking": "+ Új foglalás rögzítése"
   },
   "footer": {
     "services": "Aloldalak",

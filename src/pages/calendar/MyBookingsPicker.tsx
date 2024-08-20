@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
     field: "sessionName",
     headerName: "calendar.name",
     flex: 1,
-    valueGetter: (params) => params.row.sessionType.name,
+    valueGetter: (params) => params.row.name,
   },
   {
     field: "providerName",
@@ -62,9 +62,9 @@ const columns: GridColDef[] = [
 const getClientName = (
   params: GridValueGetterParams<any, any, GridTreeNodeWithRender>,
 ) => {
-  if (params.row.sessionType.type === "PRIVATE")
+  if (params.row.sessionType?.type === "PRIVATE")
     return params.row.users[0].name;
-  if (params.row.sessionType.type === "GROUP") return params.row.users.length;
+  if (params.row.sessionType?.type === "GROUP") return params.row.users.length;
   return "";
 };
 

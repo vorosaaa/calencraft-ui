@@ -1,4 +1,17 @@
 {
+  "booking": {
+    "required": "This field is required",
+    "title": "Create a booking",
+    "name": "Name",
+    "email": "Email",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "date": "Date",
+    "price": "Price",
+    "users": "Participants",
+    "userName": "Name",
+    "create": "Create"
+  },
   "contact": {
     "title": "Contact Details",
     "name": "Attila Vörös enterprising individual",
@@ -29,6 +42,7 @@
       "BOOKINGS_FOUND": "Bookings found",
       "BOOKINGS_FOUND_USER": "Bookings found for user",
       "REGISTERED_FOR_SESSION": "Successfully registered for session",
+      "BOOKING_CREATED": "Booking created",
       "SUBSCRIPTION_CREATED": "Subscription created",
       "SUBSCRIPTION_UPDATED": "Subscription updated",
       "SUBSCRIPTION_CANCELLED": "Subscription cancelled",
@@ -377,7 +391,8 @@
     "pricing": "Subscriptions",
     "calendar": "My Calendar",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "new_booking": "New Booking"
   },
   "footer": {
     "services": "Subpages",

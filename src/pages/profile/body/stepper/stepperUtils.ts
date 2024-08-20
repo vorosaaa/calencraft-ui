@@ -70,7 +70,7 @@ export const hasBookingConflict = (
     // Check if session type is GROUP and booking is not full
     const isGroupSessionConflict =
       sessionType.type === BookingType.GROUP &&
-      booking.sessionType.name === sessionType.name &&
+      booking.name === sessionType.name &&
       sessionType.maxCapacity &&
       booking.users.length < sessionType.maxCapacity;
 

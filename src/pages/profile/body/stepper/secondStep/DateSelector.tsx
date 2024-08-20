@@ -141,7 +141,7 @@ export const DateSelector = ({
       } else if (type === BookingType.GROUP) {
         const groupBookings = bookings.filter(
           (booking: ProviderBooking) =>
-            booking.sessionType.name === name &&
+            booking.name === name &&
             booking.startTime === formatTime(currentTime),
         );
         users = groupBookings.length > 0 ? groupBookings[0].users.length : 0;
