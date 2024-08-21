@@ -55,6 +55,11 @@ export const Calendar = () => {
         enqueueSuccess(t("bookingDetails.modals.delete.success"));
         queryClient.invalidateQueries(["mybookings", dateRange, calendarType]);
       },
+      onSettled: () => {
+        setDeleteBookingId("");
+        setReason("");
+        setOpenDeleteDialog(false);
+      },
     },
   );
 
@@ -64,10 +69,7 @@ export const Calendar = () => {
     setDeleteBookingId(id);
     setOpenDeleteDialog(true);
   };
-  const handleConfirmRemove = () => {
-    mutate({ id: deleteBookingId, reason });
-    handleCloseDeleteDialog();
-  };
+  const handleConfirmRemove = () => mutate({ id: deleteBookingId, reason });
 
   useEffect(() => {
     if (!meData) return;
