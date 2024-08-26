@@ -10,6 +10,7 @@ import { Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { SubscriptionType } from "../../../types/enums";
 
 type Props = {
   data?: any;
@@ -36,7 +37,8 @@ export const BrowserMenu = ({
       { text: "header.book", url: "/search" },
       isLoggedIn() && { text: "header.calendar", url: "/calendar" },
       isLoggedIn() &&
-        data?.user?.isProvider && {
+        data?.user?.isProvider &&
+        data?.user.subscriptionType !== SubscriptionType.NO_SUBSCRIPTION && {
           text: "header.new_booking",
           url: "/admin/booking",
         },
@@ -78,7 +80,11 @@ export const MobileMenu = ({
       { text: "header.book", url: "/search" },
       isLoggedIn() && { text: "header.calendar", url: "/calendar" },
       isLoggedIn() &&
-        data?.user?.isProvider && { text: "header.pricing", url: "/myplan" },
+        data?.user?.isProvider &&
+        data?.user.subscriptionType !== SubscriptionType.NO_SUBSCRIPTION && {
+          text: "header.new_booking",
+          url: "/admin/booking",
+        },
     ].filter(Boolean);
   }, [isLoggedIn, data]);
 
