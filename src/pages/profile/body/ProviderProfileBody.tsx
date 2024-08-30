@@ -26,7 +26,9 @@ export const ProviderProfileBody = ({ user }: Props) => {
       }}
     >
       <BottomLeftContainer>
-        <SectionTitle variant="h6">{t("profile.aboutme")}</SectionTitle>
+        {description && (
+          <SectionTitle variant="h6">{t("profile.aboutme")}</SectionTitle>
+        )}
         <Description variant="body1">{description}</Description>
         {/*<SectionTitle variant="h6">{t("profile.certificates")}</SectionTitle>
         <CertificationList>
