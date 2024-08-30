@@ -370,21 +370,23 @@
     "privacy": "privacy policy"
   },
   "home": {
-    "welcomeTitle": "Welcome to Calencraft!",
-    "welcomeText1": "Discover the easiest way to book various service appointments with Calencraft. From beauty treatments to home services and educational classes, our platform simplifies the booking process for your convenience.",
-    "welcomeText2": "Calencraft aims to redefine how you access and manage appointments. Say goodbye to complexities and embrace seamless booking.",
-    "whyChooseTitle": "Why Choose Us?",
-    "reasons": {
-      "simpleSchedulingFirstWord": "✅ Easy Scheduling",
-      "simpleSchedulingRest": "Book your desired services effortlessly through our user-friendly interface. From hairdressing appointments to home maintenance services, find everything with just a few clicks.",
-      "diverseSelectionFirstWord": "🌟 Diverse Selection",
-      "diverseSelectionRest": "Explore a wide range of services from professional providers committed to delivering quality experiences. Whether it’s wellness, household, or educational services, we’ve got you covered.",
-      "expertGuidanceFirstWord": "👥 Expert Support",
-      "expertGuidanceRest": "Connect with expert providers dedicated to your satisfaction. Receive personalized advice, services, and reliable assistance throughout your experience.",
-      "tailoredPlansFirstWord": "📅 Tailored Schedules",
-      "tailoredPlansRest": "Customize your schedule according to your needs. Choose the most convenient times and select individual or group services as per your requirements."
-    },
-    "getStartedButton": "Browse"
+    "home": {
+      "welcomeTitle": "Welcome to Calencraft!",
+      "welcomeText1": "Experience how easy it can be to book any service with Calencraft! Whether you need beauty treatments, home services, or educational classes, our platform makes booking a breeze, just for you.",
+      "welcomeText2": "At Calencraft, we're here to simplify the way you manage your appointments. Say goodbye to hassles and enjoy a smooth, easy booking experience with us.",
+      "whyChooseTitle": "Why Choose Calencraft?",
+      "reasons": {
+        "simpleSchedulingFirstWord": "✅ Quick and Easy Scheduling",
+        "simpleSchedulingRest": "Whatever service you're looking for—whether it's a haircut, home repair, or a class—you can book it in just a few clicks on our user-friendly platform.",
+        "diverseSelectionFirstWord": "🌟 Wide Range of Services",
+        "diverseSelectionRest": "Discover top-notch services from professional providers who are dedicated to delivering quality experiences. From wellness to household help and education, you’ll find everything you need.",
+        "expertGuidanceFirstWord": "👥 Personalized Expert Support",
+        "expertGuidanceRest": "Connect with trusted professionals who care about your satisfaction. Get tailored advice, services, and dependable support every step of the way.",
+        "tailoredPlansFirstWord": "📅 Flexible, Personalized Schedules",
+        "tailoredPlansRest": "Create a schedule that works for you! Pick the perfect times and choose services that meet your needs, whether for yourself or in a group."
+      },
+      "getStartedButton": "Browse Now"
+    }
   },
   "header": {
     "book": "Book",

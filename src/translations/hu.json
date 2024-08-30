@@ -374,22 +374,23 @@
     "privacy": "adatvédelmi irányelveket"
   },
   "home": {
-    "welcomeTitle": "Üdvözöl a Calencraft!",
-    "welcomeText1": "Fedezd fel a legegyszerűbb módot a különböző szolgáltatások időpontjainak foglalására a Calencraft segítségével. Legyen szó szépségápolásról, otthoni szolgáltatásokról vagy oktatási órákról, platformunk egyszerűsíti a foglalási folyamatot a te kényelmed érdekében.",
-    "welcomeText2": "A Calencraft célja, hogy újraértelmezze, hogyan éred el és kezeled az időpontokat. Búcsúzz el a bonyolultságoktól és köszöntsd az egyszerű és zökkenőmentes foglalást.",
-    "whyChooseTitle": "Miért válassz minket?",
+    "welcomeTitle": "Üdv a Calencraft-nál!",
+    "welcomeText1": "Fedezd fel, milyen egyszerű időpontot foglalni bármilyen szolgáltatásra a Calencraft segítségével! Legyen szó szépségápolásról, házhoz jövő szolgáltatásokról vagy oktatási órákról, platformunk megkönnyíti a foglalást, hogy a te életed is egyszerűbb legyen.",
+    "welcomeText2": "A Calencraft azzal a céllal jött létre, hogy a lehető legegyszerűbbé és zökkenőmentessé tegye az időpontfoglalást számodra. Felejtsd el a bonyodalmakat – élvezd az egyszerű és gyors foglalási élményt velünk!",
+    "whyChooseTitle": "Miért válaszd a Calencraft-ot?",
     "reasons": {
-      "simpleSchedulingFirstWord": "✅ Egyszerű Foglalás",
-      "simpleSchedulingRest": "Foglalj kívánt szolgáltatásokat könnyedén a felhasználóbarát felületünkön keresztül. A fodrászati időpontoktól a házirendezési szolgáltatásokig mindent megtalálsz néhány kattintással.",
-      "diverseSelectionFirstWord": "🌟 Sokféle Választék",
-      "diverseSelectionRest": "Fedezz fel széles körű szolgáltatásokat professzionális szakemberektől, akik elkötelezettek a minőségi élmény nyújtásában. Legyen szó wellnessről, háztartási vagy oktatási szolgáltatásokról, nálunk minden megtalálható.",
-      "expertGuidanceFirstWord": "👥 Szakértői Támogatás",
-      "expertGuidanceRest": "Kapcsolódj szakértő szolgáltatókkal, akik elkötelezettek a elégedettséged iránt. Kapj személyre szabott tanácsokat, szolgáltatásokat és megbízható segítséget az élményed során.",
-      "tailoredPlansFirstWord": "📅 Testreszabható Ütemtervek",
-      "tailoredPlansRest": "Alakítsd ki az időbeosztásodat az igényeid szerint. Válassz a legmegfelelőbb időpontok közül és válaszd ki az egyéni vagy csoportos szolgáltatások közül a szükségleteidnek megfelelően."
+      "simpleSchedulingFirstWord": "✅ Egyszerű és gyors foglalás",
+      "simpleSchedulingRest": "Bármit is keresel, legyen az fodrász, házhoz jövő szakember vagy egy tanfolyam, pár kattintással lefoglalhatod nálunk.",
+      "diverseSelectionFirstWord": "🌟 Széles szolgáltatási kínálat",
+      "diverseSelectionRest": "Válassz a legjobb szakemberek közül, akik minőségi szolgáltatásokat nyújtanak. Legyen szó wellnessről, háztartási segítségről vagy oktatásról, nálunk megtalálod, amit keresel.",
+      "expertGuidanceFirstWord": "👥 Személyre szabott szakértői segítség",
+      "expertGuidanceRest": "Lépj kapcsolatba olyan szolgáltatókkal, akik tényleg törődnek veled! Kapj tanácsokat, ajánlásokat és élvezd a teljeskörű támogatást az elejétől a végéig.",
+      "tailoredPlansFirstWord": "📅 Rugalmas időpontok, egyedi igények",
+      "tailoredPlansRest": "Állítsd össze a saját időbeosztásodat! Válaszd ki a számodra legmegfelelőbb időpontokat és szolgáltatásokat, akár egyedül, akár csoportban."
     },
-    "getStartedButton": "Böngészés"
+    "getStartedButton": "Böngéssz most"
   },
+
   "header": {
     "book": "Foglalás",
     "pricing": "Előfizetésem",
