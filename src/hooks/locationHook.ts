@@ -13,13 +13,16 @@ export const useLocation = () => {
   const setSearchCountry = (value: CountryCode | undefined) =>
     setLocationState((prevState) => ({ ...prevState, searchCountry: value }));
 
+  const setSearchCity = (value: string | undefined) =>
+    setLocationState((prevState) => ({ ...prevState, searchCity: value }));
+
   const setIsLoading = (value: boolean) =>
     setLocationState((prevState) => ({ ...prevState, isLoading: value }));
 
   return {
     location: locationState,
     isLoading: locationState.isLoading,
-    searchCountry: locationState.searchCountry,
+    setSearchCity,
     setIsLoading,
     setSearchCountry,
   };

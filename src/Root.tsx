@@ -28,7 +28,7 @@ export const Root = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegistrationModalOpen, setRegistrationModalOpen] = useState(false);
   const { setBackground } = useBackgroundHook();
-  const { setSearchCountry, setIsLoading } = useLocation();
+  const { setSearchCountry, setSearchCity, setIsLoading } = useLocation();
 
   useEffect(() => {
     axios
@@ -36,6 +36,9 @@ export const Root = () => {
       .then((response: any) => {
         if (response.data.country_code in CountryCode) {
           setSearchCountry(response.data.country_code);
+        }
+        if (response.data.city) {
+          setSearchCity(response.data.city);
         }
       })
       .finally(() => {

@@ -1,5 +1,13 @@
-import { Autocomplete, Box, Button, Stack, TextField } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Grid,
+  Skeleton,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { Fragment, useState } from "react";
 import { SearchContainer } from "./css/ProviderList.css";
 import { ProviderTable } from "./ProviderTable";
 import { useQuery } from "react-query";
@@ -12,58 +20,66 @@ import { countries } from "../../types/countries";
 import { useLocation } from "../../hooks/locationHook";
 import { getProviders } from "../../api/providerApi";
 
+type SearchObject = {
+  name?: string;
+  city?: string;
+  category?: string;
+  country?: CountryCode;
+};
+
 export const SearchPage = () => {
+  const { isLoading: isLocationLoading, location } = useLocation();
   const isMobile = useCheckMobileScreen();
-  const {
-    isLoading: isLocationLoading,
-    searchCountry,
-    setSearchCountry,
-  } = useLocation();
-
-  const [searchName, setSearchName] = useState<string | undefined>();
-  const [searchCity, setSearchCity] = useState<string | undefined>();
-  const [searchCategory, setSearchCategory] = useState<string | undefined>();
-  const [country, setCountry] = useState<CountryCode>();
-
-  useEffect(() => {
-    setCountry(searchCountry);
-  }, [searchCountry]);
-
+  // States
+  const [temporarySearchObject, setTemporarySearchObject] =
+    useState<SearchObject>({});
+  const [searchObject, setSearchObject] = useState<SearchObject>({});
   const [paginationDetails, setPaginationDetails] = useState({
     page: 0,
     pageSize: 10,
   });
-  const [searchObject, setSearchObject] = useState<{
-    name?: string;
-    city?: string;
-    category?: string;
-  }>({});
+
+  // Functions
+  const updateTemporarySearchObject = (
+    key: keyof SearchObject,
+    value?: string | CountryCode,
+  ) => {
+    setTemporarySearchObject((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+  const onPaginationChange = (model: GridPaginationModel) => {
+    setPaginationDetails(model);
+  };
+
+  // Queries
   const { data, isLoading } = useQuery(
-    ["providers", searchObject, searchCountry, paginationDetails],
+    ["providers", searchObject, paginationDetails],
     () =>
       getProviders(
         paginationDetails.page,
         paginationDetails.pageSize,
         searchObject.name,
-        searchObject.city,
-        searchCountry,
+        location.searchCity,
+        location.searchCountry,
         searchObject.category,
       ),
+    { enabled: !isLocationLoading },
   );
 
+  // Handlers
   const handleSearchSubmit = () => {
+    const { category, name } = temporarySearchObject;
     setPaginationDetails({ ...paginationDetails, page: 0 });
-    setSearchCountry(country);
     setSearchObject({
-      name: searchName?.length === 0 ? undefined : searchName,
-      city: searchCity?.length === 0 ? undefined : searchCity,
-      category: searchCategory,
+      name: name?.length === 0 ? undefined : name,
+      city: location.searchCity?.length === 0 ? undefined : location.searchCity,
+      country: location.searchCountry,
+      category,
     });
   };
 
-  const onPaginationChange = (model: GridPaginationModel) => {
-    setPaginationDetails(model);
-  };
   return (
     <View maxWidth="lg" sx={{ pt: 4 }}>
       <SearchContainer>
@@ -72,17 +88,15 @@ export const SearchPage = () => {
           spacing={2}
           sx={{ width: "100%" }}
         >
-          <SearchForm
-            searchName={searchName}
-            setSearchName={setSearchName}
-            searchCity={searchCity}
-            setSearchCity={setSearchCity}
-            searchCategory={searchCategory}
-            setSearchCategory={setSearchCategory}
-            searchCountry={country}
-            setSearchCountry={setCountry}
-            handleSearchSubmit={handleSearchSubmit}
-          />
+          {isLocationLoading ? (
+            <SearchLoading />
+          ) : (
+            <SearchForm
+              temporarySearchObject={temporarySearchObject}
+              updateTemporarySearch={updateTemporarySearchObject}
+              handleSearchSubmit={handleSearchSubmit}
+            />
+          )}
         </Stack>
       </SearchContainer>
       <ProviderTable
@@ -97,28 +111,20 @@ export const SearchPage = () => {
 };
 
 type SearchProps = {
-  searchName?: string;
-  searchCity?: string;
-  searchCategory?: string;
-  searchCountry?: CountryCode;
-  setSearchName: (e: string) => void;
-  setSearchCity: (e: string) => void;
-  setSearchCountry: (v: CountryCode | undefined) => void;
-  setSearchCategory: (e: string | undefined) => void;
+  temporarySearchObject: SearchObject;
+  updateTemporarySearch: (key: keyof SearchObject, value?: string) => void;
+
   handleSearchSubmit: () => void;
 };
 
 const SearchForm = ({
-  searchName,
-  setSearchName,
-  searchCity,
-  setSearchCity,
-  searchCategory,
-  setSearchCategory,
-  searchCountry,
-  setSearchCountry,
+  temporarySearchObject,
+  updateTemporarySearch,
   handleSearchSubmit,
 }: SearchProps) => {
+  const { name, category } = temporarySearchObject;
+  const { location, setSearchCity, setSearchCountry } = useLocation();
+  const { searchCity, searchCountry } = location;
   const { t } = useTranslation();
   const isMobile = useCheckMobileScreen();
   return (
@@ -127,8 +133,8 @@ const SearchForm = ({
         fullWidth={!isMobile}
         label={t("search.header.name")}
         variant="outlined"
-        value={searchName}
-        onChange={(e) => setSearchName(e.target.value)}
+        value={name}
+        onChange={(e) => updateTemporarySearch("name", e.target.value)}
       />
       <TextField
         fullWidth={!isMobile}
@@ -142,8 +148,10 @@ const SearchForm = ({
         id="service-type"
         options={Object.values(ServiceCategory)}
         getOptionLabel={(option) => t(`service_types.${option}`)}
-        value={searchCategory}
-        onChange={(event, newValue) => setSearchCategory(newValue || undefined)}
+        value={category}
+        onChange={(event, newValue) =>
+          updateTemporarySearch("category", newValue || undefined)
+        }
         renderInput={(params) => (
           <TextField
             {...params}
@@ -154,9 +162,7 @@ const SearchForm = ({
       />
       <Autocomplete
         fullWidth
-        value={
-          countries.find((country) => country.code === searchCountry) || null
-        }
+        value={countries.find((c) => c.code === searchCountry) || null}
         autoHighlight
         onChange={(_event, newValue) => setSearchCountry(newValue?.code)}
         options={countries}
@@ -195,5 +201,30 @@ const SearchForm = ({
         {t("search.header.search")}
       </Button>
     </Fragment>
+  );
+};
+
+const SearchLoading = () => {
+  const isMobile = useCheckMobileScreen();
+  const paddingLeft = isMobile ? 0 : 2;
+  const paddingTop = isMobile ? 2 : 0;
+  return (
+    <Grid container>
+      <Grid item xs={12} sm={2.35} sx={{ paddingTop }}>
+        <Skeleton variant="rounded" height={60} />
+      </Grid>
+      <Grid item xs={12} sm={2.35} sx={{ paddingLeft, paddingTop }}>
+        <Skeleton variant="rounded" height={60} />
+      </Grid>
+      <Grid item xs={12} sm={2.35} sx={{ paddingLeft, paddingTop }}>
+        <Skeleton variant="rounded" height={60} />
+      </Grid>
+      <Grid item xs={12} sm={2.35} sx={{ paddingLeft, paddingTop }}>
+        <Skeleton variant="rounded" height={60} />
+      </Grid>
+      <Grid item xs={12} sm={2.6} sx={{ paddingLeft, paddingTop }}>
+        <Skeleton variant="rounded" height={60} />
+      </Grid>
+    </Grid>
   );
 };
