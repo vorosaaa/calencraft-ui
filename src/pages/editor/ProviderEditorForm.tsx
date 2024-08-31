@@ -11,7 +11,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { EmailStatus } from "../../types/enums";
+import { EmailStatus, SubscriptionType } from "../../types/enums";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AddressAccordionContent } from "./accordions/AddressAccordionContent";
 import { ProviderPersonalContent } from "./accordions/ProviderPersonalContent";
@@ -124,19 +124,21 @@ const FormEditor = ({
     }
   };
 
+  console.log(subscriptionType);
   return (
     <Container>
-      {subscriptionType && subscriptionType === "NO_SUBSCRIPTION" && (
-        <Button
-          sx={{ mb: 2 }}
-          fullWidth
-          variant="outlined"
-          color="warning"
-          onClick={() => navigate("/myplan")}
-        >
-          {t("editor.no_plan")}
-        </Button>
-      )}
+      {subscriptionType &&
+        subscriptionType === SubscriptionType.NO_SUBSCRIPTION && (
+          <Button
+            sx={{ mb: 2 }}
+            fullWidth
+            variant="outlined"
+            color="warning"
+            onClick={() => navigate("/myplan")}
+          >
+            {t("editor.no_plan")}
+          </Button>
+        )}
       {emailStatus === EmailStatus.NOT_CONFIRMED && (
         <Button
           sx={{ mb: 2 }}
