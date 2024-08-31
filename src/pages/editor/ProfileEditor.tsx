@@ -192,7 +192,7 @@ export const ProfileEditor = () => {
   useEffect(() => {
     if (meData) {
       setFormData({
-        subscriptionType: meData.user.subscription,
+        subscriptionType: meData.user.subscriptionType,
         emailStatus: meData.user.emailStatus,
         isProvider: meData.user.isProvider,
         coverPosition: meData.user.coverPosition,
