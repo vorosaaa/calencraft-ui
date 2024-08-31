@@ -98,8 +98,8 @@ export const DateSelector = ({
     const possibleTimes: TimeSlot[] = [];
 
     if (
-      isTempBreakConflict(date, startTimeInMinutes, breaks) &&
-      isTempBreakConflict(date, endTimeInMinutes, breaks)
+      isTempBreakConflict(date, lengthInMinutes, startTimeInMinutes, breaks) &&
+      isTempBreakConflict(date, lengthInMinutes, endTimeInMinutes, breaks)
     ) {
       setPossibleStartTimes(possibleTimes);
       return;
@@ -112,9 +112,14 @@ export const DateSelector = ({
       const currentTime = createCurrentTime(date, i);
       if (!isDayAvailable(currentTime, days)) continue;
 
-      const regularBreakConflict = hasRegularBreakConflict(currentTime, breaks);
+      const regularBreakConflict = hasRegularBreakConflict(
+        currentTime,
+        selectedSession.lengthInMinutes,
+        breaks,
+      );
       const temporaryBreakConflict = hasTemporaryBreakConflict(
         currentTime,
+        lengthInMinutes,
         breaks,
       );
       const bookingConflicts = hasBookingConflict(

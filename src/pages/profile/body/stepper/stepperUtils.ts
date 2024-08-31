@@ -81,6 +81,7 @@ export const hasBookingConflict = (
 
 export const hasTemporaryBreakConflict = (
   time: Date,
+  lengthInMinutes: number,
   breaks: ProviderBreak[],
 ): boolean => {
   return breaks.some((breakItem: ProviderBreak) => {
@@ -100,16 +101,22 @@ export const hasTemporaryBreakConflict = (
 
     // Get currentTime in milliseconds for comparison
     const currentTimeInMilliseconds = time.getTime();
+    const endTimeInMilliseconds = time.getTime() + lengthInMinutes * 60 * 1000;
     // Check if currentTime is within the break's start and end times
     return (
-      currentTimeInMilliseconds >= startTime.getTime() &&
-      currentTimeInMilliseconds < endTime.getTime()
+      (currentTimeInMilliseconds >= startTime.getTime() &&
+        currentTimeInMilliseconds < endTime.getTime()) ||
+      (endTimeInMilliseconds > startTime.getTime() &&
+        endTimeInMilliseconds <= endTime.getTime()) ||
+      (currentTimeInMilliseconds < startTime.getTime() &&
+        endTimeInMilliseconds > endTime.getTime())
     );
   });
 };
 
 export const hasRegularBreakConflict = (
   time: Date,
+  lengthInMinutes: number,
   breaks: ProviderBreak[],
 ): boolean => {
   const daysOfWeek = [
@@ -123,7 +130,7 @@ export const hasRegularBreakConflict = (
   ];
   const currentDay = daysOfWeek[time.getDay()];
   const currentTimeInMilliseconds = time.getTime();
-
+  const endTimeInMilliseconds = time.getTime() + lengthInMinutes * 60 * 1000;
   return breaks.some((breakItem: ProviderBreak) => {
     if (breakItem.type !== "REGULAR" || !breakItem.days.includes(currentDay)) {
       return false;
@@ -142,8 +149,12 @@ export const hasRegularBreakConflict = (
     const breakEndInMilliseconds = breakEndDate.getTime();
 
     return (
-      currentTimeInMilliseconds >= breakStartInMilliseconds &&
-      currentTimeInMilliseconds < breakEndInMilliseconds
+      (currentTimeInMilliseconds >= breakStartInMilliseconds &&
+        currentTimeInMilliseconds < breakEndInMilliseconds) ||
+      (endTimeInMilliseconds > breakStartInMilliseconds &&
+        endTimeInMilliseconds <= breakEndInMilliseconds) ||
+      (currentTimeInMilliseconds < breakStartInMilliseconds &&
+        endTimeInMilliseconds > breakEndInMilliseconds)
     );
   });
 };
@@ -195,6 +206,12 @@ export const calculateEndTime = (
 
 export const isTempBreakConflict = (
   date: Date,
+  lengthInMinutes: number,
   timeInMinutes: number,
   breaks: ProviderBreak[],
-) => hasTemporaryBreakConflict(createCurrentTime(date, timeInMinutes), breaks);
+) =>
+  hasTemporaryBreakConflict(
+    createCurrentTime(date, timeInMinutes),
+    lengthInMinutes,
+    breaks,
+  );
