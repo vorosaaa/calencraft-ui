@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { SelectChangeEvent, Grid, Tab, Tabs } from "@mui/material";
+import { SelectChangeEvent, Grid, Tab, Tabs, Box } from "@mui/material";
 import { FormState } from "../../../types/formState";
 import { GeneralEditor } from "./GeneralEditor";
 import { useTranslation } from "react-i18next";
@@ -34,17 +34,24 @@ export const ProviderEditor = (props: Props) => {
   };
 
   return (
-    <Grid
-      container
-      sx={{ display: "flex", minHeight: "100vh", justifyContent: "center" }}
+    <Box
+      display="flex"
+      flexDirection={isMobile ? "column" : "row"}
+      minHeight="100vh"
     >
-      <Grid item xs={isMobile ? 12 : 2}>
+      <Box
+        sx={{
+          width: isMobile ? "100%" : "240px",
+          borderRight: isMobile ? "none" : 1,
+          borderColor: "divider",
+          overflowY: "auto",
+        }}
+      >
         <Tabs
           orientation={isMobile ? "horizontal" : "vertical"}
           variant="scrollable"
           scrollButtons="auto"
           sx={{
-            height: "100%",
             borderRight: isMobile ? "none" : 1,
             borderColor: "divider",
           }}
@@ -57,17 +64,13 @@ export const ProviderEditor = (props: Props) => {
           <Tab label={t("editor.breaks")} />
           <Tab label={t("editor.email")} />
         </Tabs>
-      </Grid>
-      <Grid
-        item
-        xs={isMobile ? 12 : 10}
-        sx={{ overflowY: "auto", maxHeight: "100vh" }}
-      >
+      </Box>
+      <Box flexGrow={1}>
         {activeTab === 0 && <GeneralEditor {...props} />}
         {activeTab === 1 && <SessionTypeEditorStepper formState={formData} />}
         {activeTab === 2 && <BreakEditorStepper />}
         {activeTab === 3 && <EmailEditor />}
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 };

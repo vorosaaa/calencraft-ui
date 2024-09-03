@@ -190,7 +190,7 @@ export const BreakEditorStepper = () => {
 
   if (!data.user.breaks) return <LoadingView />;
   return (
-    <Container sx={{ mt: 2 }}>
+    <Container sx={{ mt: 4 }}>
       <Stepper
         activeStep={activeStep}
         alternativeLabel
