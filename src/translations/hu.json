@@ -165,6 +165,8 @@
   "editor": {
     "email_editor": {
       "description": "Kattintson a rövidítésre, hogy behelyettesítődjön. A rendszer automatikusan kitölti a kifejezéseket a tényleges adatokkal.",
+      "description_2": "Például: Az üdvözlő üzenetben a $user (Felhasználó) rövidítés a felhasználó nevével lesz helyettesítve.",
+      "description_3": "Kérjük ügyeljen arra, hogy minden fontos információt tartalmazzon az e-mail, például a szolgáltatás helyszínét, az időpontot és a szolgáltatást.",
       "user": "Felhasználó",
       "booking_name": "Szolgáltatás",
       "start": "Kezdő időpont",
@@ -369,9 +371,9 @@
     "register": "Mehet",
     "close": "Mégse",
     "accept": "Elfogadom a",
-    "terms": "felhasználási feltételeket",
+    "terms": "Felhasználási feltételeket",
     "and": "és az",
-    "privacy": "adatvédelmi irányelveket"
+    "privacy": "Adatvédelmi irányelveket"
   },
   "home": {
     "welcomeTitle": "Üdv a Calencraft-nál!",

@@ -1,26 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { ProviderEditorForm } from "./ProviderEditorForm";
-import { LoadingHeader, ProfileEditorHeader } from "./ProfileEditorHeader";
+import { LoadingHeader } from "./ProfileEditorHeader";
 import {
-  deleteUser,
   updateProfile,
   uploadCoverPicture,
   uploadProfilePicture,
 } from "../../api/meApi";
-import { UserEditorForm } from "./UserEditorForm";
-import {
-  Container,
-  Grid,
-  Skeleton,
-  SelectChangeEvent,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { UserEditor } from "./userEditor/UserEditor";
+import { Container, Grid, Skeleton, SelectChangeEvent } from "@mui/material";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { EmailStatus, VerificationMode } from "../../types/enums";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +15,8 @@ import { enqueueError, enqueueSuccess } from "../../enqueueHelper";
 import { useMe } from "../../queries/queries";
 import { FormState } from "../../types/formState";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../hooks/authHook";
+import { ProviderEditor } from "./providerEditor/ProviderEditor";
+import { Pictures } from "../../types/pictures";
 
 const initialData: FormState = {
   emailStatus: EmailStatus.CONFIRMED,
@@ -44,16 +32,15 @@ const initialData: FormState = {
 
 export const ProfileEditor = () => {
   const { t } = useTranslation();
-  const { removeAuth } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { setVerification } = useVerificationModalHook();
 
   const [formData, setFormData] = useState<FormState | undefined>();
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  const [cover, setCover] = useState<File | null>(null);
-  const [activeTab, setActiveTab] = useState(0);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [pictureData, setPictureData] = useState<Pictures>({
+    profilePicture: null,
+    cover: null,
+  });
 
   //Queries
   const { data: meData, isLoading: meDataLoading } = useMe({
@@ -73,28 +60,20 @@ export const ProfileEditor = () => {
   });
 
   const { mutate: updateProfilePicture } = useMutation(uploadProfilePicture, {
+    onSuccess: (data: any) => {
+      // Empty function
+    },
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
 
   const { mutate: updateCoverPicture } = useMutation(uploadCoverPicture, {
+    onSuccess: (data: any) => {
+      // Empty function
+    },
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
-
-  const { mutate: removeAccount, isLoading: isDeleteLoading } = useMutation(
-    deleteUser,
-    {
-      onSuccess: (data: any) => {
-        removeAuth();
-        queryClient.invalidateQueries({ queryKey: ["me"] });
-        enqueueSuccess(t(`messages.success.${data.message}`));
-        navigate("/");
-      },
-      onError: (error: any) =>
-        enqueueError(t(`messages.errors.${error.response.data.message}`)),
-    },
-  );
 
   //Handlers and functions
   const openVerificationModal = () => {
@@ -148,14 +127,13 @@ export const ProfileEditor = () => {
     setFormData({ ...formData, coverPosition: position });
   };
 
-  const handleProfilePictureChange = ({
-    target: { files },
-  }: React.ChangeEvent<HTMLInputElement>) =>
-    setProfilePicture(files?.[0] || null);
-
-  const handleCoverChange = ({
-    target: { files },
-  }: React.ChangeEvent<HTMLInputElement>) => setCover(files?.[0] || null);
+  const handlePictureChange = (
+    key: keyof Pictures,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { files } = event.target;
+    setPictureData({ ...pictureData, [key]: files?.[0] || null });
+  };
 
   // Handle form submission logic
   const handleSubmit = () => {
@@ -171,22 +149,17 @@ export const ProfileEditor = () => {
       form.append("description", formData.description);
       form.append("serviceCategory", formData.serviceCategory);
     }
-    if (profilePicture) {
+    if (pictureData.profilePicture) {
       const profilePicForm = new FormData();
-      profilePicForm.append("picture", profilePicture);
+      profilePicForm.append("picture", pictureData.profilePicture);
       updateProfilePicture(profilePicForm); // Update the profile picture
     }
-    if (cover) {
+    if (pictureData.cover) {
       const coverForm = new FormData();
-      coverForm.append("cover", cover);
+      coverForm.append("cover", pictureData.cover);
       updateCoverPicture(coverForm); // Update the cover picture
     }
     updateMe(form);
-  };
-
-  const handleDelete = () => {
-    removeAccount();
-    setDeleteOpen(false);
   };
 
   useEffect(() => {
@@ -210,39 +183,23 @@ export const ProfileEditor = () => {
   if (!meData || meDataLoading || !formData) return <LoadingView />;
   return (
     <Fragment>
-      <DeleteModal
-        open={deleteOpen}
-        handleClose={() => setDeleteOpen(false)}
-        handleDelete={handleDelete}
-      />
-      <ProfileEditorHeader
-        activeTab={activeTab}
-        coverPicture={cover}
-        profilePicture={profilePicture}
-        coverPosition={formData.coverPosition}
-        coverPicUrl={meData.user.coverUrl}
-        profilePicUrl={meData.user.picUrl}
-        setCoverPosition={setCoverPosition}
-        handleProfilePictureChange={handleProfilePictureChange}
-        handleCoverChange={handleCoverChange}
-      />
       {meData.user.isProvider ? (
-        <ProviderEditorForm
-          isDeleteLoading={isDeleteLoading}
-          activeTab={activeTab}
+        <ProviderEditor
           formData={formData}
-          handleDeleteOpen={() => setDeleteOpen(true)}
-          setActiveTab={setActiveTab}
-          openVerificationModal={openVerificationModal}
+          pictureData={pictureData}
+          handlePictureChange={handlePictureChange}
+          setCoverPosition={setCoverPosition}
+          setFormData={setFormData}
           handleInputChange={handleInputChange}
           handleSelectChange={handleSelectChange}
           handleSubmit={handleSubmit}
         />
       ) : (
-        <UserEditorForm
-          isDeleteLoading={isDeleteLoading}
+        <UserEditor
           formData={formData}
-          handleDeleteOpen={() => setDeleteOpen(true)}
+          pictureData={pictureData}
+          setFormData={setFormData}
+          handlePictureChange={handlePictureChange}
           openVerificationModal={openVerificationModal}
           handleSubmit={handleSubmit}
           handleInputChange={handleInputChange}
@@ -282,38 +239,5 @@ const LoadingView = () => {
         </Grid>
       </Container>
     </Fragment>
-  );
-};
-
-type DeleteProps = {
-  open: boolean;
-  handleClose: () => void;
-  handleDelete: () => void;
-};
-
-const DeleteModal = ({ open, handleClose, handleDelete }: DeleteProps) => {
-  const { t } = useTranslation();
-  return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">
-        {t("delete_modal.title")}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {t("delete_modal.content")}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions sx={{ justifyContent: "space-between" }}>
-        <Button onClick={handleClose}>{t("delete_modal.close")}</Button>
-        <Button onClick={handleDelete} color="error" autoFocus>
-          {t("delete_modal.remove")}
-        </Button>
-      </DialogActions>
-    </Dialog>
   );
 };

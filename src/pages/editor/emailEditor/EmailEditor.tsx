@@ -9,8 +9,9 @@ import {
   Tabs,
   Box,
   Typography,
+  Collapse,
 } from "@mui/material";
-import { Clear } from "@mui/icons-material";
+import { Clear, ExpandLess, ExpandMore, Info } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { PreviewModal } from "./PreviewModal";
 import { useMe } from "../../../queries/queries";
@@ -22,6 +23,7 @@ export const EmailEditor = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [header, setHeader] = useState("");
+  const [expanded, setExpanded] = useState(false);
   const [bodySections, setBodySections] = useState<string[]>([""]);
   const [footer, setFooter] = useState("");
   const [activeInput, setActiveInput] = useState<HTMLInputElement | null>(null);
@@ -133,10 +135,31 @@ export const EmailEditor = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="caption" sx={{ marginBottom: 4 }}>
-        {t("editor.email_editor.description")}
-      </Typography>
+    <Container sx={{ mt: 2 }}>
+      <Box
+        sx={{ border: 0.5, borderRadius: 2, borderColor: "info", p: 1, mb: 2 }}
+      >
+        <Box display="flex" alignItems="center">
+          <Info color="info" sx={{ mr: 1 }} />
+          <Typography variant="caption" sx={{ flexGrow: 1 }}>
+            {t("editor.email_editor.description")}
+          </Typography>
+          <IconButton onClick={() => setExpanded(!expanded)}>
+            {expanded ? <ExpandLess /> : <ExpandMore />}
+          </IconButton>
+        </Box>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Box mt={2}>
+            <Typography variant="caption" sx={{ marginBottom: 4 }}>
+              {t("editor.email_editor.description_2")}
+            </Typography>
+            <br />
+            <Typography variant="caption">
+              {t("editor.email_editor.description_3")}
+            </Typography>
+          </Box>
+        </Collapse>
+      </Box>
       <PreviewModal
         open={previewOpen}
         handleClose={handlePreviewClose}
@@ -145,7 +168,11 @@ export const EmailEditor = () => {
         footer={footer}
       />
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "4px" }}
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          marginTop: "8px",
+        }}
       >
         {shorthands.map((shorthand, index) => (
           <div key={index} style={{ marginTop: 1 }}>
@@ -158,7 +185,7 @@ export const EmailEditor = () => {
         ))}
       </div>
       <Tabs
-        sx={{ mb: 2 }}
+        sx={{ mb: 2, mt: 2 }}
         value={tabIndex}
         onChange={(event, newValue) => handleChange(newValue)}
         variant="fullWidth"

@@ -21,23 +21,32 @@ export const Footer = () => {
         {/* Upper Container */}
         <Grid container spacing={3}>
           {/* Our Company */}
-          <Grid item xs={12} sm={4}>
-            <div onClick={() => navigate("/termsofservice")}>
+          <Grid item xs={12}>
+            <div
+              onClick={() => navigate("/termsofservice")}
+              style={{ textAlign: "center" }}
+            >
               <Typography sx={{ cursor: "pointer" }} variant="h6">
                 {t("footer.termsOfService")}
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <div onClick={() => navigate("/privacy")}>
+          <Grid item xs={12}>
+            <div
+              onClick={() => navigate("/privacy")}
+              style={{ textAlign: "center" }}
+            >
               <Typography sx={{ cursor: "pointer" }} variant="h6">
                 {t("footer.privacyPolicy")}
               </Typography>
             </div>
           </Grid>
           {/* Contact Information */}
-          <Grid item xs={12} sm={4}>
-            <div onClick={() => navigate("/contact")}>
+          <Grid item xs={12}>
+            <div
+              onClick={() => navigate("/contact")}
+              style={{ textAlign: "center" }}
+            >
               <Typography sx={{ cursor: "pointer" }} variant="h6">
                 {t("footer.contactInformation")}
               </Typography>
@@ -52,6 +61,7 @@ export const Footer = () => {
             marginTop: 2,
             display: "flex",
             flexDirection: "row",
+            justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
           }}

@@ -163,6 +163,8 @@
   "editor": {
     "email_editor": {
       "description": "Click on the shorthand to substitute it. The system will automatically fill the placeholders with actual data.",
+      "description_2": "For example: In the welcome message, the $user (User) abbreviation will be replaced with the user's name.",
+      "description_3": "Please ensure that the email contains all important information, such as the location of the service, the time, and the service itself.",
       "user": "User",
       "booking_name": "Service",
       "start": "Start Time",
@@ -365,9 +367,9 @@
     "register": "Submit",
     "close": "Cancel",
     "accept": "By registering I accept the",
-    "terms": "terms of service",
+    "terms": "Terms of service",
     "and": "and",
-    "privacy": "privacy policy"
+    "privacy": "Privacy policy"
   },
   "home": {
     "home": {

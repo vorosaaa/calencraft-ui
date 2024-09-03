@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Collapse, Fade } from "@mui/material";
+import { Avatar, Badge, Button } from "@mui/material";
 import {
   ContainerOnOverlay,
   Overlay,
@@ -8,43 +8,40 @@ import { Add, PhotoCamera, PendingOutlined } from "@mui/icons-material";
 import { colors } from "../../theme/colors";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Pictures } from "../../types/pictures";
+import { useMe } from "../../queries/queries";
 
 type Props = {
-  activeTab: number;
+  pictures: Pictures;
   coverPosition: string;
-  coverPicture: File | null;
-  coverPicUrl: string;
-  profilePicUrl: string;
-  profilePicture: File | null;
   setCoverPosition: (position: string) => void;
-  handleCoverChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleProfilePictureChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handlePictureChange: (
+    key: keyof Pictures,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
 };
 
 export const ProfileEditorHeader = ({
-  activeTab,
+  pictures,
   coverPosition,
-  coverPicture,
-  coverPicUrl,
-  profilePicUrl,
-  profilePicture,
   setCoverPosition,
-  handleCoverChange,
-  handleProfilePictureChange,
+  handlePictureChange,
 }: Props) => {
+  const { cover, profilePicture } = pictures;
+  const { data: meData } = useMe();
   const { t } = useTranslation();
   const [dragging, setDragging] = useState(false);
   const [preloadedCoverUrl, setPreloadedCoverUrl] = useState("");
 
   useEffect(() => {
-    if (coverPicture) {
+    if (cover) {
       const reader = new FileReader();
       reader.onload = () => {
         setPreloadedCoverUrl(reader.result as string);
       };
-      reader.readAsDataURL(coverPicture);
+      reader.readAsDataURL(cover);
     }
-  }, [coverPicture]);
+  }, [cover]);
 
   const handleMouseDown = () => setDragging(true);
   const handleMouseUp = () => setDragging(false);
@@ -57,15 +54,14 @@ export const ProfileEditorHeader = ({
       setCoverPosition(`${x}% ${y}%`);
     }
   };
-  const isFormEditor = activeTab === 0;
   return (
     <StyledPaper
       elevation={3}
       sx={{
         backgroundImage: `url("${
-          coverPicture
-            ? preloadedCoverUrl || URL.createObjectURL(coverPicture)
-            : coverPicUrl
+          cover
+            ? preloadedCoverUrl || URL.createObjectURL(cover)
+            : meData?.user?.coverUrl
         }")`,
         backgroundPosition: coverPosition,
       }}
@@ -82,25 +78,23 @@ export const ProfileEditorHeader = ({
             overlap="circular"
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             badgeContent={
-              <Fade in={isFormEditor}>
-                <Add
-                  fontSize="large"
-                  style={{
-                    color: colors.white,
-                    borderRadius: 50,
-                    backgroundColor: "rgba(224,224,224, 0.1)",
-                    backdropFilter: "blur(5px)",
-                    boxShadow: "none",
-                  }}
-                />
-              </Fade>
+              <Add
+                fontSize="large"
+                style={{
+                  color: colors.white,
+                  borderRadius: 50,
+                  backgroundColor: "rgba(224,224,224, 0.1)",
+                  backdropFilter: "blur(5px)",
+                  boxShadow: "none",
+                }}
+              />
             }
           >
             <Avatar
               src={
                 profilePicture
                   ? URL.createObjectURL(profilePicture)
-                  : profilePicUrl
+                  : meData?.user?.picUrl
               }
               alt="Profile"
               style={{
@@ -111,35 +105,29 @@ export const ProfileEditorHeader = ({
           </Badge>
         </label>
 
-        {isFormEditor && (
-          <input
-            accept="image/*"
-            id="profile-picture"
-            type="file"
-            onChange={handleProfilePictureChange}
-            style={{ display: "none" }}
-          />
-        )}
-        <Collapse in={isFormEditor}>
-          <label htmlFor="cover" style={{ cursor: "pointer" }}>
-            <Button
-              variant="contained"
-              component="span"
-              startIcon={<PhotoCamera />}
-            >
-              {t("editor.change_cover")}
-            </Button>
-          </label>
-        </Collapse>
-        {isFormEditor && (
-          <input
-            accept="image/*"
-            id="cover"
-            type="file"
-            onChange={handleCoverChange}
-            style={{ display: "none" }}
-          />
-        )}
+        <input
+          accept="image/*"
+          id="profile-picture"
+          type="file"
+          onChange={(e) => handlePictureChange("profilePicture", e)}
+          style={{ display: "none" }}
+        />
+        <label htmlFor="cover" style={{ cursor: "pointer" }}>
+          <Button
+            variant="contained"
+            component="span"
+            startIcon={<PhotoCamera />}
+          >
+            {t("editor.change_cover")}
+          </Button>
+        </label>
+        <input
+          accept="image/*"
+          id="cover"
+          type="file"
+          onChange={(e) => handlePictureChange("cover", e)}
+          style={{ display: "none" }}
+        />
       </ContainerOnOverlay>
     </StyledPaper>
   );
