@@ -178,7 +178,7 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
 
   if (!data.user.sessionTypes) return <LoadingView />;
   return (
-    <Container sx={{ mt: 2 }}>
+    <Container sx={{ mt: 4 }}>
       <Stepper
         activeStep={activeStep}
         alternativeLabel

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Chip,
@@ -135,7 +135,7 @@ export const EmailEditor = () => {
   };
 
   return (
-    <Container sx={{ mt: 2 }}>
+    <Container sx={{ mt: 4 }}>
       <Box
         sx={{ border: 0.5, borderRadius: 2, borderColor: "info", p: 1, mb: 2 }}
       >
