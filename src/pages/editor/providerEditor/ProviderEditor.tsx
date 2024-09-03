@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { SelectChangeEvent, Grid, Tab, Tabs, Box } from "@mui/material";
+import { SelectChangeEvent, Tab, Tabs, Box } from "@mui/material";
 import { FormState } from "../../../types/formState";
 import { GeneralEditor } from "./GeneralEditor";
 import { useTranslation } from "react-i18next";
