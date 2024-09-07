@@ -45,10 +45,14 @@ export const ProviderPersonalContent = ({
         <TextField
           variant="outlined"
           fullWidth
+          rows={4}
+          maxRows={4}
+          multiline
           label={t("editor.description")}
           name="description"
           value={description}
           onChange={handleInputChange}
+          inputProps={{ maxLength: 600 }}
         />
       </Grid>
       <Grid item xs={12} lg={6}>

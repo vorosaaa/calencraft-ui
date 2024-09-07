@@ -232,6 +232,8 @@
     "select_break": "Breaks",
     "edit_break": "Basic Details",
     "details_break": "Details",
+    "break_temporary_info": "Temporary breaks are one-time occasions, like holidays, vacations, or other events.",
+    "break_regular_info": "Regular breaks are recurring, like coffee breaks, lunch breaks, or other regular events.",
     "break_day": "Select which days the break applies.",
     "break_start": "Start",
     "break_end": "End",
