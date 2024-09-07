@@ -52,9 +52,13 @@ export const SessionForm = ({
           <TextField
             label={t("editor.session_description")}
             fullWidth
+            rows={2}
+            maxRows={2}
+            multiline
             value={description}
             onChange={(e) => handleChange("description", e.target.value)}
             margin="normal"
+            inputProps={{ maxLength: 300 }}
           />
         </Grid>
         <Grid item xs={6}>

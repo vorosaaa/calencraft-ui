@@ -239,6 +239,8 @@
     "break_day": "Válasz ki melyik napokon érvényes a szünet.",
     "break_start": "Kezdés",
     "break_end": "Vége",
+    "break_temporary_info": "Az egyszeri szünetek olyan események, mint a szabadság, betervezett szünetek, vagy egyéb egyszeri események.",
+    "break_regular_info": "Az ismétlődő szünetek olyan események, mint a kávé szünet, ebédidő, vagy egyéb rendszeres események.",
     "break_regular": "Ismétlődő",
     "break_temporary": "Egyszeri",
     "break_date_title": "Add meg, meddig tart a szünet",
