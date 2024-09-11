@@ -378,19 +378,30 @@
     "privacy": "Adatvédelmi irányelveket"
   },
   "home": {
-    "welcomeTitle": "Üdv a Calencraft-nál!",
-    "welcomeText1": "Fedezd fel, milyen egyszerű időpontot foglalni bármilyen szolgáltatásra a Calencraft segítségével! Legyen szó szépségápolásról, házhoz jövő szolgáltatásokról vagy oktatási órákról, platformunk megkönnyíti a foglalást, hogy a te életed is egyszerűbb legyen.",
-    "welcomeText2": "A Calencraft azzal a céllal jött létre, hogy a lehető legegyszerűbbé és zökkenőmentessé tegye az időpontfoglalást számodra. Felejtsd el a bonyodalmakat – élvezd az egyszerű és gyors foglalási élményt velünk!",
-    "whyChooseTitle": "Miért válaszd a Calencraft-ot?",
+    "welcomeTitle": "Üdv a Calencraft-on!",
+    "welcomeText": "A Calencraft egy olyan platform, ahol könnyedén menedzselheted a szolgáltatásaidat, ügyfeleidet és az idődet. Állítsd össze a saját szolgáltatásaidat és időpontjaidat, és éld az életed a saját tempódban!",
+    "welcomeText2": "A weboldal azzal a céllal jött létre, hogy a lehető legegyszerűbbé és zökkenőmentessé tegye az időpontfoglalást számodra. Felejtsd el a bonyodalmakat – élvezd az egyszerű és gyors foglalási élményt velünk!",
+    "sections": {
+      "simpleScheduling": "Egyszerű időpontfoglalás",
+      "simpleSchedulingDescription": "Bármilyen szolgáltatást is kínálsz, a Calencraft segít abban, hogy Te és az Ügyfeleid is könnyedén menedzselhessétek időpontjaitok.",
+      "simpleSchedulingDescription2": "Csupán pár kattintással lefoglalhatod a szolgáltatásokat, és mindig naprakész lehetsz az időpontokkal kapcsolatban.",
+      "subscriptions": "Előfizetések",
+      "subscriptionsDescription": "Válassz a különböző előfizetési csomagok közül, és élvezd a Calencraft nyújtotta előnyöket már havi 1.000 Ft-tól.",
+      "subscriptionsDescription2": "Legyen szó a szolgáltatásaidról vagy az időbeosztásodról, a Calencraft segít abban, hogy mindig naprakész legyél.",
+      "calendarManagement": "Naptárkezelés",
+      "calendarManagementDescription": "Legyél mindig naprakész a foglalásaidról és az időbeosztásodról. Kezeld egyszerűen a szolgáltatásaidat és az időpontjaidat a naptárban.",
+      "emailNotifications": "E-mail értesítések",
+      "emailNotificationsDescription": "Ne maradj le egyetlen fontos információról sem! A Calencraft automatikusan értesítéseket küld a foglalásaidról és az időpontjaidról, hogy mindig naprakész legyél.",
+      "emailNotificationsDescription2": "Személyre szabhatod az e-mail sablonjaidat, amelyek az ügyfelek számára kerülnek kiküldésre.",
+      "noMoreNoShows": "Nincs több elmaradt foglalás",
+      "noMoreNoShowsDescription": "Kezeld könnyedén a foglalásaidat és az időpontjaidat, és ne aggódj az ügyfelek miatt. Minden fontos információ egy helyen, hogy mindig naprakész legyél."
+    },
+    "whyChooseTitle": "Miért szeretik a Calencraftot?",
     "reasons": {
-      "simpleSchedulingFirstWord": "✅ Egyszerű és gyors foglalás",
-      "simpleSchedulingRest": "Bármit is keresel, legyen az fodrász, házhoz jövő szakember vagy egy tanfolyam, pár kattintással lefoglalhatod nálunk.",
-      "diverseSelectionFirstWord": "🌟 Széles szolgáltatási kínálat",
-      "diverseSelectionRest": "Válassz a legjobb szakemberek közül, akik minőségi szolgáltatásokat nyújtanak. Legyen szó wellnessről, háztartási segítségről vagy oktatásról, nálunk megtalálod, amit keresel.",
-      "expertGuidanceFirstWord": "👥 Személyre szabott szakértői segítség",
-      "expertGuidanceRest": "Lépj kapcsolatba olyan szolgáltatókkal, akik tényleg törődnek veled! Kapj tanácsokat, ajánlásokat és élvezd a teljeskörű támogatást az elejétől a végéig.",
-      "tailoredPlansFirstWord": "📅 Rugalmas időpontok, egyedi igények",
-      "tailoredPlansRest": "Állítsd össze a saját időbeosztásodat! Válaszd ki a számodra legmegfelelőbb időpontokat és szolgáltatásokat, akár egyedül, akár csoportban."
+      "easyScheduling": "Egyszerű időpontfoglalás",
+      "flexiblePlans": "Rugalmas előfizetések",
+      "comprehensiveSupport": "Teljes körű támogatás",
+      "increasedVisibility": "Növelt láthatóság"
     },
     "getStartedButton": "Böngéssz most"
   },

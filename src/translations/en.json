@@ -374,23 +374,32 @@
     "privacy": "Privacy policy"
   },
   "home": {
-    "home": {
-      "welcomeTitle": "Welcome to Calencraft!",
-      "welcomeText1": "Experience how easy it can be to book any service with Calencraft! Whether you need beauty treatments, home services, or educational classes, our platform makes booking a breeze, just for you.",
-      "welcomeText2": "At Calencraft, we're here to simplify the way you manage your appointments. Say goodbye to hassles and enjoy a smooth, easy booking experience with us.",
-      "whyChooseTitle": "Why Choose Calencraft?",
-      "reasons": {
-        "simpleSchedulingFirstWord": "✅ Quick and Easy Scheduling",
-        "simpleSchedulingRest": "Whatever service you're looking for—whether it's a haircut, home repair, or a class—you can book it in just a few clicks on our user-friendly platform.",
-        "diverseSelectionFirstWord": "🌟 Wide Range of Services",
-        "diverseSelectionRest": "Discover top-notch services from professional providers who are dedicated to delivering quality experiences. From wellness to household help and education, you’ll find everything you need.",
-        "expertGuidanceFirstWord": "👥 Personalized Expert Support",
-        "expertGuidanceRest": "Connect with trusted professionals who care about your satisfaction. Get tailored advice, services, and dependable support every step of the way.",
-        "tailoredPlansFirstWord": "📅 Flexible, Personalized Schedules",
-        "tailoredPlansRest": "Create a schedule that works for you! Pick the perfect times and choose services that meet your needs, whether for yourself or in a group."
-      },
-      "getStartedButton": "Browse Now"
-    }
+    "welcomeTitle": "Welcome to Calencraft!",
+    "welcomeText": "Calencraft is a platform where you can easily manage your services, clients, and time. Set up your own services and appointments, and live your life at your own pace!",
+    "welcomeText2": "This website was created to make scheduling as simple and seamless as possible for you. Forget the hassles – enjoy the easy and fast booking experience with us!",
+    "sections": {
+      "simpleScheduling": "Simple Scheduling",
+      "simpleSchedulingDescription": "Whatever service you offer, Calencraft helps both you and your clients manage appointments with ease.",
+      "simpleSchedulingDescription2": "With just a few clicks, you can book services and always stay up to date with your appointments.",
+      "subscriptions": "Subscriptions",
+      "subscriptionsDescription": "Choose from various subscription packages and enjoy the benefits of Calencraft starting at just 1,000 HUF per month.",
+      "subscriptionsDescription2": "Whether it's your services or your schedule, Calencraft helps you stay organized and up to date.",
+      "calendarManagement": "Calendar Management",
+      "calendarManagementDescription": "Stay up to date with your bookings and schedule. Manage your services and appointments easily within the calendar.",
+      "emailNotifications": "Email Notifications",
+      "emailNotificationsDescription": "Never miss an important detail! Calencraft automatically sends notifications about your bookings and appointments, keeping you informed at all times.",
+      "emailNotificationsDescription2": "Customize the email templates that are sent to your clients.",
+      "noMoreNoShows": "No More No-Shows",
+      "noMoreNoShowsDescription": "Easily manage your bookings and appointments, and don't worry about your clients. All important information in one place so you can stay organized."
+    },
+    "whyChooseTitle": "Why do people love Calencraft?",
+    "reasons": {
+      "easyScheduling": "Easy Scheduling",
+      "flexiblePlans": "Flexible Subscriptions",
+      "comprehensiveSupport": "Comprehensive Support",
+      "increasedVisibility": "Increased Visibility"
+    },
+    "getStartedButton": "Browse Now"
   },
   "header": {
     "book": "Book",
