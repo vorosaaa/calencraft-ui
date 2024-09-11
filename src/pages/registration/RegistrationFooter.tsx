@@ -6,7 +6,6 @@ import { FormState } from "./Registration";
 type FooterProps = {
   form: FormState;
   currentStep: number;
-  handleClose: () => void;
   handleBack: () => void;
   handleSubmit: () => void;
 };
@@ -14,7 +13,7 @@ type FooterProps = {
 export const RegistrationFooter = ({
   form,
   currentStep,
-  handleClose,
+  //handleClose,
   handleBack,
   handleSubmit,
 }: FooterProps) => {
@@ -54,11 +53,13 @@ export const RegistrationFooter = ({
           </Button>
         </Box>
       )}
+      {/*
       {isMobile && (
-        <Button fullWidth onClick={handleClose}>
+        <Button fullWidth onClick={void}>
           <Typography variant="caption">{t("registration.close")}</Typography>
         </Button>
       )}
+        */}
     </DialogActions>
   );
 };

@@ -1,40 +1,50 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
+
+import { ArrowBack, Visibility, VisibilityOff } from "@mui/icons-material";
 import { login } from "../../api/authApi";
-import { FormParent, SubmitButton } from "./Login.css";
+import {
+  FormParent,
+  SubmitButton,
+  StyledContainer,
+  CarouselBox,
+  FormBox,
+  BackButton,
+} from "./Login.css";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import Carousel from "react-material-ui-carousel";
 
-type Props = {
-  open: boolean;
-  handleClose: () => void;
-  onRegistrationClick: () => void;
-};
+const carouselImages = [
+  "/images/barber.jpeg",
+  "/images/fitness.jpeg",
+  "/images/cosmetics.jpeg",
+];
 
-export const Login: React.FC<Props> = ({
-  open,
-  handleClose,
-  onRegistrationClick,
-}: Props) => {
+const CarouselCard = ({ src }: { src: string }) => (
+  <img
+    src={src}
+    alt="carousel"
+    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+  />
+);
+
+export const Login: React.FC = () => {
   const { t } = useTranslation();
   const { setVerification } = useVerificationModalHook();
   const { saveAuth } = useAuth();
   const queryClient = useQueryClient();
   const isMobile = useCheckMobileScreen();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,8 +55,8 @@ export const Login: React.FC<Props> = ({
       saveAuth(data.token);
       setEmail("");
       setPassword("");
-      handleClose();
       queryClient.invalidateQueries("me");
+      navigate("/");
     },
   });
 
@@ -61,14 +71,20 @@ export const Login: React.FC<Props> = ({
   const handleForgotPassword = () => {
     setEmail("");
     setPassword("");
-    handleClose();
     setVerification(
       true,
       VerificationMode.FORGOT_PASSWORD,
       VerificationMode.FORGOT_PASSWORD,
     );
   };
-  const handleLogin = async () => mutate({ email, password });
+
+  const handleLogin = async () => {
+    mutate({ email, password });
+  };
+
+  const onRegistrationClick = () => {
+    navigate("/register");
+  };
 
   useEffect(() => {
     if (!email || !password) return;
@@ -85,12 +101,24 @@ export const Login: React.FC<Props> = ({
     };
   }, [email, password]);
 
+  const sliderSettings = {
+    autoplay: true,
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose} fullScreen={isMobile}>
-      <DialogTitle variant="h4" align="center" gutterBottom>
-        {t("login.title")}
-      </DialogTitle>
-      <DialogContent>
+    <StyledContainer>
+      <BackButton onClick={() => navigate(-1)}>
+        <ArrowBack />
+      </BackButton>
+      <FormBox>
+        <Typography variant="h4" align="center">
+          {t("login.title")}
+        </Typography>
         <FormParent>
           <TextField
             label={t("login.email")}
@@ -147,12 +175,21 @@ export const Login: React.FC<Props> = ({
             </Typography>
           </div>
         </FormParent>
-      </DialogContent>
-      {isMobile && (
-        <DialogActions onClick={handleClose}>
-          <Button fullWidth>{t("login.back")}</Button>
-        </DialogActions>
-      )}
-    </Dialog>
+      </FormBox>
+      <CarouselBox>
+        <Carousel
+          autoPlay={true}
+          interval={3000}
+          duration={800}
+          animation="slide"
+          height={"100vh"}
+          indicators={false}
+        >
+          {carouselImages.map((src, index) => (
+            <CarouselCard key={index} src={src} />
+          ))}
+        </Carousel>
+      </CarouselBox>
+    </StyledContainer>
   );
 };

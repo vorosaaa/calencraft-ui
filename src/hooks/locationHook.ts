@@ -7,7 +7,7 @@ const location = atom({
   default: { isLoading: true } as Location,
 });
 
-export const useLocation = () => {
+export const useGeoLocation = () => {
   const [locationState, setLocationState] = useRecoilState(location);
 
   const setSearchCountry = (value: CountryCode | undefined) =>

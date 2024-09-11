@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import { ServiceCategory, CountryCode } from "../../types/enums";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { countries } from "../../types/countries";
-import { useLocation } from "../../hooks/locationHook";
+import { useGeoLocation } from "../../hooks/locationHook";
 import { getProviders } from "../../api/providerApi";
 
 type SearchObject = {
@@ -28,7 +28,7 @@ type SearchObject = {
 };
 
 export const SearchPage = () => {
-  const { isLoading: isLocationLoading, location } = useLocation();
+  const { isLoading: isLocationLoading, location } = useGeoLocation();
   const isMobile = useCheckMobileScreen();
   // States
   const [temporarySearchObject, setTemporarySearchObject] =
@@ -123,7 +123,7 @@ const SearchForm = ({
   handleSearchSubmit,
 }: SearchProps) => {
   const { name, category } = temporarySearchObject;
-  const { location, setSearchCity, setSearchCountry } = useLocation();
+  const { location, setSearchCity, setSearchCountry } = useGeoLocation();
   const { searchCity, searchCountry } = location;
   const { t } = useTranslation();
   const isMobile = useCheckMobileScreen();

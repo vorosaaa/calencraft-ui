@@ -3,11 +3,13 @@ import { AppBar, Container, CssBaseline, Toolbar } from "@mui/material";
 import { useAuth } from "../../hooks/authHook";
 import { BrowserLogo, MobileLogo } from "./logo/Logo";
 import { BrowserMenu, MobileMenu } from "./menu/HeaderMenu";
+import LanguageSelector from "./language-selector/LanguageSelector";
 import { useState } from "react";
 import { HeaderAvatar } from "./avatar/HeaderAvatar";
 import { AuthMenu } from "./auth/AuthMenu";
 import { useBackgroundHook } from "../../hooks/backgroundHook";
 import { useMe } from "../../queries/queries";
+import i18n, { dynamicActivate } from "../../i18n";
 
 type Props = {
   onLoginClick: () => void;
@@ -15,6 +17,12 @@ type Props = {
 };
 
 export const Header = (props: Props) => {
+  const [language, setLanguage] = useState<string>(i18n.language);
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage);
+    dynamicActivate(newLanguage);
+  };
+  
   const { isLoggedIn } = useAuth();
   const { data } = useMe();
   const { onLoginClick, onRegistrationClick } = props;
@@ -71,6 +79,10 @@ export const Header = (props: Props) => {
               onRegistrationClick={onRegistrationClick}
             />
           )}
+          <LanguageSelector
+            currentLanguage={language}
+            onChangeLanguage={handleLanguageChange}
+          />
         </Toolbar>
       </Container>
     </AppBar>

@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+  Box,
+  IconButton,
+} from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 import { register } from "../../api/authApi";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
-import { GridContent } from "./GridContent";
-import { RegistrationFooter } from "./RegistrationFooter";
-import { UserTypeSelector } from "./UserTypeSelector";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PersonalData } from "../../types/user";
+import { UserTypeSelector } from "./UserTypeSelector";
+import { GridContent } from "./GridContent";
+import { RegistrationFooter } from "./RegistrationFooter";
 
 type Props = {
-  open: boolean;
-  handleClose: () => void;
   navigateToVerification: () => void;
 };
 
@@ -51,11 +58,7 @@ const initialFormState: FormState = {
   accepted: false,
 };
 
-export const RegistrationForm = ({
-  open,
-  handleClose,
-  navigateToVerification,
-}: Props) => {
+export const RegistrationForm = ({ navigateToVerification }: Props) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const isMobile = useCheckMobileScreen();
@@ -70,7 +73,6 @@ export const RegistrationForm = ({
     onSuccess: (data) => {
       setFormState(initialFormState);
       saveAuth(data.token);
-      handleClose();
       queryClient.invalidateQueries("me");
       navigate("/myprofile");
       navigateToVerification();
@@ -148,18 +150,18 @@ export const RegistrationForm = ({
   }, []);
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      fullScreen={isMobile}
-      fullWidth
-      maxWidth="sm"
-    >
-      <DialogTitle sx={{ padding: 4 }} variant="h4" align="center">
+    <Container maxWidth="sm" sx={{ padding: isMobile ? 2 : 4 }}>
+      <IconButton
+        onClick={() => navigate(-1)}
+        style={{ position: "absolute", top: "10px", left: "10px" }}
+      >
+        <ArrowBack />
+      </IconButton>
+      <Typography variant="h4" align="center" gutterBottom>
         {t("registration.title")}
-      </DialogTitle>
-      <DialogContent>
-        {currentStep === 1 && (
+      </Typography>
+      <Box>
+      {currentStep === 1 && (
           <UserTypeSelector
             formState={formState}
             handleUserTypeClick={handleUserTypeClick}
@@ -172,15 +174,14 @@ export const RegistrationForm = ({
             handleInputChange={handleInputChange}
           />
         )}
-      </DialogContent>
       <RegistrationFooter
         form={formState}
         currentStep={currentStep}
-        handleClose={handleClose}
         handleBack={handleBack}
         handleSubmit={handleSubmit}
       />
-    </Dialog>
+      </Box>
+    </Container>
   );
 };
 
@@ -190,7 +191,7 @@ const validateEmail = (email: string) => {
   );
 };
 
-export const validatePassword = (password: string): boolean => {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d.,-]{8,}$/;
+const validatePassword = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   return passwordRegex.test(password);
 };
