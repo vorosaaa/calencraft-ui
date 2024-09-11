@@ -1,32 +1,62 @@
-import {
-  Button,
-  CardMedia,
-  Container,
-  Grid,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Button, Grid, styled, Typography } from "@mui/material";
 
-export const View = styled(Container)(({ theme }) => ({
+// Section container with theme-based spacing
+export const Section = styled(Grid)(({ theme }) => ({
+  minHeight: "80vh", // Full viewport height
+  padding: theme.spacing(6, 0),
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+  backgroundColor: theme.palette.background.default,
+}));
+
+// Section title styled with theme-based margin
+export const SectionTitle = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  textAlign: "left",
+  fontWeight: "normal",
+}));
+
+// Section content styling with theme spacing for typography
+export const SectionContent = styled(Typography)(() => ({
+  fontSize: "1.1rem",
+  lineHeight: 1.6,
+}));
+
+// Section layout container allowing custom alignment of image and content
+export const SectionLayout = styled(Grid)<{
+  isMobile?: boolean;
+  reverse?: boolean;
+}>(({ theme, isMobile, reverse }) => ({
+  display: "flex",
+  flexDirection: reverse ? "row-reverse" : "row",
+  paddingLeft: isMobile ? theme.spacing(2) : theme.spacing(16),
+  paddingRight: isMobile ? theme.spacing(2) : theme.spacing(16),
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: theme.spacing(8),
+  [theme.breakpoints.down("md")]: {
+    flexDirection: "column",
+  },
+}));
+
+// Image wrapper for consistent image sizing
+export const ImageWrapper = styled("div")({
+  flex: 1,
+  img: {
+    width: "100%",
+    height: "auto",
+    borderRadius: "10px",
+  },
+});
+
+// Content wrapper for consistent spacing
+export const ContentWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
-  marginTop: theme.spacing(4),
-}));
-
-export const Title = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-  marginTop: theme.spacing(4),
-  fontWeight: "bold",
-}));
-
-export const Text = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  marginBottom: theme.spacing(2),
-}));
-export const IntroText = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  marginBottom: theme.spacing(2),
+  alignItems: "flex-start",
+  flex: 1,
+  padding: theme.spacing(2),
 }));
 
 export const StartButton = styled(Button)(({ theme }) => ({
@@ -38,9 +68,4 @@ export const StartButton = styled(Button)(({ theme }) => ({
   },
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
-}));
-
-export const Image = styled(CardMedia)(() => ({
-  height: 360,
-  objectFit: "cover",
 }));

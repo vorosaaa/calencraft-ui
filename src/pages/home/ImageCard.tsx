@@ -1,6 +1,4 @@
-import { Card } from "@mui/material";
-import React from "react";
-import { Image } from "./Home.css";
+import { Card, CardMedia } from "@mui/material";
 
 type Props = {
   image: string;
@@ -10,7 +8,7 @@ type Props = {
 export const ImageCard = (props: Props) => {
   return (
     <Card>
-      <Image {...props} />
+      <CardMedia sx={{ height: 360, objectFit: "cover" }} {...props} />
     </Card>
   );
 };
