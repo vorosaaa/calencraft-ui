@@ -152,8 +152,7 @@ export const DateSelector = ({
         users = groupBookings.length > 0 ? groupBookings[0].users.length : 0;
         free = users < (maxCapacity || 1);
       }
-
-      if (free || type === BookingType.GROUP) {
+      if (currentTime > new Date() && (free || type === BookingType.GROUP)) {
         possibleTimes.push({
           startTime: formatTime(currentTime),
           users,
