@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { colors } from "../../../../theme/colors";
 import { countries } from "../../../../types/countries";
 import { FormState } from "../../../../types/formState";
+import { ChangeEvent, useState } from "react";
 
 type Props = {
   formState: FormState;
@@ -31,9 +32,36 @@ export const SessionForm = ({
   const { t } = useTranslation();
   const { name, description, maxCapacity, price } = sessionType;
   const { address } = formState;
+  const [localPrice, setLocalPrice] = useState<number | string>(price || 0);
+  const [localMaxCapacity, setLocalMaxCapacity] = useState<number | string>(
+    maxCapacity || 1,
+  );
 
-  const onNextClick = () => {
-    handleNext();
+  const handlePriceChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const value = e.target.value;
+    setLocalPrice(value);
+    handleChange("price", Number(value));
+  };
+  const handleMaxCapacityChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const value = e.target.value;
+    setLocalMaxCapacity(value);
+    handleChange("maxCapacity", Number(value));
+  };
+  const handlePriceBlur = () => {
+    if (localPrice === "") {
+      setLocalPrice(0);
+      handleChange("price", 0);
+    }
+  };
+  const handleMaxCapacityBlur = () => {
+    if (localMaxCapacity === "") {
+      setLocalMaxCapacity(1);
+      handleChange("maxCapacity", 1);
+    }
   };
 
   return (
@@ -53,7 +81,6 @@ export const SessionForm = ({
             label={t("editor.session_description")}
             fullWidth
             rows={2}
-            maxRows={2}
             multiline
             value={description}
             onChange={(e) => handleChange("description", e.target.value)}
@@ -65,8 +92,9 @@ export const SessionForm = ({
           <TextField
             label={t("editor.session_price")}
             fullWidth
-            value={price || 0}
-            onChange={(e) => handleChange("price", Number(e.target.value))}
+            value={localPrice}
+            onChange={handlePriceChange}
+            onBlur={handlePriceBlur}
             type="number"
             margin="normal"
             InputProps={{
@@ -108,10 +136,9 @@ export const SessionForm = ({
             label={t("editor.session_max_attendance")}
             type="number"
             fullWidth
-            value={maxCapacity || 1}
-            onChange={(e) =>
-              handleChange("maxCapacity", Number(e.target.value))
-            }
+            value={localMaxCapacity}
+            onChange={handleMaxCapacityChange}
+            onBlur={handleMaxCapacityBlur}
             margin="normal"
           />
         </Grid>
@@ -129,7 +156,7 @@ export const SessionForm = ({
         <Button
           variant="contained"
           color="primary"
-          onClick={onNextClick}
+          onClick={handleNext}
           sx={{ marginBottom: 2 }}
         >
           {t("editor.next")}
