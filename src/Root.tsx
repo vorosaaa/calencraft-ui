@@ -15,6 +15,7 @@ import { useBackgroundHook } from "./hooks/backgroundHook";
 import { useValidateToken } from "./queries/queries";
 import axios from "axios";
 import { useLocation } from "./hooks/locationHook";
+import ScrollToTopButton from "./components/scrollToTop/ScrollToTopButton";
 
 export const Root = () => {
   const { removeAuth } = useAuth();
@@ -96,6 +97,7 @@ export const Root = () => {
 
       {/* Add Footer component */}
       <Footer />
+      <ScrollToTopButton/>
     </ThemeProvider>
   );
 };

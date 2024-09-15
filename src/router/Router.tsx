@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import ScrollToTop from "../components/scrollToTop/ScrollToTop";
 import { Home } from "../pages/home/Home";
 import { ProfileEditor } from "../pages/editor/ProfileEditor";
 import { BookingDetails } from "../pages/bookingdetails/BookingDetails";
@@ -14,7 +15,7 @@ import { NewBookingPage } from "../pages/admin/booking/NewBookingPage";
 
 export const BookyRoutes = () => {
   return (
-    <Routes>
+    <><ScrollToTop /><Routes>
       <Route path="/" element={<Home />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/admin/booking" element={<NewBookingPage />} />
@@ -27,6 +28,6 @@ export const BookyRoutes = () => {
       <Route path="/about" element={<AboutUsPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/booking/:id" element={<BookingDetails />} />
-    </Routes>
+    </Routes></>
   );
 };
