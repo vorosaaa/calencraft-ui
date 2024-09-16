@@ -1,6 +1,5 @@
 import { Box, Button, DialogActions, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { FormState } from "./Registration";
 
 type FooterProps = {
@@ -17,8 +16,6 @@ export const RegistrationFooter = ({
   handleBack,
   handleSubmit,
 }: FooterProps) => {
-  const isMobile = useCheckMobileScreen();
-
   const { t } = useTranslation();
   const isDisabled =
     !form.accepted || !form.email || !form.name || !form.password;
@@ -27,9 +24,8 @@ export const RegistrationFooter = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        padding: 2,
-        paddingLeft: 3,
-        paddingRight: 3,
+        padding: 0,
+        mt: 2,
       }}
     >
       {currentStep === 2 && (

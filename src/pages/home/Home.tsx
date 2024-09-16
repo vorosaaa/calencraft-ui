@@ -10,7 +10,6 @@ import {
 } from "./Home.css";
 import { Container, Divider, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import { ImageCard } from "./ImageCard";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
@@ -58,14 +57,23 @@ export const Home: React.FC = () => {
 
   return (
     <Container disableGutters maxWidth="xl">
-      <div style={{ minHeight: "85", width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <Carousel
           sx={{ width: "100%" }}
           autoPlay={true}
-          duration={800}
+          interval={5000}
+          duration={1000}
+          indicators={false}
           animation="slide"
         >
-          {images?.map((image, index) => <ImageCard key={index} {...image} />)}
+          {images?.map((image, index) => (
+            <img
+              key={index}
+              src={image.image}
+              alt={image.title}
+              style={{ width: "100%", height: 360, objectFit: "cover" }}
+            />
+          ))}
         </Carousel>
         {/* Welcome Section */}
         <Container maxWidth="md">

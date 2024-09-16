@@ -96,7 +96,6 @@ export const Login = () => {
           paddingLeft: 8,
           paddingRight: 8,
           display: "flex",
-          alignItems: "center",
           flexDirection: "column",
           justifyContent: "center",
         }}
@@ -104,7 +103,7 @@ export const Login = () => {
         xs={12}
         md={4}
       >
-        <Typography sx={{ mb: 4 }} variant="h5" align="center">
+        <Typography sx={{ mb: 4 }} variant="h5">
           {t("login.title")}
         </Typography>
         <FormParent>

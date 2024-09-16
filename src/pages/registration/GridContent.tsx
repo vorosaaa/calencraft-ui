@@ -107,7 +107,7 @@ export const GridContent = ({
           }}
         />
       </Grid>
-      <Grid sx={{ paddingRight: isMobile ? 0 : 1 }} item xs={isMobile ? 12 : 6}>
+      <Grid item xs={isMobile ? 12 : 6}>
         <TextField
           fullWidth
           label={t("registration.password_repeat")}

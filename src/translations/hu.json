@@ -355,7 +355,8 @@
     "back": "Mégse"
   },
   "registration": {
-    "title": "Regisztráció",
+    "login": "Van már fiókod? Jelentkezz be itt!",
+    "title": "Készítsd el a Calencraft fiókod!",
     "question": "Hogyan szeretnéd használni az oldalt?",
     "user": "Felhasználóként",
     "provider": "Szolgáltatóként",

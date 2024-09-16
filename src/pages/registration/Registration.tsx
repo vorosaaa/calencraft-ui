@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-  Box,
-  IconButton,
-} from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
+import { Typography, Grid, CssBaseline } from "@mui/material";
 import { register } from "../../api/authApi";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,10 +10,25 @@ import { PersonalData } from "../../types/user";
 import { UserTypeSelector } from "./UserTypeSelector";
 import { GridContent } from "./GridContent";
 import { RegistrationFooter } from "./RegistrationFooter";
+import Carousel from "react-material-ui-carousel";
 
 type Props = {
   navigateToVerification: () => void;
 };
+
+const carouselImages = [
+  "/images/barber.jpeg",
+  "/images/fitness.jpeg",
+  "/images/cosmetics.jpeg",
+];
+
+const CarouselCard = ({ src }: { src: string }) => (
+  <img
+    src={src}
+    alt="carousel"
+    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+  />
+);
 
 export type FormState = {
   confirmPassword: string;
@@ -61,7 +66,6 @@ const initialFormState: FormState = {
 export const RegistrationForm = ({ navigateToVerification }: Props) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const isMobile = useCheckMobileScreen();
   const navigate = useNavigate();
   const { saveAuth } = useAuth();
 
@@ -150,18 +154,25 @@ export const RegistrationForm = ({ navigateToVerification }: Props) => {
   }, []);
 
   return (
-    <Container maxWidth="sm" sx={{ padding: isMobile ? 2 : 4 }}>
-      <IconButton
-        onClick={() => navigate(-1)}
-        style={{ position: "absolute", top: "10px", left: "10px" }}
+    <Grid container spacing={0}>
+      <CssBaseline />
+
+      <Grid
+        sx={{
+          paddingLeft: 8,
+          paddingRight: 8,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+        item
+        xs={12}
+        md={4}
       >
-        <ArrowBack />
-      </IconButton>
-      <Typography variant="h4" align="center" gutterBottom>
-        {t("registration.title")}
-      </Typography>
-      <Box>
-      {currentStep === 1 && (
+        <Typography variant="h5" align="left" sx={{ mb: 4 }}>
+          {t("registration.title")}
+        </Typography>
+        {currentStep === 1 && (
           <UserTypeSelector
             formState={formState}
             handleUserTypeClick={handleUserTypeClick}
@@ -174,14 +185,28 @@ export const RegistrationForm = ({ navigateToVerification }: Props) => {
             handleInputChange={handleInputChange}
           />
         )}
-      <RegistrationFooter
-        form={formState}
-        currentStep={currentStep}
-        handleBack={handleBack}
-        handleSubmit={handleSubmit}
-      />
-      </Box>
-    </Container>
+        <RegistrationFooter
+          form={formState}
+          currentStep={currentStep}
+          handleBack={handleBack}
+          handleSubmit={handleSubmit}
+        />
+      </Grid>
+      <Grid item xs={0} md={8}>
+        <Carousel
+          autoPlay={true}
+          interval={5000}
+          duration={1000}
+          animation="slide"
+          height={"100vh"}
+          indicators={false}
+        >
+          {carouselImages.map((src, index) => (
+            <CarouselCard key={index} src={src} />
+          ))}
+        </Carousel>
+      </Grid>
+    </Grid>
   );
 };
 
