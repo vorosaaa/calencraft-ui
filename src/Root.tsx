@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ThemeProvider } from "@mui/material";
 import { Header } from "./components/header/Header";
 import { customTheme } from "./theme/theme";
@@ -7,7 +7,7 @@ import { useAuth } from "./hooks/authHook";
 import { Footer } from "./components/footer/Footer";
 import { VerificationModal } from "./pages/verification/Verification";
 import { useVerificationModalHook } from "./hooks/verificationHook";
-import { CountryCode, VerificationMode } from "./types/enums";
+import { CountryCode } from "./types/enums";
 import { generateRandomGradient } from "./utils/headerUtils";
 import { useBackgroundHook } from "./hooks/backgroundHook";
 import { useValidateToken } from "./queries/queries";
@@ -28,8 +28,6 @@ export const Root = () => {
   const hideHeaderFooter =
     location.pathname === "/login" || location.pathname === "/register";
 
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isRegistrationModalOpen, setRegistrationModalOpen] = useState(false);
   const { setBackground } = useBackgroundHook();
   const { setSearchCountry, setSearchCity, setIsLoading } = useGeoLocation();
 
@@ -52,28 +50,14 @@ export const Root = () => {
     setBackground(randomGradient);
   }, []);
 
-  const handleLoginModalOpen = () => setLoginModalOpen(true);
-  const handleRegistrationModalOpen = () => setRegistrationModalOpen(true);
-
   return (
     <ThemeProvider theme={customTheme}>
-      <div
-        style={{
-          minHeight: "100vh",
-          minWidth: "100vw",
-        }}
-      >
-        {!hideHeaderFooter && (
-          <Header
-            onLoginClick={handleLoginModalOpen}
-            onRegistrationClick={handleRegistrationModalOpen}
-          />
-        )}
+      {!hideHeaderFooter && <Header />}
+      <div style={{ minHeight: "100vh" }}>
         <BookyRoutes />
-        <VerificationModal />
-
-        {!hideHeaderFooter && <Footer />}
       </div>
+      <VerificationModal />
+      {!hideHeaderFooter && <Footer />}
     </ThemeProvider>
   );
 };

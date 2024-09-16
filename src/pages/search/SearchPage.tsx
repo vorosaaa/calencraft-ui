@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Container,
   Grid,
   Skeleton,
   Stack,
@@ -11,7 +12,6 @@ import { Fragment, useState } from "react";
 import { SearchContainer } from "./css/ProviderList.css";
 import { ProviderTable } from "./ProviderTable";
 import { useQuery } from "react-query";
-import { View } from "../login/Login.css";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 import { ServiceCategory, CountryCode } from "../../types/enums";
@@ -81,7 +81,7 @@ export const SearchPage = () => {
   };
 
   return (
-    <View maxWidth="lg" sx={{ pt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 0, pt: 4 }}>
       <SearchContainer>
         <Stack
           direction={isMobile ? "column" : "row"}
@@ -106,7 +106,7 @@ export const SearchPage = () => {
         paginationModel={paginationDetails}
         onPaginationChange={onPaginationChange}
       />
-    </View>
+    </Container>
   );
 };
 

@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
+  CssBaseline,
+  Grid,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
-
-import { ArrowBack, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { login } from "../../api/authApi";
-import {
-  FormParent,
-  SubmitButton,
-  StyledContainer,
-  CarouselBox,
-  FormBox,
-  BackButton,
-} from "./Login.css";
+import { FormParent, SubmitButton } from "./Login.css";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
 import { useNavigate } from "react-router-dom";
@@ -38,12 +31,11 @@ const CarouselCard = ({ src }: { src: string }) => (
   />
 );
 
-export const Login: React.FC = () => {
+export const Login = () => {
   const { t } = useTranslation();
   const { setVerification } = useVerificationModalHook();
   const { saveAuth } = useAuth();
   const queryClient = useQueryClient();
-  const isMobile = useCheckMobileScreen();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -78,13 +70,8 @@ export const Login: React.FC = () => {
     );
   };
 
-  const handleLogin = async () => {
-    mutate({ email, password });
-  };
-
-  const onRegistrationClick = () => {
-    navigate("/register");
-  };
+  const handleLogin = async () => mutate({ email, password });
+  const onRegistrationClick = () => navigate("/register");
 
   useEffect(() => {
     if (!email || !password) return;
@@ -101,22 +88,23 @@ export const Login: React.FC = () => {
     };
   }, [email, password]);
 
-  const sliderSettings = {
-    autoplay: true,
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   return (
-    <StyledContainer>
-      <BackButton onClick={() => navigate(-1)}>
-        <ArrowBack />
-      </BackButton>
-      <FormBox>
-        <Typography variant="h4" align="center">
+    <Grid container spacing={0}>
+      <CssBaseline />
+      <Grid
+        sx={{
+          paddingLeft: 8,
+          paddingRight: 8,
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+        item
+        xs={12}
+        md={4}
+      >
+        <Typography sx={{ mb: 4 }} variant="h5" align="center">
           {t("login.title")}
         </Typography>
         <FormParent>
@@ -175,12 +163,12 @@ export const Login: React.FC = () => {
             </Typography>
           </div>
         </FormParent>
-      </FormBox>
-      <CarouselBox>
+      </Grid>
+      <Grid item xs={0} md={8}>
         <Carousel
           autoPlay={true}
-          interval={3000}
-          duration={800}
+          interval={5000}
+          duration={1000}
           animation="slide"
           height={"100vh"}
           indicators={false}
@@ -189,7 +177,7 @@ export const Login: React.FC = () => {
             <CarouselCard key={index} src={src} />
           ))}
         </Carousel>
-      </CarouselBox>
-    </StyledContainer>
+      </Grid>
+    </Grid>
   );
 };

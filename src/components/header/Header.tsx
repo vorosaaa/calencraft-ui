@@ -11,21 +11,15 @@ import { useBackgroundHook } from "../../hooks/backgroundHook";
 import { useMe } from "../../queries/queries";
 import i18n, { dynamicActivate } from "../../i18n";
 
-type Props = {
-  onLoginClick: () => void;
-  onRegistrationClick: () => void;
-};
-
-export const Header = (props: Props) => {
+export const Header = () => {
   const [language, setLanguage] = useState<string>(i18n.language);
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
     dynamicActivate(newLanguage);
   };
-  
+
   const { isLoggedIn } = useAuth();
   const { data } = useMe();
-  const { onLoginClick, onRegistrationClick } = props;
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -74,10 +68,7 @@ export const Header = (props: Props) => {
               handleCloseUserMenu={handleCloseUserMenu}
             />
           ) : (
-            <AuthMenu
-              onLoginClick={onLoginClick}
-              onRegistrationClick={onRegistrationClick}
-            />
+            <AuthMenu />
           )}
           <LanguageSelector
             currentLanguage={language}
