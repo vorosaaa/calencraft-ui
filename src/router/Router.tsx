@@ -14,6 +14,7 @@ import { ContactPage } from "../pages/contact/ContactPage";
 import { NewBookingPage } from "../pages/admin/booking/NewBookingPage";
 import { Login } from "../pages/login/Login";
 import { RegistrationForm } from "../pages/registration/Registration";
+import { Verification } from "../pages/verification/Verification";
 
 export const BookyRoutes = () => {
   return (
@@ -33,16 +34,8 @@ export const BookyRoutes = () => {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/booking/:id" element={<BookingDetails />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/register"
-          element={
-            <RegistrationForm
-              navigateToVerification={function (): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-          }
-        />
+        <Route path="/register" element={<RegistrationForm />} />
+        <Route path="/verification" element={<Verification />} />
       </Routes>
     </>
   );

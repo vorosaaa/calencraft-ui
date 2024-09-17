@@ -15,21 +15,8 @@ import { useTranslation } from "react-i18next";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
 import { useNavigate } from "react-router-dom";
-import Carousel from "react-material-ui-carousel";
-
-const carouselImages = [
-  "/images/barber.jpeg",
-  "/images/fitness.jpeg",
-  "/images/cosmetics.jpeg",
-];
-
-const CarouselCard = ({ src }: { src: string }) => (
-  <img
-    src={src}
-    alt="carousel"
-    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-  />
-);
+import { CustomCarousel } from "../../components/auth/CustomCarousel";
+import { useCheckMobileScreen } from "../../hooks/screenHook";
 
 export const Login = () => {
   const { t } = useTranslation();
@@ -37,6 +24,7 @@ export const Login = () => {
   const { saveAuth } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const isMobile = useCheckMobileScreen();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -64,10 +52,10 @@ export const Login = () => {
     setEmail("");
     setPassword("");
     setVerification(
-      true,
       VerificationMode.FORGOT_PASSWORD,
       VerificationMode.FORGOT_PASSWORD,
     );
+    navigate("/verification");
   };
 
   const handleLogin = async () => mutate({ email, password });
@@ -93,8 +81,8 @@ export const Login = () => {
       <CssBaseline />
       <Grid
         sx={{
-          paddingLeft: 8,
-          paddingRight: 8,
+          paddingLeft: isMobile ? 2 : 8,
+          paddingRight: isMobile ? 2 : 8,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -164,18 +152,7 @@ export const Login = () => {
         </FormParent>
       </Grid>
       <Grid item xs={0} md={8}>
-        <Carousel
-          autoPlay={true}
-          interval={5000}
-          duration={1000}
-          animation="slide"
-          height={"100vh"}
-          indicators={false}
-        >
-          {carouselImages.map((src, index) => (
-            <CarouselCard key={index} src={src} />
-          ))}
-        </Carousel>
+        <CustomCarousel />
       </Grid>
     </Grid>
   );

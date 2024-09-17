@@ -8,8 +8,7 @@ import {
 } from "../../api/meApi";
 import { UserEditor } from "./userEditor/UserEditor";
 import { Container, Grid, Skeleton, SelectChangeEvent } from "@mui/material";
-import { useVerificationModalHook } from "../../hooks/verificationHook";
-import { EmailStatus, VerificationMode } from "../../types/enums";
+import { EmailStatus } from "../../types/enums";
 import { useNavigate } from "react-router-dom";
 import { enqueueError, enqueueSuccess } from "../../enqueueHelper";
 import { useMe } from "../../queries/queries";
@@ -34,7 +33,6 @@ export const ProfileEditor = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setVerification } = useVerificationModalHook();
 
   const [formData, setFormData] = useState<FormState | undefined>();
   const [pictureData, setPictureData] = useState<Pictures>({
@@ -76,13 +74,6 @@ export const ProfileEditor = () => {
   });
 
   //Handlers and functions
-  const openVerificationModal = () => {
-    setVerification(
-      true,
-      VerificationMode.VERIFICATION,
-      VerificationMode.VERIFICATION,
-    );
-  };
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     if (!formData) {
@@ -200,7 +191,6 @@ export const ProfileEditor = () => {
           pictureData={pictureData}
           setFormData={setFormData}
           handlePictureChange={handlePictureChange}
-          openVerificationModal={openVerificationModal}
           handleSubmit={handleSubmit}
           handleInputChange={handleInputChange}
         />

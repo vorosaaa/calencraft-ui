@@ -4,7 +4,6 @@ import { VerificationMode } from "../types/enums";
 const verification = atom({
   key: "verification",
   default: {
-    open: false,
     mode: VerificationMode.FORGOT_PASSWORD,
     originalMode: VerificationMode.FORGOT_PASSWORD,
   },
@@ -22,14 +21,12 @@ export const useVerificationModalHook = () => {
     setVerificationState((prev) => ({ ...prev, mode: value }));
   };
   const setVerification = (
-    open: boolean,
     mode: VerificationMode,
     originalMode: VerificationMode,
   ) => {
-    setVerificationState({ open, mode, originalMode });
+    setVerificationState({ mode, originalMode });
   };
   return {
-    open: verificationState.open,
     mode: verificationState.mode,
     originalMode: verificationState.originalMode,
     setVerificationOpen,

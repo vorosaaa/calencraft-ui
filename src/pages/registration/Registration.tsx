@@ -5,30 +5,15 @@ import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { PersonalData } from "../../types/user";
 import { UserTypeSelector } from "./UserTypeSelector";
 import { GridContent } from "./GridContent";
 import { RegistrationFooter } from "./RegistrationFooter";
-import Carousel from "react-material-ui-carousel";
-
-type Props = {
-  navigateToVerification: () => void;
-};
-
-const carouselImages = [
-  "/images/barber.jpeg",
-  "/images/fitness.jpeg",
-  "/images/cosmetics.jpeg",
-];
-
-const CarouselCard = ({ src }: { src: string }) => (
-  <img
-    src={src}
-    alt="carousel"
-    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-  />
-);
+import { CustomCarousel } from "../../components/auth/CustomCarousel";
+import { useGeoLocation } from "../../hooks/locationHook";
+import { useVerificationModalHook } from "../../hooks/verificationHook";
+import { VerificationMode } from "../../types/enums";
+import { useCheckMobileScreen } from "../../hooks/screenHook";
 
 export type FormState = {
   confirmPassword: string;
@@ -63,11 +48,14 @@ const initialFormState: FormState = {
   accepted: false,
 };
 
-export const RegistrationForm = ({ navigateToVerification }: Props) => {
+export const RegistrationForm = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { saveAuth } = useAuth();
+  const { setVerification } = useVerificationModalHook();
+  const isMobile = useCheckMobileScreen();
+  const { location } = useGeoLocation();
 
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const [error, setError] = useState<ErrorState>(initialError);
@@ -78,8 +66,11 @@ export const RegistrationForm = ({ navigateToVerification }: Props) => {
       setFormState(initialFormState);
       saveAuth(data.token);
       queryClient.invalidateQueries("me");
-      navigate("/myprofile");
-      navigateToVerification();
+      setVerification(
+        VerificationMode.VERIFICATION,
+        VerificationMode.VERIFICATION,
+      );
+      navigate("/verification");
     },
   });
 
@@ -146,12 +137,8 @@ export const RegistrationForm = ({ navigateToVerification }: Props) => {
   };
 
   useEffect(() => {
-    axios
-      .get("https://ipapi.co/json/")
-      .then((response: any) =>
-        setFormState({ ...formState, country: response.data.country_code }),
-      );
-  }, []);
+    setFormState({ ...formState, country: location.searchCountry });
+  }, [location]);
 
   return (
     <Grid container spacing={0}>
@@ -159,8 +146,8 @@ export const RegistrationForm = ({ navigateToVerification }: Props) => {
 
       <Grid
         sx={{
-          paddingLeft: 8,
-          paddingRight: 8,
+          paddingLeft: isMobile ? 2 : 8,
+          paddingRight: isMobile ? 2 : 8,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -193,18 +180,7 @@ export const RegistrationForm = ({ navigateToVerification }: Props) => {
         />
       </Grid>
       <Grid item xs={0} md={8}>
-        <Carousel
-          autoPlay={true}
-          interval={5000}
-          duration={1000}
-          animation="slide"
-          height={"100vh"}
-          indicators={false}
-        >
-          {carouselImages.map((src, index) => (
-            <CarouselCard key={index} src={src} />
-          ))}
-        </Carousel>
+        <CustomCarousel />
       </Grid>
     </Grid>
   );

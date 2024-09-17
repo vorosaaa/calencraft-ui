@@ -5,7 +5,6 @@ import { customTheme } from "./theme/theme";
 import { BookyRoutes } from "./router/Router";
 import { useAuth } from "./hooks/authHook";
 import { Footer } from "./components/footer/Footer";
-import { VerificationModal } from "./pages/verification/Verification";
 import { useVerificationModalHook } from "./hooks/verificationHook";
 import { CountryCode } from "./types/enums";
 import { generateRandomGradient } from "./utils/headerUtils";
@@ -26,7 +25,9 @@ export const Root = () => {
 
   const location = useLocation();
   const hideHeaderFooter =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/verification";
 
   const { setBackground } = useBackgroundHook();
   const { setSearchCountry, setSearchCity, setIsLoading } = useGeoLocation();
@@ -56,7 +57,6 @@ export const Root = () => {
       <div style={{ minHeight: "100vh" }}>
         <BookyRoutes />
       </div>
-      <VerificationModal />
       {!hideHeaderFooter && <Footer />}
     </ThemeProvider>
   );
