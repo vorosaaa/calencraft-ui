@@ -251,7 +251,8 @@
     "title_password_reset": "Jelszó visszaállítása",
     "title_verification": "E-mail megerősítése",
     "email": "E-mail",
-    "send_code": "Ellenőrző kód küldése",
+    "provide_email": "Kérjük add meg az e-mail címedet!",
+    "send_code": "Küldés",
     "description": "Elküldtünk egy ellenőrző kódot, kérjük, ellenőrizze a beérkezett leveleit.",
     "resend": "Újraküldés",
     "next": "Tovább",
@@ -261,7 +262,9 @@
     "password_empty": "A jelszó nem lehet üres.",
     "password_complexity": "A jelszónak legalább 8 karakter hosszúnak kell lennie, és tartalmaznia kell egy számot.",
     "reset": "Jelszó visszaállítása",
-    "close": "Bezárás"
+    "later": "Később",
+    "close": "Bezárás",
+    "verify": "Mehet"
   },
   "menu": {
     "profile": "Profilom",
@@ -355,7 +358,8 @@
     "back": "Mégse"
   },
   "registration": {
-    "title": "Regisztráció",
+    "login": "Van már fiókod? Jelentkezz be itt!",
+    "title": "Készítsd el a Calencraft fiókod!",
     "question": "Hogyan szeretnéd használni az oldalt?",
     "user": "Felhasználóként",
     "provider": "Szolgáltatóként",

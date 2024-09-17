@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { Typography, Grid, CssBaseline } from "@mui/material";
 import { register } from "../../api/authApi";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
-import { GridContent } from "./GridContent";
-import { RegistrationFooter } from "./RegistrationFooter";
-import { UserTypeSelector } from "./UserTypeSelector";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { PersonalData } from "../../types/user";
-
-type Props = {
-  open: boolean;
-  handleClose: () => void;
-  navigateToVerification: () => void;
-};
+import { UserTypeSelector } from "./UserTypeSelector";
+import { GridContent } from "./GridContent";
+import { RegistrationFooter } from "./RegistrationFooter";
+import { CustomCarousel } from "../../components/auth/CustomCarousel";
+import { useGeoLocation } from "../../hooks/locationHook";
+import { useVerificationModalHook } from "../../hooks/verificationHook";
+import { VerificationMode } from "../../types/enums";
+import { useCheckMobileScreen } from "../../hooks/screenHook";
 
 export type FormState = {
   confirmPassword: string;
@@ -51,16 +48,14 @@ const initialFormState: FormState = {
   accepted: false,
 };
 
-export const RegistrationForm = ({
-  open,
-  handleClose,
-  navigateToVerification,
-}: Props) => {
+export const RegistrationForm = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const isMobile = useCheckMobileScreen();
   const navigate = useNavigate();
   const { saveAuth } = useAuth();
+  const { setVerification } = useVerificationModalHook();
+  const isMobile = useCheckMobileScreen();
+  const { location } = useGeoLocation();
 
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const [error, setError] = useState<ErrorState>(initialError);
@@ -70,10 +65,12 @@ export const RegistrationForm = ({
     onSuccess: (data) => {
       setFormState(initialFormState);
       saveAuth(data.token);
-      handleClose();
       queryClient.invalidateQueries("me");
-      navigate("/myprofile");
-      navigateToVerification();
+      setVerification(
+        VerificationMode.VERIFICATION,
+        VerificationMode.VERIFICATION,
+      );
+      navigate("/verification");
     },
   });
 
@@ -140,25 +137,28 @@ export const RegistrationForm = ({
   };
 
   useEffect(() => {
-    axios
-      .get("https://ipapi.co/json/")
-      .then((response: any) =>
-        setFormState({ ...formState, country: response.data.country_code }),
-      );
-  }, []);
+    setFormState({ ...formState, country: location.searchCountry });
+  }, [location]);
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      fullScreen={isMobile}
-      fullWidth
-      maxWidth="sm"
-    >
-      <DialogTitle sx={{ padding: 4 }} variant="h4" align="center">
-        {t("registration.title")}
-      </DialogTitle>
-      <DialogContent>
+    <Grid container spacing={0}>
+      <CssBaseline />
+
+      <Grid
+        sx={{
+          paddingLeft: isMobile ? 2 : 8,
+          paddingRight: isMobile ? 2 : 8,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+        item
+        xs={12}
+        md={4}
+      >
+        <Typography variant="h5" align="left" sx={{ mb: 4 }}>
+          {t("registration.title")}
+        </Typography>
         {currentStep === 1 && (
           <UserTypeSelector
             formState={formState}
@@ -172,15 +172,17 @@ export const RegistrationForm = ({
             handleInputChange={handleInputChange}
           />
         )}
-      </DialogContent>
-      <RegistrationFooter
-        form={formState}
-        currentStep={currentStep}
-        handleClose={handleClose}
-        handleBack={handleBack}
-        handleSubmit={handleSubmit}
-      />
-    </Dialog>
+        <RegistrationFooter
+          form={formState}
+          currentStep={currentStep}
+          handleBack={handleBack}
+          handleSubmit={handleSubmit}
+        />
+      </Grid>
+      <Grid item xs={0} md={8}>
+        <CustomCarousel />
+      </Grid>
+    </Grid>
   );
 };
 
@@ -190,7 +192,7 @@ const validateEmail = (email: string) => {
   );
 };
 
-export const validatePassword = (password: string): boolean => {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d.,-]{8,}$/;
+const validatePassword = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   return passwordRegex.test(password);
 };

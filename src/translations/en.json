@@ -246,8 +246,9 @@
   "verification": {
     "title_password_reset": "Password Reset",
     "title_verification": "Email Verification",
+    "provide_email": "Please provide your e-mail address!",
     "email": "Email",
-    "send_code": "Send Verification Code",
+    "send_code": "Send",
     "description": "We've sent a verification code, please check your inbox.",
     "resend": "Resend",
     "next": "Next",
@@ -257,7 +258,9 @@
     "password_empty": "Password cannot be empty.",
     "password_complexity": "Password must be at least 8 characters long and include a number.",
     "reset": "Reset Password",
-    "close": "Close"
+    "later": "Later",
+    "close": "Close",
+    "verify": "Submit"
   },
   "menu": {
     "profile": "My Profile",
@@ -351,7 +354,8 @@
     "back": "Cancel"
   },
   "registration": {
-    "title": "Registration",
+    "login": "Already have an account? Login here!",
+    "title": "Register to Calencraft",
     "question": "How would you like to use the platform?",
     "user": "As a User",
     "provider": "As a Provider",

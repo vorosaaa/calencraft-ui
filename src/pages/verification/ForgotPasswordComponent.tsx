@@ -1,4 +1,10 @@
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -16,7 +22,10 @@ export const ForgotPasswordComponent = ({
 }: Props) => {
   const { t } = useTranslation();
   return (
-    <Box sx={{ paddingTop: 2, textAlign: "center" }}>
+    <Box>
+      <Typography variant="body1" sx={{ mb: 4 }}>
+        {t("verification.provide_email")}
+      </Typography>
       <TextField
         fullWidth
         label={t("verification.email")}
@@ -27,10 +36,11 @@ export const ForgotPasswordComponent = ({
         inputProps={{
           maxLength: 50,
         }}
-        sx={{ mb: 2 }}
+        sx={{ mb: 3 }}
       />
 
       <Button
+        fullWidth
         color="primary"
         variant="contained"
         onClick={handleSendEmail}

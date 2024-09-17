@@ -3,25 +3,26 @@ import { useCheckMobileScreen } from "../../../hooks/screenHook";
 import { HeaderButton } from "../Header.css";
 import { Person } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-type Props = {
-  onLoginClick: () => void;
-  onRegistrationClick: () => void;
-};
-
-export const AuthMenu = ({ onLoginClick, onRegistrationClick }: Props) => {
+export const AuthMenu = () => {
+  const navigate = useNavigate();
   const isMobile = useCheckMobileScreen();
   const { t } = useTranslation();
+
+  const handleLoginClick = () => navigate("/login");
+  const handleRegistrationClick = () => navigate("/register");
+
   return isMobile ? (
-    <IconButton onClick={onLoginClick}>
+    <IconButton onClick={handleLoginClick}>
       <Person />
     </IconButton>
   ) : (
     <>
-      <HeaderButton onClick={onLoginClick}>
+      <HeaderButton onClick={handleLoginClick}>
         <Typography>{t("header.login")}</Typography>
       </HeaderButton>
-      <HeaderButton onClick={onRegistrationClick}>
+      <HeaderButton onClick={handleRegistrationClick}>
         <Typography>{t("header.register")}</Typography>
       </HeaderButton>
     </>

@@ -1,19 +1,13 @@
-import { Button, Container, TextField, styled } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 
-export const View = styled(Container)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-}));
-
-export const FormParent = styled("form")(({ theme }) => ({
+export const FormParent = styled("div")(() => ({
   display: "flex",
-  flexDirection: "column",
-  gap: theme.spacing(2),
-}));
-
-export const FormInput = styled(TextField)(() => ({
   width: "100%",
+  flexDirection: "column",
 }));
 
 export const SubmitButton = styled(Button)(({ theme }) => ({
-  margin: theme.spacing(2, 0, 0, 0),
+  marginTop: theme.spacing(6),
+  marginBottom: theme.spacing(2),
 }));

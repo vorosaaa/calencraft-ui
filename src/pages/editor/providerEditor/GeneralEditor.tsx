@@ -20,6 +20,7 @@ import { ProfileEditorHeader } from "../ProfileEditorHeader";
 import { Warning } from "./Warning";
 import { DeleteModal } from "../modal/DeleteModal";
 import { Pictures } from "../../../types/pictures";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   formData: FormState;
@@ -45,6 +46,7 @@ export const GeneralEditor = ({
 }: Props) => {
   const { t } = useTranslation();
   const { setVerification } = useVerificationModalHook();
+  const navigate = useNavigate();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isBillingAddressDifferent, setIsBillingAddressDifferent] =
     useState(false);
@@ -76,12 +78,12 @@ export const GeneralEditor = ({
 
   const { mutate, isLoading: isDeleteLoading } = useDeleteMutation();
 
-  const openVerificationModal = () => {
+  const navigateToVerification = () => {
     setVerification(
-      true,
       VerificationMode.VERIFICATION,
       VerificationMode.VERIFICATION,
     );
+    navigate("/verification");
   };
 
   const handleDelete = () => {
@@ -111,7 +113,7 @@ export const GeneralEditor = ({
         <Warning
           subscriptionType={subscriptionType}
           emailStatus={emailStatus}
-          openVerificationModal={openVerificationModal}
+          openVerificationModal={navigateToVerification}
         />
         <ProviderPersonalContent
           name={name}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Container, Divider, Typography } from "@mui/material";
-import { EmailStatus } from "../../../types/enums";
+import { EmailStatus, VerificationMode } from "../../../types/enums";
 import { AddressAccordionContent } from "../accordions/AddressAccordionContent";
 import { UserPersonalContent } from "../accordions/UserPersonalContent";
 import { FormState } from "../../../types/formState";
@@ -10,12 +10,13 @@ import { useDeleteMutation } from "../../../mutations/mutations";
 import { DeleteModal } from "../modal/DeleteModal";
 import { Pictures } from "../../../types/pictures";
 import { ProfileEditorHeader } from "../ProfileEditorHeader";
+import { useNavigate } from "react-router-dom";
+import { useVerificationModalHook } from "../../../hooks/verificationHook";
 
 type Props = {
   formData: FormState;
   pictureData: Pictures;
   setFormData: (value: React.SetStateAction<FormState | undefined>) => void;
-  openVerificationModal: () => void;
   handleSubmit: () => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handlePictureChange: (
@@ -29,19 +30,28 @@ export const UserEditor = ({
   pictureData,
   setFormData,
   handlePictureChange,
-  openVerificationModal,
   handleSubmit,
   handleInputChange,
 }: Props) => {
   const { t } = useTranslation();
   const { name, emailStatus, phoneNumber, description, address } = formData;
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const navigate = useNavigate();
+  const { setVerification } = useVerificationModalHook();
 
   const { mutate, isLoading: isDeleteLoading } = useDeleteMutation();
 
   const handleDelete = () => {
     mutate();
     setDeleteOpen(false);
+  };
+
+  const navigateToVerification = () => {
+    setVerification(
+      VerificationMode.VERIFICATION,
+      VerificationMode.VERIFICATION,
+    );
+    navigate("/verification");
   };
 
   const setCoverPosition = (position: string) => {
@@ -69,7 +79,7 @@ export const UserEditor = ({
             fullWidth
             variant="outlined"
             color="warning"
-            onClick={openVerificationModal}
+            onClick={navigateToVerification}
           >
             {t("editor.verify_email")}
           </Button>

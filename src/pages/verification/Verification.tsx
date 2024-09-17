@@ -1,11 +1,4 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Typography,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { Button, Grid, CssBaseline, Typography } from "@mui/material";
 import { useMutation, useQueryClient } from "react-query";
 import {
   resetPassword,
@@ -23,13 +16,16 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/authHook";
 import { enqueueError, enqueueSuccess } from "../../enqueueHelper";
 import { useMe } from "../../queries/queries";
+import { CustomCarousel } from "../../components/auth/CustomCarousel";
+import { useNavigate } from "react-router-dom";
 
-export const VerificationModal: React.FC = () => {
+export const Verification = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { saveAuth } = useAuth();
   const isMobile = useCheckMobileScreen();
   const queryClient = useQueryClient();
-  const { open, mode, originalMode, setVerificationOpen, setVerificationMode } =
+  const { mode, originalMode, setVerificationMode } =
     useVerificationModalHook();
 
   const [token, setToken] = useState("");
@@ -57,7 +53,8 @@ export const VerificationModal: React.FC = () => {
     onSuccess: (data: any) => {
       if (originalMode === VerificationMode.VERIFICATION) {
         queryClient.invalidateQueries("me");
-        closeModal();
+        setVerificationCode("");
+        navigate("/myprofile");
       } else {
         setToken(data.token);
         setVerificationMode(VerificationMode.PASSWORD_RESET);
@@ -69,7 +66,7 @@ export const VerificationModal: React.FC = () => {
     onSuccess: (data: any) => {
       saveAuth(data.token);
       queryClient.invalidateQueries("me");
-      closeModal();
+      navigateToHome();
     },
   });
 
@@ -80,9 +77,9 @@ export const VerificationModal: React.FC = () => {
     mutate(email);
   };
 
-  const closeModal = () => {
+  const navigateToHome = () => {
     setVerificationCode("");
-    setVerificationOpen(false);
+    navigate("/");
   };
 
   const handleVerify = () => mutateVerify({ code: verificationCode, email });
@@ -112,19 +109,25 @@ export const VerificationModal: React.FC = () => {
   }, [data]);
 
   return (
-    <Dialog
-      open={open}
-      onClose={closeModal}
-      fullWidth
-      maxWidth="sm"
-      fullScreen={isMobile}
-    >
-      <DialogTitle variant="h5">
-        {originalMode === VerificationMode.FORGOT_PASSWORD
-          ? t("verification.title_password_reset")
-          : t("verification.title_verification")}
-      </DialogTitle>
-      <DialogContent sx={{ p: isMobile ? 1 : 3 }}>
+    <Grid container spacing={0}>
+      <CssBaseline />
+      <Grid
+        sx={{
+          paddingLeft: isMobile ? 2 : 8,
+          paddingRight: isMobile ? 2 : 8,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+        item
+        xs={12}
+        md={4}
+      >
+        <Typography variant="h5" align="left" sx={{ mb: 4 }}>
+          {originalMode === VerificationMode.FORGOT_PASSWORD
+            ? t("verification.title_password_reset")
+            : t("verification.title_verification")}
+        </Typography>
         {mode === VerificationMode.FORGOT_PASSWORD && (
           <ForgotPasswordComponent
             email={email}
@@ -151,14 +154,13 @@ export const VerificationModal: React.FC = () => {
             handleSubmit={handleReset}
           />
         )}
-      </DialogContent>
-      {isMobile && (
-        <DialogActions>
-          <Button onClick={() => closeModal()}>
-            {t("verification.close")}
-          </Button>
-        </DialogActions>
-      )}
-    </Dialog>
+        {isMobile && (
+          <Button onClick={navigateToHome}>{t("verification.close")}</Button>
+        )}
+      </Grid>
+      <Grid item xs={0} md={8}>
+        <CustomCarousel />
+      </Grid>
+    </Grid>
   );
 };
