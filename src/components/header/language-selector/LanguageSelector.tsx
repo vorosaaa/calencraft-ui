@@ -4,8 +4,8 @@ import {
   Select,
   FormControl,
   SelectChangeEvent,
+  Box,
 } from "@mui/material";
-import ReactCountryFlag from "react-country-flag";
 
 interface LanguageSelectorProps {
   currentLanguage: string;
@@ -36,28 +36,29 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             (lang) => lang.code === selected,
           );
           return (
-            <ReactCountryFlag
-              countryCode={selectedLanguage?.country || ""}
-              svg
-              style={{
-                width: "1.5em",
-                height: "1.5em",
-              }}
+            <img
+              loading="lazy"
+              width="32"
+              srcSet={`https://flagcdn.com/w40/${selectedLanguage?.country.toLowerCase()}.png 2x`}
+              src={`https://flagcdn.com/w20/${selectedLanguage?.country.toLowerCase()}.png`}
+              alt=""
             />
           );
         }}
       >
         {languages.map((lang) => (
           <MenuItem key={lang.code} value={lang.code}>
-            <ReactCountryFlag
-              countryCode={lang.country}
-              svg
-              style={{
-                width: "1.5em",
-                height: "1.5em",
-                marginRight: "0.5em",
+            <Box
+              component="img"
+              sx={{
+                marginRight: 1
               }}
-            />
+              alt=""
+              loading="lazy"
+              width="28"
+              srcSet={`https://flagcdn.com/w40/${lang.country.toLowerCase()}.png 2x`}
+              src={`https://flagcdn.com/w20/${lang.country.toLowerCase()}.png`}
+            />            
             {lang.code.toUpperCase()}
           </MenuItem>
         ))}

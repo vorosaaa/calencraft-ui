@@ -1,4 +1,4 @@
-import { AppBar, Container, CssBaseline, Toolbar } from "@mui/material";
+import { AppBar, Box, Container, CssBaseline, Toolbar } from "@mui/material";
 
 import { useAuth } from "../../hooks/authHook";
 import { BrowserLogo, MobileLogo } from "./logo/Logo";
@@ -70,10 +70,18 @@ export const Header = () => {
           ) : (
             <AuthMenu />
           )}
-          <LanguageSelector
-            currentLanguage={language}
-            onChangeLanguage={handleLanguageChange}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: 1,
+            }}
+          >
+            <LanguageSelector
+              currentLanguage={language}
+              onChangeLanguage={handleLanguageChange}
+            />
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
