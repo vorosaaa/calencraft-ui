@@ -29,6 +29,13 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   return (
     <FormControl variant="outlined" size="small">
       <Select
+        sx={{
+          display: "flex",
+          "& .MuiSelect-select": {
+            display: "flex",
+            alignItems: "center",
+          },
+        }}
         value={currentLanguage}
         onChange={handleChange}
         renderValue={(selected) => {
@@ -38,7 +45,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           return (
             <img
               loading="lazy"
-              width="32"
+              width="24"
+              height="16"
               srcSet={`https://flagcdn.com/w40/${selectedLanguage?.country.toLowerCase()}.png 2x`}
               src={`https://flagcdn.com/w20/${selectedLanguage?.country.toLowerCase()}.png`}
               alt=""
@@ -51,14 +59,14 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             <Box
               component="img"
               sx={{
-                marginRight: 1
+                marginRight: 1,
               }}
               alt=""
               loading="lazy"
               width="28"
               srcSet={`https://flagcdn.com/w40/${lang.country.toLowerCase()}.png 2x`}
               src={`https://flagcdn.com/w20/${lang.country.toLowerCase()}.png`}
-            />            
+            />
             {lang.code.toUpperCase()}
           </MenuItem>
         ))}
