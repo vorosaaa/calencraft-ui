@@ -1,39 +1,29 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
+  CssBaseline,
+  Grid,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { login } from "../../api/authApi";
 import { FormParent, SubmitButton } from "./Login.css";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { CustomCarousel } from "../../components/auth/CustomCarousel";
+import { useCheckMobileScreen } from "../../hooks/screenHook";
 
-type Props = {
-  open: boolean;
-  handleClose: () => void;
-  onRegistrationClick: () => void;
-};
-
-export const Login: React.FC<Props> = ({
-  open,
-  handleClose,
-  onRegistrationClick,
-}: Props) => {
+export const Login = () => {
   const { t } = useTranslation();
   const { setVerification } = useVerificationModalHook();
   const { saveAuth } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const isMobile = useCheckMobileScreen();
 
   const [email, setEmail] = useState("");
@@ -45,8 +35,8 @@ export const Login: React.FC<Props> = ({
       saveAuth(data.token);
       setEmail("");
       setPassword("");
-      handleClose();
       queryClient.invalidateQueries("me");
+      navigate("/");
     },
   });
 
@@ -61,14 +51,15 @@ export const Login: React.FC<Props> = ({
   const handleForgotPassword = () => {
     setEmail("");
     setPassword("");
-    handleClose();
     setVerification(
-      true,
       VerificationMode.FORGOT_PASSWORD,
       VerificationMode.FORGOT_PASSWORD,
     );
+    navigate("/verification");
   };
+
   const handleLogin = async () => mutate({ email, password });
+  const onRegistrationClick = () => navigate("/register");
 
   useEffect(() => {
     if (!email || !password) return;
@@ -86,11 +77,23 @@ export const Login: React.FC<Props> = ({
   }, [email, password]);
 
   return (
-    <Dialog open={open} onClose={handleClose} fullScreen={isMobile}>
-      <DialogTitle variant="h4" align="center" gutterBottom>
-        {t("login.title")}
-      </DialogTitle>
-      <DialogContent>
+    <Grid container spacing={0}>
+      <CssBaseline />
+      <Grid
+        sx={{
+          paddingLeft: isMobile ? 2 : 8,
+          paddingRight: isMobile ? 2 : 8,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+        item
+        xs={12}
+        md={4}
+      >
+        <Typography sx={{ mb: 4 }} variant="h5">
+          {t("login.title")}
+        </Typography>
         <FormParent>
           <TextField
             label={t("login.email")}
@@ -147,12 +150,10 @@ export const Login: React.FC<Props> = ({
             </Typography>
           </div>
         </FormParent>
-      </DialogContent>
-      {isMobile && (
-        <DialogActions onClick={handleClose}>
-          <Button fullWidth>{t("login.back")}</Button>
-        </DialogActions>
-      )}
-    </Dialog>
+      </Grid>
+      <Grid item xs={0} md={8}>
+        <CustomCarousel />
+      </Grid>
+    </Grid>
   );
 };

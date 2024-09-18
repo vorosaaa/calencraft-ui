@@ -1,12 +1,10 @@
 import { Box, Button, DialogActions, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { FormState } from "./Registration";
 
 type FooterProps = {
   form: FormState;
   currentStep: number;
-  handleClose: () => void;
   handleBack: () => void;
   handleSubmit: () => void;
 };
@@ -14,12 +12,10 @@ type FooterProps = {
 export const RegistrationFooter = ({
   form,
   currentStep,
-  handleClose,
+  //handleClose,
   handleBack,
   handleSubmit,
 }: FooterProps) => {
-  const isMobile = useCheckMobileScreen();
-
   const { t } = useTranslation();
   const isDisabled =
     !form.accepted || !form.email || !form.name || !form.password;
@@ -28,9 +24,8 @@ export const RegistrationFooter = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        padding: 2,
-        paddingLeft: 3,
-        paddingRight: 3,
+        padding: 0,
+        mt: 2,
       }}
     >
       {currentStep === 2 && (
@@ -54,11 +49,13 @@ export const RegistrationFooter = ({
           </Button>
         </Box>
       )}
+      {/*
       {isMobile && (
-        <Button fullWidth onClick={handleClose}>
+        <Button fullWidth onClick={void}>
           <Typography variant="caption">{t("registration.close")}</Typography>
         </Button>
       )}
+        */}
     </DialogActions>
   );
 };

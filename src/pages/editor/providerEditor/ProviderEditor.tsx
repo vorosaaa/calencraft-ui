@@ -31,6 +31,7 @@ export const ProviderEditor = (props: Props) => {
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
+    window.scrollTo(0, 0);
   };
 
   return (

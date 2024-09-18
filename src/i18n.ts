@@ -23,3 +23,7 @@ i18n
   });
 
 export default i18n;
+
+export async function dynamicActivate(locale: string) {
+  i18n.changeLanguage(locale);
+}

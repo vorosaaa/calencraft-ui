@@ -1,12 +1,13 @@
 import { Button, CircularProgress, Container, Typography } from "@mui/material";
 import { MultipleTextInput } from "../../components/input/MultipleTextInput";
-import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useTranslation } from "react-i18next";
+import { useVerificationModalHook } from "../../hooks/verificationHook";
+import { VerificationMode } from "../../types/enums";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   countDown: number;
   isLoading: boolean;
-
   verificationCode: string;
   setVerificationCode: (s: string) => void;
   handleSendEmail: () => void;
@@ -21,8 +22,10 @@ export const CodeVerificationComponent = ({
   handleSendEmail,
   handleVerify,
 }: Props) => {
-  const isMobile = useCheckMobileScreen();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { originalMode } = useVerificationModalHook();
+  const isVerification = originalMode === VerificationMode.VERIFICATION;
   return (
     <Container
       sx={{
@@ -36,18 +39,23 @@ export const CodeVerificationComponent = ({
       <div
         style={{
           display: "flex",
-          marginBottom: 24,
+          marginBottom: 32,
           marginTop: 24,
         }}
       >
         <MultipleTextInput
-          gridItemSize={isMobile ? 1.5 : 1.2}
+          gridItemSize={1.5}
           inputValue={verificationCode}
           setInputValue={setVerificationCode}
           length={8}
         />
       </div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {isVerification && (
+          <Button variant="text" onClick={() => navigate("/")}>
+            {t("verification.later")}
+          </Button>
+        )}
         <Button
           variant="outlined"
           onClick={handleSendEmail}
@@ -59,7 +67,7 @@ export const CodeVerificationComponent = ({
             : `${t("verification.resend")} (${countDown}s)`}
         </Button>
         <Button variant="contained" color="primary" onClick={handleVerify}>
-          {t("verification.next")}
+          {isVerification ? t("verification.verify") : t("verification.next")}
         </Button>
       </div>
     </Container>
