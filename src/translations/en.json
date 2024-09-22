@@ -60,6 +60,7 @@
       "PASSWORD_RESET_SUCCESS": "Password reset successful"
     },
     "errors": {
+      "FAILED_TO_SUBSCRIBE": "Failed to subscribe",
       "START_END_MISMATCH": "Start time must be before end time",
       "INVALID_EMAIL": "Invalid email format",
       "REG_REQUIRED_FIELDS": "Email, name, and password are required fields",

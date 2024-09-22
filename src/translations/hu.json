@@ -60,6 +60,7 @@
       "PASSWORD_RESET_SUCCESS": "A jelszó sikeresen visszaállítva"
     },
     "errors": {
+      "FAILED_TO_SUBSCRIBE": "A feliratkozás meghiúsult",
       "START_END_MISMATCH": "A kezdő időpont nem lehet a befejező időpont után",
       "INVALID_EMAIL": "Érvénytelen e-mail formátum",
       "REG_REQUIRED_FIELDS": "Az e-mail, név és jelszó kötelező mezők",
