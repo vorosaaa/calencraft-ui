@@ -10,14 +10,19 @@ type SubscriptionProp = {
   address: Address;
 };
 
-const getSecret = async () => {
-  const setupIntentResponse = await axiosClient.get("api/payment/setup");
+const getPaymentIntentSecret = async (subscriptionType: SubscriptionType) => {
+  const paymentIntentResponse = await axiosClient.post(
+    "api/payment/create-intent",
+    {
+      subscriptionType,
+    },
+  );
 
   const { client_secret, payment_method } =
-    setupIntentResponse.data.resultList[0];
+    paymentIntentResponse.data.resultList[0];
 
   if (!client_secret) {
-    throw new Error("Failed to retrieve SetupIntent details");
+    throw new Error("Failed to retrieve PaymentIntent details");
   }
 
   return { client_secret, payment_method };
@@ -39,10 +44,10 @@ export const subscribe = async ({
       throw new Error("Failed to submit");
     }
     // Get the client secret for the setup intent
-    const { client_secret } = await getSecret();
+    const { client_secret } = await getPaymentIntentSecret(subscriptionType);
 
     // Use the clientSecret and Elements instance to confirm the setup
-    const { setupIntent, error } = await stripe.confirmSetup({
+    const { paymentIntent, error } = await stripe.confirmPayment({
       elements,
       clientSecret: client_secret,
       confirmParams: {
@@ -58,13 +63,13 @@ export const subscribe = async ({
       redirect: "if_required",
     });
     if (error) {
-      throw new Error("Failed to confirm SetupIntent");
+      throw new Error("Failed to confirm Payment");
     }
 
     // Prepare the request body for subscription creation
     const body = {
       subscriptionType,
-      setupIntentId: setupIntent.id,
+      intentId: paymentIntent.id,
       address,
     };
 
@@ -84,7 +89,7 @@ export const subscribe = async ({
   } catch (error) {
     console.error(error);
   }
-  return { success: false, message: "Failed to subscribe" };
+  return { success: false, message: "FAILED_TO_SUBSCRIBE" };
 };
 
 export const deleteSubscription = async () => {

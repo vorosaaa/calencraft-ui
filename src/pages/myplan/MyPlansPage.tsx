@@ -4,17 +4,8 @@ import { Stepper, Container } from "@mui/material";
 import { Plans } from "./Plans";
 import { SubscriptionType } from "../../types/enums";
 import { PlanDetails } from "./PlanDetails";
-import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/authHook";
-import { config } from "../../config/config";
-
-const stripePromise = loadStripe(config.STRIPE_PUBLIC_KEY);
-const options: StripeElementsOptions = {
-  mode: "setup",
-  currency: "huf",
-};
 
 export const MyPlansPage = () => {
   const navigate = useNavigate();
@@ -44,11 +35,7 @@ export const MyPlansPage = () => {
       case 0:
         return <Plans handleNext={handleNext} />;
       case 1:
-        return (
-          <Elements stripe={stripePromise} options={options}>
-            <PlanDetails type={selectedType} handleBack={handleBack} />
-          </Elements>
-        );
+        return <PlanDetails type={selectedType} handleBack={handleBack} />;
       // Add more cases for additional steps
       default:
         return "Unknown step";

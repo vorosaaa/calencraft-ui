@@ -2,6 +2,7 @@ import {
   useStripe,
   useElements,
   PaymentElement,
+  Elements,
 } from "@stripe/react-stripe-js";
 import { useMutation, useQueryClient } from "react-query";
 import {
@@ -22,21 +23,44 @@ import { useTranslation } from "react-i18next";
 import { useMe } from "../../queries/queries";
 import { AddressAccordionContent } from "../editor/accordions/AddressAccordionContent";
 import { Address } from "../../types/user";
+import { loadStripe } from "@stripe/stripe-js";
+import { config } from "../../config/config";
 
 type Props = {
   type: SubscriptionType;
   handleBack: () => void;
 };
 
+const stripePromise = loadStripe(config.STRIPE_PUBLIC_KEY);
+
 export const PlanDetails = ({ type, handleBack }: Props) => {
+  let amount = config.SUBSCRIPTION_AMOUNTS[type];
+  if (typeof amount === "string") {
+    amount = parseInt(amount.replace(/\./g, ""), 10);
+  }
+  amount *= 100;
+
+  if (isNaN(amount) || amount < 0) {
+    throw new Error("Invalid subscription amount");
+  }
   return (
-    <Container maxWidth="sm">
-      {type === SubscriptionType.NO_SUBSCRIPTION ? (
-        <DeleteContent handleBack={handleBack} />
-      ) : (
-        <PaymentComponent handleBack={handleBack} type={type} />
-      )}
-    </Container>
+    <Elements
+      stripe={stripePromise}
+      options={{
+        mode: "payment",
+        currency: "huf",
+        amount,
+        setup_future_usage: "off_session",
+      }}
+    >
+      <Container maxWidth="sm">
+        {type === SubscriptionType.NO_SUBSCRIPTION ? (
+          <DeleteContent handleBack={handleBack} />
+        ) : (
+          <PaymentComponent handleBack={handleBack} type={type} />
+        )}
+      </Container>
+    </Elements>
   );
 };
 type DeleteProps = {
