@@ -506,7 +506,8 @@
       "features": {
         "trial": "Első hónap ingyenes",
         "automatic_email_handling": "Automatikus e-mail kezelés",
-        "available": "A profilod elérhető lesz mások számára"
+        "available": "A profilod elérhető lesz mások számára",
+        "calendar": "Naptárkezelés"
       }
     },
     "premium": {

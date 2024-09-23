@@ -501,7 +501,8 @@
       "features": {
         "trial": "First month free",
         "automatic_email_handling": "Automatic email handling",
-        "available": "Your profile will be available to others"
+        "available": "Your profile will be available to others",
+        "calendar": "Calendar management"
       }
     },
     "premium": {
