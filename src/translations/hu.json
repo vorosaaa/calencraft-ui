@@ -291,7 +291,8 @@
       "length": "Időtartam: {{minutes}} perc",
       "morning": "Délelőtt",
       "afternoon": "Délután",
-      "evening": "Este"
+      "evening": "Este",
+      "selected": "Kiválasztott időpont: {{startTime}} - {{endTime}}"
     },
     "thirdStep": {
       "title": "Elérhetőségek",

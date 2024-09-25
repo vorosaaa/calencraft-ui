@@ -13,6 +13,7 @@ import { useValidateToken } from "./queries/queries";
 import axios from "axios";
 import { useGeoLocation } from "./hooks/locationHook";
 import { useLocation } from "react-router-dom";
+import ScrollToTopButton from "./components/scrollToTop/ScrollToTopButton";
 
 export const Root = () => {
   const { removeAuth } = useAuth();
@@ -58,6 +59,7 @@ export const Root = () => {
         <BookyRoutes />
       </div>
       {!hideHeaderFooter && <Footer />}
+      <ScrollToTopButton />
     </ThemeProvider>
   );
 };
