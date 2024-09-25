@@ -177,8 +177,13 @@ export const DateSelector = ({
       <SessionCard session={selectedSession} />
       {selectedStartTime && (
         <Typography variant="body1" sx={{ mt: 2, mb: 2 }}>
-          Kiválasztott időpont: {selectedStartTime} -
-          {calculateEndTime(selectedStartTime, selectedSession.lengthInMinutes)}
+          {t("profile.secondStep.selected", {
+            startTime: selectedStartTime,
+            endTime: calculateEndTime(
+              selectedStartTime,
+              selectedSession.lengthInMinutes,
+            ),
+          })}
         </Typography>
       )}
       <BookyDatePicker

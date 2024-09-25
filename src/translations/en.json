@@ -287,7 +287,8 @@
       "length": "Length: {{minutes}} minutes",
       "morning": "Morning",
       "afternoon": "Afternoon",
-      "evening": "Evening"
+      "evening": "Evening",
+      "selected": "Selected: {{startTime}} - {{endTime}}"
     },
     "thirdStep": {
       "title": "Contact Details",
