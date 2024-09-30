@@ -30,23 +30,21 @@ export const BookyDatePicker = ({
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         shouldDisableDate={(date) => {
-          // Get the day of the week for the date
-          const dayOfWeek = daysOfWeek[date.getDay()];
-
           // Get the valid from date
           const validFromDate = new Date(Number(selectedSession.validFrom));
-          // Strip the time from the date
-          const isDayAvailable = selectedSession.days.includes(dayOfWeek);
           // Check if the date is the same as the valid from date
           const isDateOnValidFrom =
             date.toDateString() === validFromDate.toDateString();
-          // Check if the date is after the valid from date
-          const isDateAfterValidFrom =
-            stripTime(date).getTime() >= validFromDate.getTime();
-
           if (selectedSession.repeat === RepeatType.ONCE) {
             return !isDateOnValidFrom;
           }
+          // Get the day of the week for the date
+          const dayOfWeek = daysOfWeek[date.getDay()];
+          const isDayAvailable = selectedSession.days.includes(dayOfWeek);
+          // Check if the date is after the valid from date
+          const isDateAfterValidFrom =
+            stripTime(date).getTime() >= stripTime(validFromDate).getTime();
+
           return !isDayAvailable || !isDateAfterValidFrom;
         }}
         disablePast
