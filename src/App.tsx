@@ -9,9 +9,12 @@ import { enqueueError, enqueueSuccess } from "./enqueueHelper";
 import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { config } from "./config/config";
 
 export const App = () => {
   return (
+    <GoogleOAuthProvider clientId= {config.GOOGLE_CLIENT_ID}>
     <Fragment>
       <SnackbarProvider
         maxSnack={3}
@@ -26,6 +29,7 @@ export const App = () => {
         </RecoilRoot>
       </SnackbarProvider>
     </Fragment>
+    </GoogleOAuthProvider>
   );
 };
 

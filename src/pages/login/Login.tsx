@@ -17,6 +17,8 @@ import { VerificationMode } from "../../types/enums";
 import { useNavigate } from "react-router-dom";
 import { CustomCarousel } from "../../components/auth/CustomCarousel";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "../../hooks/googleAuthHook";
 
 export const Login = () => {
   const { t } = useTranslation();
@@ -76,6 +78,22 @@ export const Login = () => {
     };
   }, [email, password]);
 
+  const { handleGoogleLoginSuccess, handleGoogleLoginError } = useGoogleAuth();
+
+  // When Google login succeeds
+  const onGoogleLoginSuccess = (credentialResponse: any) => {
+    handleGoogleLoginSuccess(
+      credentialResponse,
+      undefined,
+      undefined,
+    );
+  };
+
+  // When Google login fails
+  const onGoogleLoginError = () => {
+    handleGoogleLoginError();
+  };
+
   return (
     <Grid container spacing={0}>
       <CssBaseline />
@@ -95,6 +113,10 @@ export const Login = () => {
           {t("login.title")}
         </Typography>
         <FormParent>
+        <GoogleLogin
+              onSuccess={onGoogleLoginSuccess}
+              onError={onGoogleLoginError}
+            />
           <TextField
             label={t("login.email")}
             fullWidth

@@ -74,6 +74,8 @@
       "PROVIDER_NOT_FOUND": "Szolgáltató nem található",
       "SESSION_NOT_FOUND": "Alkalom nem található",
       "INVALID_REQUEST": "Érvénytelen kérés",
+      "INVALID_LOGINTYPE": "Érvénytelen bejelentkezési forma",
+      "MUST_REGISTER_FIRST": "Nem regisztrált felhasználó",
       "BOOKING_NOT_FOUND": "Foglalás nem található",
       "USER_NOT_PART_OF_BOOKING": "A felhasználó nem része ennek a foglalásnak",
       "EMAIL_FAILED": "E-mail küldése sikertelen",
