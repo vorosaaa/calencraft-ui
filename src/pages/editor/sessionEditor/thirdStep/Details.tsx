@@ -11,6 +11,9 @@ import {
   Switch,
   FormGroup,
   FormLabel,
+  Box,
+  Collapse,
+  IconButton,
 } from "@mui/material";
 import { SessionType } from "../../../../types/sessionType";
 import { NavigatorContainer } from "../../css/ProfileEditor.css";
@@ -20,6 +23,8 @@ import { RepeatType } from "../../../../types/enums";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { useState } from "react";
+import { ChevronLeft, ChevronRight, Info } from "@mui/icons-material";
+import { useCheckMobileScreen } from "../../../../hooks/screenHook";
 
 export type SelectedTimeFrames = { [key: string]: string[] };
 type Props = {
@@ -27,7 +32,7 @@ type Props = {
   handleSubmit: () => void;
   handleChange: (
     key: keyof SessionType,
-    value: string | number | string[] | RepeatType,
+    value: string | number | string[] | RepeatType | null,
     isFixed?: boolean,
   ) => void;
   handleBack: () => void;
@@ -111,8 +116,15 @@ export const Details = ({
           />
         </FormGroup>
       )}
-      <Grid container spacing={2} sx={{ mb: 2 }}>
-        {!isFixed && (
+      {!isFixed && (
+        <Grid container spacing={2} sx={{ mb: 2 }}>
+          <InfoBoxGridItem
+            text={t("editor.length_frequency_description", {
+              length: selectedType.lengthInMinutes,
+              frequency: selectedType.generationFrequency,
+            })}
+            mobile
+          />
           <Grid item xs={6} sm={3}>
             <TextField
               label={t("editor.session_length")}
@@ -124,8 +136,34 @@ export const Details = ({
               fullWidth
             />
           </Grid>
-        )}
-        <Grid item xs={6} sm={2}>
+          <Grid item xs={6} sm={3}>
+            <TextField
+              label={t("editor.generation_frequency")}
+              type="number"
+              value={selectedType.generationFrequency}
+              onChange={(e) =>
+                handleChange(
+                  "generationFrequency",
+                  Number(e.target.value),
+                  isFixed,
+                )
+              }
+              fullWidth
+            />
+          </Grid>
+          <InfoBoxGridItem
+            text={t("editor.length_frequency_description", {
+              length: selectedType.lengthInMinutes,
+              frequency: selectedType.generationFrequency,
+            })}
+            mobile={false}
+          />
+        </Grid>
+      )}
+
+      <Grid container spacing={2} sx={{ mb: 2 }}>
+        <InfoBoxGridItem text={t("editor.from_to_description")} mobile />
+        <Grid item xs={6} sm={3}>
           <TextField
             label={t(isFixed ? "editor.from" : "editor.session_from")}
             type="time"
@@ -134,7 +172,7 @@ export const Details = ({
             fullWidth
           />
         </Grid>
-        <Grid item xs={6} sm={2}>
+        <Grid item xs={6} sm={3}>
           <TextField
             label={t(isFixed ? "editor.to" : "editor.session_to")}
             type="time"
@@ -143,27 +181,48 @@ export const Details = ({
             fullWidth
           />
         </Grid>
-        <Grid item xs={6} sm={2.5}>
+        <InfoBoxGridItem
+          text={t("editor.from_to_description")}
+          mobile={false}
+        />
+      </Grid>
+      <Grid container spacing={2} sx={{ mb: 2 }}>
+        <InfoBoxGridItem text={t("editor.date_repeat_description")} mobile />
+        <Grid item xs={6} sm={3}>
+          <DatePickerComponent
+            selectedDate={selectedType.validFrom}
+            handleDateChange={(date) => handleChange("validFrom", date)}
+          />
+        </Grid>
+        <Grid item xs={6} sm={3}>
           <RepeatTypeSelect
             value={selectedType.repeat}
             onChange={(e) => handleChange("repeat", e)}
           />
         </Grid>
+        <InfoBoxGridItem
+          text={t("editor.date_repeat_description")}
+          mobile={false}
+        />
       </Grid>
-      <Typography sx={{ mb: 1, mt: 1 }} variant="caption">
-        {t("editor.session_days")}
-      </Typography>
-      <Grid container spacing={1}>
-        {days.map((day, index) => (
-          <Grid item xs={6} sm={2.4} key={index}>
-            <DayButton
-              day={t("days.".concat(day))}
-              isSelected={selectedType.days.includes(day)}
-              onClick={() => onDayClick(day)}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {selectedType.repeat !== RepeatType.ONCE && (
+        <Typography sx={{ mb: 1, mt: 1 }} variant="caption">
+          {t("editor.session_days")}
+        </Typography>
+      )}
+      {selectedType.repeat !== RepeatType.ONCE && (
+        <Grid container spacing={1}>
+          {days.map((day, index) => (
+            <Grid item xs={6} sm={2.4} key={index}>
+              <DayButton
+                day={t("days.".concat(day))}
+                isSelected={selectedType.days.includes(day)}
+                onClick={() => onDayClick(day)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       <NavigatorContainer>
         <Button
@@ -188,22 +247,27 @@ export const Details = ({
 };
 
 type DatePickerComponentProps = {
-  selectedDate: Date | null;
-  handleDateChange: (date: Date | null) => void;
+  selectedDate: number | null;
+  handleDateChange: (date: number | null) => void;
 };
 
 const DatePickerComponent = ({
   selectedDate,
   handleDateChange,
-}: DatePickerComponentProps) => (
-  <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <DatePicker
-      label="Select date"
-      value={selectedDate}
-      onChange={handleDateChange}
-    />
-  </LocalizationProvider>
-);
+}: DatePickerComponentProps) => {
+  const { t } = useTranslation();
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        disablePast
+        sx={{ width: "100%" }}
+        label={t("editor.valid_from")}
+        value={Number(selectedDate)}
+        onChange={handleDateChange}
+      />
+    </LocalizationProvider>
+  );
+};
 
 type RepeatTypeSelectProps = {
   value: RepeatType;
@@ -224,13 +288,77 @@ const RepeatTypeSelect = ({ value, onChange }: RepeatTypeSelectProps) => {
         <MenuItem value={RepeatType.WEEKLY}>
           {t("editor.session_weekly")}
         </MenuItem>
-        <MenuItem value={RepeatType.BI_WEEKLY}>
-          {t("editor.session_bi_weekly")}
-        </MenuItem>
-        <MenuItem value={RepeatType.MONTHLY}>
-          {t("editor.session_monthly")}
-        </MenuItem>
       </Select>
     </FormControl>
+  );
+};
+
+type InfoBoxGridItemProps = {
+  text: string;
+  mobile: boolean;
+};
+
+const InfoBoxGridItem = ({ text, mobile }: InfoBoxGridItemProps) => {
+  return (
+    <Grid
+      item
+      xs={mobile ? 12 : 0}
+      sm={mobile ? 0 : 6}
+      sx={{
+        display: {
+          xs: mobile ? "block" : "none",
+          sm: mobile ? "none" : "block",
+        },
+      }}
+    >
+      <InfoBox text={text} />
+    </Grid>
+  );
+};
+
+type InfoBoxProps = {
+  text: string;
+};
+
+const InfoBox = ({ text }: InfoBoxProps) => {
+  const isMobile = useCheckMobileScreen();
+  const [expanded, setExpanded] = useState(isMobile);
+
+  return (
+    <Box
+      sx={{
+        alignItems: "center",
+        width: expanded ? "100%" : "auto",
+        display: isMobile ? "flex" : "inline-flex",
+        justifyContent: "space-between",
+        height: "100%",
+        border: 1,
+        borderRadius: 1,
+        borderColor: "grey.400",
+        p: 1,
+      }}
+    >
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Info color="info" sx={{ mr: 1 }} />
+        <Collapse in={expanded} orientation="horizontal" unmountOnExit>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row", // Arrange icons and text horizontally
+              alignItems: "center",
+              whiteSpace: isMobile ? "normal" : "nowrap", // Prevent text from wrapping
+            }}
+          >
+            <Typography variant="caption">{text}</Typography>
+          </Box>
+        </Collapse>
+      </Box>
+
+      {!isMobile && (
+        <IconButton onClick={() => setExpanded(!expanded)}>
+          {expanded ? <ChevronLeft /> : <ChevronRight />}
+        </IconButton>
+      )}
+    </Box>
   );
 };

@@ -22,8 +22,8 @@ import { useMe } from "../../../queries/queries";
 
 const initialType = {
   name: "",
-  from: new Date().getTime(),
-  to: new Date().getTime(),
+  from: Date.now(),
+  to: Date.now(),
   startTime: "10:00",
   endTime: "10:15",
   days: [],

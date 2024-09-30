@@ -18,6 +18,7 @@ import {
 import { UserState } from "../../../../types/userState";
 import { BookingState } from "../../../../types/booking";
 import { useMe } from "../../../../queries/queries";
+import { RepeatType } from "../../../../types/enums";
 
 type Props = {
   provider: UserProfile;
@@ -91,7 +92,10 @@ export const BookingStepper = ({ provider }: Props) => {
   };
 
   const onSessionClick = (type: SessionType) => {
-    const closestDay = getClosestDay(new Date().getDay(), type.days);
+    const closestDay =
+      type.repeat === RepeatType.ONCE
+        ? new Date(Number(type.validFrom))
+        : getClosestDay(type.days, type.validFrom);
     setBookingState((prevState) => ({
       ...prevState,
       selectedSession: type,
@@ -228,7 +232,14 @@ export const BookingStepper = ({ provider }: Props) => {
   );
 };
 
-const getClosestDay = (currentDay: number, availableDays: string[]): Date => {
+const getClosestDay = (availableDays: string[], validFrom: number): Date => {
+  const currentDate = new Date();
+  const validFromDate = new Date(Number(validFrom));
+  // Determine the starting date based on validFrom
+  const startingDate =
+    validFromDate > currentDate ? validFromDate : currentDate;
+  const startingDay = startingDate.getDay();
+
   const daysOfWeek = [
     "sunday",
     "monday",
@@ -243,11 +254,10 @@ const getClosestDay = (currentDay: number, availableDays: string[]): Date => {
   );
 
   for (let i = 0; i < 7; i++) {
-    const potentialDay = (currentDay + i) % 7;
+    const potentialDay = (startingDay + i) % 7;
     if (availableDaysIndices.includes(potentialDay)) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      return date;
+      startingDate.setDate(startingDate.getDate() + i);
+      return startingDate;
     }
   }
 

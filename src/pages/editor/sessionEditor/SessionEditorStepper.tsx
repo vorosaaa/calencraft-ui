@@ -29,6 +29,8 @@ const initialType = {
   startTime: "08:00",
   endTime: "18:00",
   lengthInMinutes: 60,
+  validFrom: Date.now(),
+  generationFrequency: 15,
   maxCapacity: 1,
   days: [],
   repeat: RepeatType.WEEKLY,
@@ -99,7 +101,7 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
 
   const handleSessionDataChange = (
     key: keyof SessionType,
-    value: string | number | string[] | RepeatType,
+    value: string | number | string[] | RepeatType | null,
     isFixed?: boolean,
   ) => {
     if ((key === "price" || key === "maxCapacity") && Number(value) < 0) return;
