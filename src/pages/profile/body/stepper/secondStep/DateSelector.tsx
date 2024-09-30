@@ -27,7 +27,7 @@ import {
 } from "../../../../../types/booking";
 import { TimeSlot } from "../../../../../types/timeSlot";
 import { SessionCard } from "./SessionCard";
-import { BookingType } from "../../../../../types/enums";
+import { BookingType, RepeatType } from "../../../../../types/enums";
 
 type Props = {
   provider: UserProfile;
@@ -86,6 +86,8 @@ export const DateSelector = ({
       lengthInMinutes,
       days,
       type,
+      generationFrequency,
+      repeat,
       name,
       maxCapacity,
     } = selectedSession;
@@ -94,7 +96,7 @@ export const DateSelector = ({
     const startTimeInMinutes = getTimeInMinutes(startTime);
     const endTimeInMinutes = getTimeInMinutes(endTime);
 
-    const step = 15;
+    const step = generationFrequency || 15;
     const possibleTimes: TimeSlot[] = [];
 
     if (
@@ -110,7 +112,8 @@ export const DateSelector = ({
       i += step
     ) {
       const currentTime = createCurrentTime(date, i);
-      if (!isDayAvailable(currentTime, days)) continue;
+      if (repeat !== RepeatType.ONCE && !isDayAvailable(currentTime, days))
+        continue;
 
       const regularBreakConflict = hasRegularBreakConflict(
         currentTime,

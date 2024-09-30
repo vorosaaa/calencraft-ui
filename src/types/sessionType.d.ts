@@ -12,6 +12,8 @@ export type SessionType = {
   repeat: RepeatType;
   endTime: string;
   description: string;
+  validFrom: number;
+  generationFrequency: number;
   price: number;
   currency?: string;
 };

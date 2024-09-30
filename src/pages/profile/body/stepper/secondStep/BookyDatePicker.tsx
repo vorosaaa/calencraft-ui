@@ -2,6 +2,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { useTranslation } from "react-i18next";
 import { SessionType } from "../../../../../types/sessionType";
+import { RepeatType } from "../../../../../types/enums";
 
 type Props = {
   selectedSession: SessionType;
@@ -32,7 +33,21 @@ export const BookyDatePicker = ({
           // Get the day of the week for the date
           const dayOfWeek = daysOfWeek[date.getDay()];
 
-          return !selectedSession.days.includes(dayOfWeek);
+          // Get the valid from date
+          const validFromDate = new Date(Number(selectedSession.validFrom));
+          // Strip the time from the date
+          const isDayAvailable = selectedSession.days.includes(dayOfWeek);
+          // Check if the date is the same as the valid from date
+          const isDateOnValidFrom =
+            date.toDateString() === validFromDate.toDateString();
+          // Check if the date is after the valid from date
+          const isDateAfterValidFrom =
+            stripTime(date).getTime() >= validFromDate.getTime();
+
+          if (selectedSession.repeat === RepeatType.ONCE) {
+            return !isDateOnValidFrom;
+          }
+          return !isDayAvailable || !isDateAfterValidFrom;
         }}
         disablePast
         sx={{ marginTop: 2, width: "100%" }}
@@ -42,4 +57,10 @@ export const BookyDatePicker = ({
       />
     </LocalizationProvider>
   );
+};
+
+const stripTime = (date: string | number | Date) => {
+  const newDate = new Date(date);
+  newDate.setHours(0, 0, 0, 0);
+  return newDate;
 };

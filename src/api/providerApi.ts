@@ -26,6 +26,12 @@ export const getProviders = async (
 };
 
 export const savesTypes = async (type: SessionType): Promise<UserProfile> => {
+  if (
+    typeof type.validFrom === "string" ||
+    typeof type.validFrom === "object"
+  ) {
+    type.validFrom = new Date(type.validFrom).getTime();
+  }
   const response = await axiosClient.post(`/api/provider/type`, type);
   return response.data;
 };
