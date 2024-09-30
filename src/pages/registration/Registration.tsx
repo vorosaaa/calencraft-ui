@@ -14,6 +14,8 @@ import { useGeoLocation } from "../../hooks/locationHook";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "../../hooks/googleAuthHook";
 
 export type FormState = {
   confirmPassword: string;
@@ -40,6 +42,7 @@ const initialError: ErrorState = {
 
 const initialFormState: FormState = {
   userType: "endUser",
+  loginType: "email",
   name: "",
   email: "",
   phone: "",
@@ -61,7 +64,7 @@ export const RegistrationForm = () => {
   const [error, setError] = useState<ErrorState>(initialError);
   const [currentStep, setCurrentStep] = useState(1); // 1 for select, 2 for form
 
-  const { mutate } = useMutation(register, {
+  const { mutate: registerUser } = useMutation(register, {
     onSuccess: (data) => {
       setFormState(initialFormState);
       saveAuth(data.token);
@@ -130,7 +133,7 @@ export const RegistrationForm = () => {
       });
     } else {
       setError(initialError);
-      mutate({
+      registerUser({
         personalData: formState,
       });
     }
@@ -139,6 +142,22 @@ export const RegistrationForm = () => {
   useEffect(() => {
     setFormState({ ...formState, country: location.searchCountry });
   }, [location]);
+
+  const { handleGoogleLoginSuccess, handleGoogleLoginError } = useGoogleAuth();
+
+  // When Google login succeeds
+  const onGoogleLoginSuccess = (credentialResponse: any) => {
+    handleGoogleLoginSuccess(
+      credentialResponse,
+      formState.userType,
+      formState.country,
+    );
+  };
+
+  // When Google login fails
+  const onGoogleLoginError = () => {
+    handleGoogleLoginError();
+  };
 
   return (
     <Grid container spacing={0}>
@@ -166,11 +185,18 @@ export const RegistrationForm = () => {
           />
         )}
         {currentStep === 2 && (
-          <GridContent
-            formState={formState}
-            error={error}
-            handleInputChange={handleInputChange}
-          />
+          <>
+            <GoogleLogin
+              onSuccess={onGoogleLoginSuccess}
+              onError={onGoogleLoginError}
+              text="signup_with"
+            />
+            <GridContent
+              formState={formState}
+              error={error}
+              handleInputChange={handleInputChange}
+            />
+          </>
         )}
         <RegistrationFooter
           form={formState}

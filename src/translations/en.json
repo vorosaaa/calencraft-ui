@@ -74,6 +74,8 @@
       "PROVIDER_NOT_FOUND": "Provider not found",
       "SESSION_NOT_FOUND": "Session not found",
       "INVALID_REQUEST": "Invalid request",
+      "INVALID_LOGINTYPE": "Invalid logintype",
+      "MUST_REGISTER_FIRST": "User not registered",
       "BOOKING_NOT_FOUND": "Booking not found",
       "USER_NOT_PART_OF_BOOKING": "User is not part of this booking",
       "EMAIL_FAILED": "Email sending failed",
