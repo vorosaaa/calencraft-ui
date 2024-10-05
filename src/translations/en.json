@@ -31,6 +31,7 @@
   },
   "messages": {
     "success": {
+      "AUTH_SUCCESS": "Authentication successful",
       "BREAK_DELETED": "Break successfully deleted",
       "SESSION_DELETED": "Successful deletion",
       "USER_DELETED": "Account successfully deleted",
@@ -60,6 +61,11 @@
       "PASSWORD_RESET_SUCCESS": "Password reset successful"
     },
     "errors": {
+      "GOOGLE_USER_WRONG_TYPE": "Wrong login method",
+      "INVALID_LOGIN_TYPE": "Invalid login type",
+      "GOOGLE_USER_NOT_FOUND": "There is no user with this Google account",
+      "GOOGLE_AUTH_FAILED": "Google authentication failed",
+      "undefined": "Unexpected error occurred",
       "FAILED_TO_SUBSCRIBE": "Failed to subscribe",
       "START_END_MISMATCH": "Start time must be before end time",
       "INVALID_EMAIL": "Invalid email format",
@@ -361,9 +367,11 @@
     "button": "Login",
     "register": "Don't have an account? Register here!",
     "forgot": "Forgot your password?",
-    "back": "Cancel"
+    "back": "Cancel",
+    "or": "or"
   },
   "registration": {
+    "or": "or",
     "login": "Already have an account? Login here!",
     "title": "Register to Calencraft",
     "question": "How would you like to use the platform?",

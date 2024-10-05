@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   CssBaseline,
+  Divider,
   Grid,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { login } from "../../api/authApi";
+import { login, loginWithGoogle } from "../../api/authApi";
 import { FormParent, SubmitButton } from "./Login.css";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
@@ -17,8 +19,11 @@ import { VerificationMode } from "../../types/enums";
 import { useNavigate } from "react-router-dom";
 import { CustomCarousel } from "../../components/auth/CustomCarousel";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
-import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleAuth } from "../../hooks/googleAuthHook";
+import {
+  CredentialResponse,
+  GoogleLogin,
+  googleLogout,
+} from "@react-oauth/google";
 
 export const Login = () => {
   const { t } = useTranslation();
@@ -32,6 +37,13 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const { mutate: googleLogin } = useMutation(loginWithGoogle, {
+    onSuccess: (data) => {
+      saveAuth(data.token);
+      queryClient.invalidateQueries("me");
+      navigate("/");
+    },
+  });
   const { mutate } = useMutation(login, {
     onSuccess: (data) => {
       saveAuth(data.token);
@@ -62,6 +74,17 @@ export const Login = () => {
 
   const handleLogin = async () => mutate({ email, password });
   const onRegistrationClick = () => navigate("/register");
+  // When Google login succeeds
+  const onGoogleLoginSuccess = (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) throw new Error("No credential found");
+    googleLogin({ token: credentialResponse.credential });
+    googleLogout();
+  };
+
+  // When Google login fails
+  const onGoogleLoginError = () => {
+    console.error("Google login failed");
+  };
 
   useEffect(() => {
     if (!email || !password) return;
@@ -78,22 +101,6 @@ export const Login = () => {
     };
   }, [email, password]);
 
-  const { handleGoogleLoginSuccess, handleGoogleLoginError } = useGoogleAuth();
-
-  // When Google login succeeds
-  const onGoogleLoginSuccess = (credentialResponse: any) => {
-    handleGoogleLoginSuccess(
-      credentialResponse,
-      undefined,
-      undefined,
-    );
-  };
-
-  // When Google login fails
-  const onGoogleLoginError = () => {
-    handleGoogleLoginError();
-  };
-
   return (
     <Grid container spacing={0}>
       <CssBaseline />
@@ -109,14 +116,18 @@ export const Login = () => {
         xs={12}
         md={4}
       >
-        <Typography sx={{ mb: 4 }} variant="h5">
+        <Typography sx={{ mb: 4, textAlign: "center" }} variant="h5">
           {t("login.title")}
         </Typography>
+
         <FormParent>
-        <GoogleLogin
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <GoogleLogin
               onSuccess={onGoogleLoginSuccess}
               onError={onGoogleLoginError}
             />
+          </Box>
+          <Divider sx={{ my: 2 }}>{t("login.or")}</Divider>
           <TextField
             label={t("login.email")}
             fullWidth

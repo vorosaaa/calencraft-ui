@@ -31,6 +31,7 @@
   },
   "messages": {
     "success": {
+      "AUTH_SUCCESS": "Sikeres bejelentkezés",
       "BREAK_DELETED": "A szünet sikeresen törölve",
       "SESSION_DELETED": "Sikeres törlés",
       "USER_DELETED": "A fiók sikeresen törölve",
@@ -60,6 +61,11 @@
       "PASSWORD_RESET_SUCCESS": "A jelszó sikeresen visszaállítva"
     },
     "errors": {
+      "GOOGLE_USER_WRONG_TYPE": "Nem Google-al regisztrált felhasználó",
+      "INVALID_LOGIN_TYPE": "Érvénytelen bejelentkezési típus",
+      "GOOGLE_USER_NOT_FOUND": "Nem található felhasználó ezzel a Google fiókkal",
+      "GOOGLE_AUTH_FAILED": "A Google bejelentkezés meghiúsult",
+      "undefined": "Nem várt hiba történt",
       "FAILED_TO_SUBSCRIBE": "A feliratkozás meghiúsult",
       "START_END_MISMATCH": "A kezdő időpont nem lehet a befejező időpont után",
       "INVALID_EMAIL": "Érvénytelen e-mail formátum",
@@ -364,9 +370,11 @@
     "button": "Bejelentkezés",
     "register": "Nincs még fiókod? Regisztrálj itt!",
     "forgot": "Elfelejtetted a jelszavad?",
-    "back": "Mégse"
+    "back": "Mégse",
+    "or": "vagy"
   },
   "registration": {
+    "or": "vagy",
     "login": "Van már fiókod? Jelentkezz be itt!",
     "title": "Készítsd el a Calencraft fiókod!",
     "question": "Hogyan szeretnéd használni az oldalt?",

@@ -30,7 +30,7 @@ export const Home: React.FC = () => {
     titleKey: string,
     contentKey: string,
     imgSrc: string,
-    reverse = false,
+    reverse?: boolean,
     contentKey2?: string,
   ) => {
     return (
@@ -84,18 +84,12 @@ export const Home: React.FC = () => {
           >
             {t("home.welcomeTitle")}
           </Typography>
-          <Typography
-            sx={{ textAlign: "center", marginBottom: 2 }}
-            variant="body1"
-          >
-            {t("home.welcomeText")}
-            <Typography
-              sx={{ textAlign: "center", marginBottom: 2, marginTop: 2 }}
-              variant="body1"
-            >
+          <div style={{ textAlign: "center", marginBottom: 2 }}>
+            <Typography variant="body1">{t("home.welcomeText")}</Typography>
+            <Typography sx={{ marginBottom: 2, marginTop: 2 }} variant="body1">
               {t("home.welcomeText2")}
             </Typography>
-          </Typography>
+          </div>
         </Container>
       </div>
 

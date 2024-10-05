@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Grid, CssBaseline } from "@mui/material";
-import { register } from "../../api/authApi";
+import { Typography, Grid, CssBaseline, Divider, Box } from "@mui/material";
+import { registerWithGoogle, register } from "../../api/authApi";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
@@ -14,8 +14,7 @@ import { useGeoLocation } from "../../hooks/locationHook";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
-import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleAuth } from "../../hooks/googleAuthHook";
+import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 export type FormState = {
   confirmPassword: string;
@@ -42,7 +41,6 @@ const initialError: ErrorState = {
 
 const initialFormState: FormState = {
   userType: "endUser",
-  loginType: "email",
   name: "",
   email: "",
   phone: "",
@@ -64,6 +62,13 @@ export const RegistrationForm = () => {
   const [error, setError] = useState<ErrorState>(initialError);
   const [currentStep, setCurrentStep] = useState(1); // 1 for select, 2 for form
 
+  const { mutate: googleRegister } = useMutation(registerWithGoogle, {
+    onSuccess: (data) => {
+      saveAuth(data.token);
+      queryClient.invalidateQueries("me");
+      navigate("/");
+    },
+  });
   const { mutate: registerUser } = useMutation(register, {
     onSuccess: (data) => {
       setFormState(initialFormState);
@@ -143,20 +148,19 @@ export const RegistrationForm = () => {
     setFormState({ ...formState, country: location.searchCountry });
   }, [location]);
 
-  const { handleGoogleLoginSuccess, handleGoogleLoginError } = useGoogleAuth();
-
   // When Google login succeeds
   const onGoogleLoginSuccess = (credentialResponse: any) => {
-    handleGoogleLoginSuccess(
-      credentialResponse,
-      formState.userType,
-      formState.country,
-    );
+    googleRegister({
+      token: credentialResponse.credential,
+      type: formState.userType,
+      country: formState.country,
+    });
+    googleLogout();
   };
 
   // When Google login fails
   const onGoogleLoginError = () => {
-    handleGoogleLoginError();
+    console.error("Google registration failed");
   };
 
   return (
@@ -186,11 +190,15 @@ export const RegistrationForm = () => {
         )}
         {currentStep === 2 && (
           <>
-            <GoogleLogin
-              onSuccess={onGoogleLoginSuccess}
-              onError={onGoogleLoginError}
-              text="signup_with"
-            />
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <GoogleLogin
+                onSuccess={onGoogleLoginSuccess}
+                onError={onGoogleLoginError}
+                text="signup_with"
+              />
+            </Box>
+            <Divider sx={{ my: 2 }}>{t("registration.or")}</Divider>
+
             <GridContent
               formState={formState}
               error={error}
