@@ -14,6 +14,16 @@ export type RegistrationData = {
   personalData: PersonalData;
 };
 
+export type GoogleRegistrationData = {
+  token: string;
+  type: "endUser" | "provider";
+  country?: CountryCode;
+};
+
+export type GoogleLoginData = {
+  token: string;
+};
+
 export type PersonalData = {
   userType: "endUser" | "provider";
   name: string;
