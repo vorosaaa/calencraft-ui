@@ -9,22 +9,26 @@ import { enqueueError, enqueueSuccess } from "./enqueueHelper";
 import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { config } from "./config/config";
 
 export const App = () => {
   return (
     <Fragment>
-      <SnackbarProvider
-        maxSnack={3}
-        action={(snackbarId) => (
-          <IconButton onClick={() => closeSnackbar(snackbarId)}>
-            <Close fontSize="small" />
-          </IconButton>
-        )}
-      >
-        <RecoilRoot>
-          <QueryClientLoader />
-        </RecoilRoot>
-      </SnackbarProvider>
+      <GoogleOAuthProvider clientId={config.GOOGLE_CLIENT_ID}>
+        <SnackbarProvider
+          maxSnack={3}
+          action={(snackbarId) => (
+            <IconButton onClick={() => closeSnackbar(snackbarId)}>
+              <Close fontSize="small" />
+            </IconButton>
+          )}
+        >
+          <RecoilRoot>
+            <QueryClientLoader />
+          </RecoilRoot>
+        </SnackbarProvider>
+      </GoogleOAuthProvider>
     </Fragment>
   );
 };

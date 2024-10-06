@@ -31,6 +31,7 @@
   },
   "messages": {
     "success": {
+      "AUTH_SUCCESS": "Authentication successful",
       "BREAK_DELETED": "Break successfully deleted",
       "SESSION_DELETED": "Successful deletion",
       "USER_DELETED": "Account successfully deleted",
@@ -60,6 +61,11 @@
       "PASSWORD_RESET_SUCCESS": "Password reset successful"
     },
     "errors": {
+      "GOOGLE_USER_WRONG_TYPE": "Wrong login method",
+      "INVALID_LOGIN_TYPE": "Invalid login type",
+      "GOOGLE_USER_NOT_FOUND": "There is no user with this Google account",
+      "GOOGLE_AUTH_FAILED": "Google authentication failed",
+      "undefined": "Unexpected error occurred",
       "FAILED_TO_SUBSCRIBE": "Failed to subscribe",
       "START_END_MISMATCH": "Start time must be before end time",
       "INVALID_EMAIL": "Invalid email format",
@@ -74,6 +80,8 @@
       "PROVIDER_NOT_FOUND": "Provider not found",
       "SESSION_NOT_FOUND": "Session not found",
       "INVALID_REQUEST": "Invalid request",
+      "INVALID_LOGINTYPE": "Invalid logintype",
+      "MUST_REGISTER_FIRST": "User not registered",
       "BOOKING_NOT_FOUND": "Booking not found",
       "USER_NOT_PART_OF_BOOKING": "User is not part of this booking",
       "EMAIL_FAILED": "Email sending failed",
@@ -359,9 +367,11 @@
     "button": "Login",
     "register": "Don't have an account? Register here!",
     "forgot": "Forgot your password?",
-    "back": "Cancel"
+    "back": "Cancel",
+    "or": "or"
   },
   "registration": {
+    "or": "or",
     "login": "Already have an account? Login here!",
     "title": "Register to Calencraft",
     "question": "How would you like to use the platform?",
@@ -542,7 +552,13 @@
     "virtual_profiles_content": "If you book a session on Calencraft without being authenticated, a virtual profile may be created in our database to represent you. This virtual profile is used solely for the purpose of managing your bookings and providing you with access to our services.",
     "payment_data_security": "Payment Data Security",
     "payment_data_security_content": "Payment data provided during the booking process is secured by Stripe's payment service. Calencraft does not store your payment information on our servers. Stripe adheres to industry standards for data security to ensure that your payment data is protected.",
-    "check_privacy_policy": "We may update this Privacy Policy from time to time. It is your responsibility to review this policy periodically for any changes."
+    "check_privacy_policy": "We may update this Privacy Policy from time to time. It is your responsibility to review this policy periodically for any changes.",
+    "google_login": "Google Login",
+    "google_login_content": "By using the Google login service, Calencraft requests access to your Google account. The purpose of accessing your Google account is to simplify the login process and securely handle your personal information.",
+    "google_login_content_2": "Access to your Google account means that during registration, your name and email address will be used to create your Calencraft account.",
+    "invoice": "Billing",
+    "invoice_content": "Calencraft does not store your payment details on our servers. By using the Billingo invoicing service, we securely handle your billing information, and invoices are sent to your email address.",
+    "invoice_content_2": "In the Billingo system, your name, email address, and billing information are used to issue invoices."
   },
   "termsOfService": {
     "title": "Terms of Service",

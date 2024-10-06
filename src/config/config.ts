@@ -3,6 +3,7 @@ export const config = {
   SERVER_URL: process.env.REACT_APP_SERVER_URL || "http://localhost:8080",
   MODE: process.env.REACT_APP_NODE_ENV || "development",
   STRIPE_PUBLIC_KEY: process.env.REACT_APP_STRIPE_PUBLIC_KEY || "public",
+  GOOGLE_CLIENT_ID: process.env.REACT_APP_GOOGLE_CLIENT_ID || "googleclientid",
   SUBSCRIPTION_AMOUNTS: {
     STANDARD: process.env.REACT_APP_STANDARD_PRICE || 1000,
     PROFESSIONAL: process.env.REACT_APP_PROFESSIONAL_PRICE || 5000,
