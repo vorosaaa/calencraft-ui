@@ -27,7 +27,12 @@ export const Footer = () => {
               style={{ textAlign: "center" }}
             >
               <Typography sx={{ cursor: "pointer" }} variant="h6">
-                {t("footer.termsOfService")}
+                <a
+                  href="/termsofservice"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  {t("footer.termsOfService")}
+                </a>
               </Typography>
             </div>
           </Grid>
@@ -37,7 +42,12 @@ export const Footer = () => {
               style={{ textAlign: "center" }}
             >
               <Typography sx={{ cursor: "pointer" }} variant="h6">
-                {t("footer.privacyPolicy")}
+                <a
+                  href="/privacy"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  {t("footer.privacyPolicy")}
+                </a>
               </Typography>
             </div>
           </Grid>
