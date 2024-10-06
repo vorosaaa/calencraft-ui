@@ -556,7 +556,13 @@
     "virtual_profiles_content": "Ha bejelentkezés nélkül foglal egy időpontot a Calencrafton, egy virtuális profil jöhet létre adatbázisunkban, amely Önt képviseli. Ez a virtuális profil kizárólag a foglalások kezelésére és szolgáltatásainkhoz való hozzáférés biztosítására szolgál.",
     "payment_data_security": "Fizetési adatok biztonsága",
     "payment_data_security_content": "A foglalási folyamat során megadott fizetési adatokat a Stripe fizetési szolgáltatása védi. A Calencraft nem tárolja a fizetési adatait szervereinken. A Stripe betartja az iparági szabványokat az adatok biztonságának biztosítása érdekében, hogy a fizetési adatai védve legyenek.",
-    "check_privacy_policy": "Időnként frissíthetjük ezt az adatvédelmi irányelvet. Az Ön felelőssége, hogy időszakonként áttekintse ezt az irányelvet a változások miatt."
+    "check_privacy_policy": "Időnként frissíthetjük ezt az adatvédelmi irányelvet. Az Ön felelőssége, hogy időszakonként áttekintse ezt az irányelvet a változások miatt.",
+    "google_login": "Google belépés",
+    "google_login_content": "A Google belépési szolgáltatását használva a Calencraft hozzáférést kér az Ön Google-fiókjához. A Google-fiókhoz való hozzáférés célja a bejelentkezési folyamat megkönnyítése és a személyes adatok biztonságos kezelése.",
+    "google_login_content_2": "A Google-fiókhoz való hozzáférés azt jelenti, hogy regisztrációkor az Ön nevét és e-mail címét felhasználva létrehozzuk az Ön Calencraft-fiókját.",
+    "invoice": "Számlázás",
+    "invoice_content": "A Calencraft nem tárolja a fizetési adatait szervereinken. A Billingo számlázási szolgáltatását használva a számlázási adatokat biztonságosan kezeljük, és a számlákat az Ön e-mail címére küldjük.",
+    "invoice_content_2": "A Billingo rendszerében az Ön nevét, e-mail címét és számlázási adatait használjuk a számlák kiállításához."
   },
   "termsOfService": {
     "title": "Felhasználási feltételek",
