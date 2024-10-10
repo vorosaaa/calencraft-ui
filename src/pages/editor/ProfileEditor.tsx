@@ -27,6 +27,7 @@ const initialData: FormState = {
   description: "",
   coverUrl: "",
   address: undefined,
+  slug: "",
 };
 
 export const ProfileEditor = () => {
@@ -132,10 +133,12 @@ export const ProfileEditor = () => {
     if (!formData) return;
     const form = new FormData();
     form.append("name", formData.name);
+    console.log(formData.phoneNumber);
     form.append("phoneNumber", formData.phoneNumber);
     form.append("address", JSON.stringify(formData.address));
     form.append("coverPosition", formData.coverPosition);
     if (formData.isProvider) {
+      formData.slug && form.append("slug", formData.slug);
       form.append("billingAddress", JSON.stringify(formData.billingAddress));
       form.append("description", formData.description);
       form.append("serviceCategory", formData.serviceCategory);
@@ -156,12 +159,13 @@ export const ProfileEditor = () => {
   useEffect(() => {
     if (meData) {
       setFormData({
+        slug: meData.user.slug,
         subscriptionType: meData.user.subscriptionType,
         emailStatus: meData.user.emailStatus,
         isProvider: meData.user.isProvider,
         coverPosition: meData.user.coverPosition,
         name: meData.user.name,
-        phoneNumber: meData.user.phoneNumber,
+        phoneNumber: meData.user.phoneNumber || "",
         serviceCategory: meData.user.serviceCategory,
         description: meData.user.description,
         coverUrl: meData.user.coverUrl,

@@ -10,9 +10,11 @@ import { Skeleton } from "@mui/material";
 import { config } from "../../config/config";
 
 export const ProfilePage: React.FC = () => {
-  const { id } = useParams();
+  const { identifier } = useParams();
 
-  const { data, isLoading } = useQuery("user", () => getUser(id as string));
+  const { data, isLoading } = useQuery("user", () =>
+    getUser(identifier as string),
+  );
 
   if (!data || isLoading) return <LoadingView />;
 

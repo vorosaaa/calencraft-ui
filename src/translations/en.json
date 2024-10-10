@@ -61,6 +61,8 @@
       "PASSWORD_RESET_SUCCESS": "Password reset successful"
     },
     "errors": {
+      "SLUG_ALREADY_EXISTS": "Slug must be unique",
+      "INVALID_SLUG": "Invalid slug. The slug must contain only letters, numbers, and dashes",
       "GOOGLE_USER_WRONG_TYPE": "Wrong login method",
       "INVALID_LOGIN_TYPE": "Invalid login type",
       "GOOGLE_USER_NOT_FOUND": "There is no user with this Google account",
@@ -201,6 +203,9 @@
     "address": "Address",
     "email": "Email",
     "name": "Name",
+    "slug": "Unique identifier",
+    "slug_tooltip": "Your identifier will be used in the URL of your profile page. For example: calencraft.com/profile/your-special-identifier",
+    "slug_placeholder": "your-special-identifier",
     "description": "About me",
     "service_type": "Service Type",
     "add_goal": "Add Goal",

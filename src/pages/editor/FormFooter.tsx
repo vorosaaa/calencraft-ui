@@ -34,8 +34,8 @@ export const FormFooter = ({
   const handleCopyLink = () => {
     const host = window.location.host;
     const protocol = window.location.protocol;
-    const userId = data.user.id || "";
-    const profileUrl = `${protocol}//${host}/profile/${userId}`;
+    const identifier = data.user.slug || data.user.id || "";
+    const profileUrl = `${protocol}//${host}/profile/${identifier}`;
     const pageUrl = `${protocol}//${host}`;
     navigator.clipboard.writeText(profileUrl ? profileUrl : pageUrl);
     setLinkCopied(true);

@@ -110,7 +110,7 @@ export const BookingDetails = () => {
                       onClick={() => navigate(`/profile/${user.id}`)}
                     >
                       <Typography>{user.name}</Typography>
-                    </Paper>{" "}
+                    </Paper>
                   </Grid>
                 ))}
               </Grid>
