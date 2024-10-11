@@ -57,6 +57,7 @@ export const ProviderPersonalContent = ({
           placeholder={t("editor.slug_placeholder")}
           value={slug}
           onChange={handleInputChange}
+          inputProps={{ maxLength: 50 }}
           InputProps={{
             endAdornment: (
               <Tooltip

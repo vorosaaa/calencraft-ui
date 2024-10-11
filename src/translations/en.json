@@ -61,6 +61,7 @@
       "PASSWORD_RESET_SUCCESS": "Password reset successful"
     },
     "errors": {
+      "INVALID_SLUG_LENGTH": "Slug is too long, maximum length is 50 characters",
       "SLUG_ALREADY_EXISTS": "Slug must be unique",
       "INVALID_SLUG": "Invalid slug. The slug must contain only letters, numbers, and dashes",
       "GOOGLE_USER_WRONG_TYPE": "Wrong login method",
