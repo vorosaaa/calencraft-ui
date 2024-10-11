@@ -53,6 +53,7 @@ export const GeneralEditor = ({
   const {
     subscriptionType,
     name,
+    slug,
     description,
     address,
     billingAddress,
@@ -117,6 +118,7 @@ export const GeneralEditor = ({
         />
         <ProviderPersonalContent
           name={name}
+          slug={slug}
           phoneNumber={phoneNumber}
           description={description}
           serviceCategory={serviceCategory}

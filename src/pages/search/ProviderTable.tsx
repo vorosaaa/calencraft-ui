@@ -57,7 +57,7 @@ export const ProviderTable = ({
   const isMobile = useCheckMobileScreen();
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    navigate(`/profile/${params.row.id}`);
+    navigate(`/profile/${params.row.slug || params.row.id}`);
   };
 
   const translatedColumns = columns

@@ -61,6 +61,9 @@
       "PASSWORD_RESET_SUCCESS": "A jelszó sikeresen visszaállítva"
     },
     "errors": {
+      "INVALID_SLUGH_LENGTH": "Az azonosító túl hosszú. Az azonosító legfeljebb 50 karakter hosszú lehet",
+      "SLUG_ALREADY_EXISTS": "Az azonosító már foglalt",
+      "INVALID_SLUG": "Érvénytelen azonosító, csak betűket, számokat és kötőjeleket tartalmazhat",
       "GOOGLE_USER_WRONG_TYPE": "Nem Google-al regisztrált felhasználó",
       "INVALID_LOGIN_TYPE": "Érvénytelen bejelentkezési típus",
       "GOOGLE_USER_NOT_FOUND": "Nem található felhasználó ezzel a Google fiókkal",
@@ -202,6 +205,9 @@
     "breaks": "Szünetek",
     "email": "E-mail",
     "name": "Név",
+    "slug": "Egyedi azonosító",
+    "slug_tooltip": "Az egyedi azonosítód a saját URL-ednek része lesz. Például: calencraft.com/profile/a-te-azonosítód",
+    "slug_placeholder": "a-te-azonosítód",
     "description": "Bemutatkozás",
     "service_type": "Szolgáltatás típusa",
     "add_goal": "Cél hozzáadása",
