@@ -38,7 +38,7 @@ export const ProviderPersonalContent = ({
 
   return (
     <Grid container spacing={2} sx={{ mb: 2 }}>
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <TextField
           variant="outlined"
           fullWidth
@@ -48,7 +48,7 @@ export const ProviderPersonalContent = ({
           onChange={handleInputChange}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <TextField
           variant="outlined"
           fullWidth
