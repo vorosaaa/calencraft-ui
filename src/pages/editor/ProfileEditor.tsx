@@ -138,7 +138,7 @@ export const ProfileEditor = () => {
     form.append("address", JSON.stringify(formData.address));
     form.append("coverPosition", formData.coverPosition);
     if (formData.isProvider) {
-      formData.slug && form.append("slug", formData.slug);
+      form.append("slug", formData.slug);
       form.append("billingAddress", JSON.stringify(formData.billingAddress));
       form.append("description", formData.description);
       form.append("serviceCategory", formData.serviceCategory);
