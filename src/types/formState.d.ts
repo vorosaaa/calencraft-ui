@@ -12,4 +12,5 @@ export type FormState = {
   billingAddress?: Address;
   phoneNumber: string;
   subscriptionType?: SubscriptionType;
+  socials?: string;
 };
