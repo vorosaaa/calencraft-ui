@@ -12,6 +12,7 @@ import { Pictures } from "../../../types/pictures";
 import { ProfileEditorHeader } from "../ProfileEditorHeader";
 import { useNavigate } from "react-router-dom";
 import { useVerificationModalHook } from "../../../hooks/verificationHook";
+import SocialsAccordionContent from "../accordions/SocialsAccordionContent";
 
 type Props = {
   formData: FormState;
@@ -34,12 +35,17 @@ export const UserEditor = ({
   handleInputChange,
 }: Props) => {
   const { t } = useTranslation();
-  const { name, emailStatus, phoneNumber, description, address } = formData;
+  const { name, emailStatus, phoneNumber, description, address, socials } =
+    formData;
   const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
   const { setVerification } = useVerificationModalHook();
 
   const { mutate, isLoading: isDeleteLoading } = useDeleteMutation();
+
+  const handleSocialsChange = (newSocials: string | undefined) => {
+    setFormData({ ...formData, socials: newSocials });
+  };
 
   const handleDelete = () => {
     mutate();
@@ -89,6 +95,13 @@ export const UserEditor = ({
           phoneNumber={phoneNumber}
           description={description}
           handleInputChange={handleInputChange}
+        />
+        <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
+          <Typography variant="body2">{t("editor.socials")}</Typography>
+        </Divider>
+        <SocialsAccordionContent
+          socials={socials}
+          setSocials={handleSocialsChange}
         />
         {address && (
           <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>

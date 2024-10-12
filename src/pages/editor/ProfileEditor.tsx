@@ -28,6 +28,7 @@ const initialData: FormState = {
   coverUrl: "",
   address: undefined,
   slug: "",
+  socials: "",
 };
 
 export const ProfileEditor = () => {
@@ -135,12 +136,12 @@ export const ProfileEditor = () => {
     form.append("name", formData.name);
     console.log(formData.phoneNumber);
     form.append("phoneNumber", formData.phoneNumber);
+    form.append("description", formData.description);
     form.append("address", JSON.stringify(formData.address));
     form.append("coverPosition", formData.coverPosition);
     if (formData.isProvider) {
       form.append("slug", formData.slug);
       form.append("billingAddress", JSON.stringify(formData.billingAddress));
-      form.append("description", formData.description);
       form.append("serviceCategory", formData.serviceCategory);
     }
     if (pictureData.profilePicture) {
@@ -153,6 +154,7 @@ export const ProfileEditor = () => {
       coverForm.append("cover", pictureData.cover);
       updateCoverPicture(coverForm); // Update the cover picture
     }
+    form.append("socials", formData.socials || "");
     updateMe(form);
   };
 
@@ -171,6 +173,7 @@ export const ProfileEditor = () => {
         coverUrl: meData.user.coverUrl,
         address: meData.user.address,
         billingAddress: meData.user.billingAddress,
+        socials: meData.user.socials,
       });
     }
   }, [meData]);
