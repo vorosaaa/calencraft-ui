@@ -8,7 +8,7 @@ import {
 } from "./css/ProviderBody.css";
 import { UserProfile } from "../../../types/user";
 import { useTranslation } from "react-i18next";
-import { Grid, Link, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 
 type Props = {
   user: UserProfile;
@@ -18,7 +18,7 @@ export const ProviderProfileBody = ({ user }: Props) => {
   const { description, email, phone, socials } = user;
   const isMobile = useCheckMobileScreen();
   const { t } = useTranslation();
-  const parsedSocials = socials ? JSON.parse(socials) : null;
+  const parsedSocials = socials?.length ? JSON.parse(socials) : null;
 
   return (
     <BottomContainer
@@ -42,43 +42,41 @@ export const ProviderProfileBody = ({ user }: Props) => {
         <Typography>{email}</Typography>
         <Typography>{phone}</Typography>
         {Array.isArray(parsedSocials) && parsedSocials !== null && (
-          <>
+          <div style={{ marginTop: 16 }}>
             <SectionTitle variant="h6">{t("profile.socials")}</SectionTitle>
-            <Grid container spacing={1} alignItems="center">
-              {parsedSocials
-                .filter(({ username }) => username) // Filter out socials with empty username
-                .map(({ platform, link, username }) => (
-                  <Grid item xs={12} key={platform}>
-                    <Grid container alignItems="center" spacing={2}>
-                      {/* Platform Logo */}
-                      <Grid item>
-                        <img
-                          src={`https://simpleicons.org/icons/${platform.toLowerCase()}.svg`}
-                          alt={platform}
-                          style={{ width: 24, height: 24 }} // Neater inline styling
-                        />
-                      </Grid>
+            {parsedSocials
+              .filter(({ username }) => username) // Filter out socials with empty username
+              .map(({ platform, link, username }) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mb: 2,
+                    justifyContent: isMobile ? "center" : "flex-start",
+                  }}
+                  key={platform}
+                >
+                  {/* Platform Logo */}
+                  <img
+                    src={`https://simpleicons.org/icons/${platform.toLowerCase()}.svg`}
+                    alt={platform}
+                    style={{ width: 24, height: 24, marginRight: 8 }} // Neater inline styling
+                  />
 
-                      {/* Username and Profile Link */}
-                      <Grid item>
-                        <Link
-                          href={
-                            /^https?:\/\//.test(link) ? link : `https://${link}`
-                          } // Cleaner URL validation
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          underline="hover"
-                        >
-                          <Typography variant="body1" color="primary">
-                            {username}
-                          </Typography>
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ))}
-            </Grid>
-          </>
+                  {/* Username and Profile Link */}
+                  <Link
+                    href={/^https?:\/\//.test(link) ? link : `https://${link}`} // Cleaner URL validation
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    underline="hover"
+                  >
+                    <Typography variant="body1" color="primary">
+                      {username}
+                    </Typography>
+                  </Link>
+                </Box>
+              ))}
+          </div>
         )}
       </BottomLeftContainer>
       <BottomRightContainer>

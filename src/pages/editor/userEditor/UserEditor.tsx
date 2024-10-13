@@ -97,7 +97,7 @@ export const UserEditor = ({
           handleInputChange={handleInputChange}
         />
         <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
-          <Typography variant="body2">{t("editor.socials")}</Typography>
+          <Typography variant="h6">{t("editor.socials")}</Typography>
         </Divider>
         <SocialsAccordionContent
           socials={socials}
@@ -105,7 +105,7 @@ export const UserEditor = ({
         />
         {address && (
           <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
-            <Typography variant="body2">{t("editor.address")}</Typography>
+            <Typography variant="h6">{t("editor.address")}</Typography>
           </Divider>
         )}
         {address && (
