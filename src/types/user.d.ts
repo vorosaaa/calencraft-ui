@@ -54,4 +54,5 @@ export type UserProfile = {
   sessionTypes?: SessionType[];
   isProvider: boolean;
   goals: string[];
+  socials: string;
 };

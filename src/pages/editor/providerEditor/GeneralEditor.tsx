@@ -21,6 +21,7 @@ import { Warning } from "./Warning";
 import { DeleteModal } from "../modal/DeleteModal";
 import { Pictures } from "../../../types/pictures";
 import { useNavigate } from "react-router-dom";
+import SocialsAccordionContent from "../accordions/SocialsAccordionContent";
 
 type Props = {
   formData: FormState;
@@ -60,7 +61,12 @@ export const GeneralEditor = ({
     serviceCategory,
     phoneNumber,
     emailStatus,
+    socials,
   } = formData;
+
+  const handleSocialsChange = (newSocials: string | undefined) => {
+    setFormData({ ...formData, socials: newSocials });
+  };
 
   // Effect to set the default state of the checkbox
   useEffect(() => {
@@ -125,9 +131,16 @@ export const GeneralEditor = ({
           handleInputChange={handleInputChange}
           handleSelectChange={handleSelectChange}
         />
+        <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
+          <Typography variant="h6">{t("editor.socials")}</Typography>
+        </Divider>
+        <SocialsAccordionContent
+          socials={socials}
+          setSocials={handleSocialsChange}
+        />
         {address && (
           <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
-            <Typography variant="body2">{t("editor.address")}</Typography>
+            <Typography variant="h6">{t("editor.address")}</Typography>
           </Divider>
         )}
         {address && (
