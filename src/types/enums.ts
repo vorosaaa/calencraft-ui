@@ -15,6 +15,12 @@ export enum BookingType {
   PRIVATE = "PRIVATE",
 }
 
+export enum SocialPlatform {
+  FACEBOOK = "FACEBOOK",
+  INSTAGRAM = "INSTAGRAM",
+  TIKTOK = "TIKTOK",
+}
+
 export enum ServiceCategory {
   HEALTHCARE = "HEALTHCARE",
   BEAUTY = "BEAUTY",

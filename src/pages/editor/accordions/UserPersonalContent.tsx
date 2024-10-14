@@ -32,6 +32,8 @@ export const UserPersonalContent = ({
         <TextField
           variant="outlined"
           fullWidth
+          rows={4}
+          multiline
           label={t("editor.description")}
           name="description"
           value={description}

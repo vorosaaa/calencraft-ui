@@ -13,4 +13,5 @@ export type FormState = {
   phoneNumber: string;
   subscriptionType?: SubscriptionType;
   slug: string;
+  socials?: string;
 };
