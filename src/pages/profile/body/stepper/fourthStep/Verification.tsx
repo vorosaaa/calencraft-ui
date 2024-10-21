@@ -11,7 +11,7 @@ import {
 import { Footer } from "./css/Verification.css";
 import { useCheckMobileScreen } from "../../../../../hooks/screenHook";
 import { useTranslation } from "react-i18next";
-import { calculateEndTime } from "../stepperUtils";
+import { calculateEndTime, formatTime } from "../stepperUtils";
 import { UserState } from "../../../../../types/userState";
 import { BookingState } from "../../../../../types/booking";
 
@@ -52,7 +52,7 @@ export const VerificationPage = ({
               {bookingState.selectedDate?.toLocaleDateString()}
             </Typography>
             <Typography>
-              {t("profile.fourthStep.from")}: {bookingState.selectedStartTime}
+              {t("profile.fourthStep.from")}: {formatTime(bookingState.selectedStartTime!)}
             </Typography>
             <Typography>
               {t("profile.fourthStep.until")}:{" "}

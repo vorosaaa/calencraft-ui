@@ -104,7 +104,7 @@ export const BookingStepper = ({ provider }: Props) => {
     handleNext();
   };
 
-  const onTimeSelection = (date?: Date, startTime?: string) => {
+  const onTimeSelection = (date?: Date, startTime?: Date) => {
     setBookingState({
       selectedDate: date,
       selectedStartTime: startTime,

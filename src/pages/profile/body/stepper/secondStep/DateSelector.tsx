@@ -36,7 +36,7 @@ type Props = {
   date: Date;
   handleBack: () => void;
   handleNext: () => void;
-  onClick: (date?: Date, startTime?: string) => void;
+  onClick: (date?: Date, startTime?: Date) => void;
   onDateClick: (d: Date) => void;
 };
 
@@ -157,7 +157,7 @@ export const DateSelector = ({
       }
       if (currentTime > new Date() && (free || type === BookingType.GROUP)) {
         possibleTimes.push({
-          startTime: formatTime(currentTime),
+          startTime: currentTime,
           users,
           free,
         });
@@ -171,7 +171,7 @@ export const DateSelector = ({
     onDateClick(date);
   };
 
-  const onSlotClick = (startTime: string, free: boolean) => {
+  const onSlotClick = (startTime: Date, free: boolean) => {
     if (!free) return;
     onClick(date, startTime);
   };
@@ -181,7 +181,8 @@ export const DateSelector = ({
       {selectedStartTime && (
         <Typography variant="body1" sx={{ mt: 2, mb: 2 }}>
           {t("profile.secondStep.selected", {
-            startTime: selectedStartTime,
+            startTime: formatTime(selectedStartTime),
+            startTimeDate: selectedStartTime,
             endTime: calculateEndTime(
               selectedStartTime,
               selectedSession.lengthInMinutes,

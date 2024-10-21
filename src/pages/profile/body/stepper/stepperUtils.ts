@@ -181,27 +181,14 @@ export const hasGroupSessionConflict = (
 };
 
 export const calculateEndTime = (
-  startTime?: string,
+  startTime?: Date,
   lengthInMinutes?: number,
 ): string => {
   if (!startTime || !lengthInMinutes) return "Invalid time";
-  const [startHour, startMinute] = startTime.split(":").map(Number);
+  const result = new Date(startTime);
+  result.setMinutes(result.getMinutes() + lengthInMinutes);
 
-  // Calculate total minutes from the start time
-  let totalMinutes = startHour * 60 + startMinute;
-
-  // Add the length in minutes
-  totalMinutes += lengthInMinutes;
-
-  // Calculate hours and minutes for the end time
-  const endHour = Math.floor(totalMinutes / 60) % 24;
-  const endMinute = totalMinutes % 60;
-
-  // Format the end time
-  const formattedEndHour = endHour < 10 ? `0${endHour}` : `${endHour}`;
-  const formattedEndMinute = endMinute < 10 ? `0${endMinute}` : `${endMinute}`;
-
-  return `${formattedEndHour}:${formattedEndMinute}`;
+  return formatTime(result);
 };
 
 export const isTempBreakConflict = (

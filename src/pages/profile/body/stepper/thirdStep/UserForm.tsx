@@ -49,6 +49,7 @@ export const UserForm = ({
           name="phoneNumber"
           type="tel"
           value={userState.phoneNumber}
+          required
           onChange={handleChange}
         />
       </form>

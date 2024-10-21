@@ -1,5 +1,5 @@
 export type TimeSlot = {
-  startTime: string;
+  startTime: Date;
   users: number;
   free: boolean;
 };

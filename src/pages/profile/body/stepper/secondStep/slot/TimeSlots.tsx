@@ -1,11 +1,12 @@
 import { Badge, Button, Grid } from "@mui/material";
 import { TimeSlot } from "../../../../../../types/timeSlot";
+import { formatTime } from "../../stepperUtils";
 
 type Props = {
-  selectedStartTime?: string;
+  selectedStartTime?: Date;
   maxCapacity?: number;
   slots: TimeSlot[];
-  onClick: (startTime: string, free: boolean) => void;
+  onClick: (startTime: Date, free: boolean) => void;
 };
 
 export const TimeSlots = ({
@@ -48,7 +49,7 @@ export const TimeSlots = ({
               color={slot.free ? "primary" : "secondary"}
               onClick={() => onClick(slot.startTime, slot.free)}
             >
-              {slot.startTime}
+              {formatTime(slot.startTime)}
             </Button>
           </Badge>
         </Grid>

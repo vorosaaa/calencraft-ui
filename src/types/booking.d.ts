@@ -37,7 +37,7 @@ export type ManualBookingRequest = {
 export type BookingRequest = {
   providerId: string;
   date: number;
-  startTime: string;
+  startTime: Date;
   sessionId: string;
   name: string;
   phoneNumber: string;
@@ -46,7 +46,7 @@ export type BookingRequest = {
 
 export type BookingState = {
   selectedDate?: Date;
-  selectedStartTime?: string;
+  selectedStartTime?: Date;
   selectedSession?: SessionType;
 };
 
