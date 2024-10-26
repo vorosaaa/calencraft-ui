@@ -1,7 +1,7 @@
 import { Button, Container, Popover, Typography } from "@mui/material";
 import { CalendarProps, Event } from "react-big-calendar";
 import { colors } from "../../theme/colors";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export type CalendarEvent = {
