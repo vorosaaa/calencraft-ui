@@ -11,12 +11,13 @@ import { ToolbarProps, Views } from "react-big-calendar";
 import { BookingToggleButton } from "./BookingToggleButton";
 import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
+import { CalendarEvent } from "./CustomEvent";
 
 type CustomToolbarProps = {
   isProvider: boolean;
   calendarType: "provider" | "user";
   setCalendarType: (str: "provider" | "user") => void;
-} & ToolbarProps;
+} & ToolbarProps<CalendarEvent, object>;
 
 export const CustomToolbar = (props: CustomToolbarProps) => {
   const {

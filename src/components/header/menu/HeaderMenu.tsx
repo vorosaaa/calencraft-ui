@@ -88,6 +88,8 @@ export const MobileMenu = ({
     ].filter(Boolean);
   }, [isLoggedIn, data]);
 
+  if (!pages?.length)
+    return <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }} />;
   return (
     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
       <IconButton
