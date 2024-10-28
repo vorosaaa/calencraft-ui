@@ -16,7 +16,7 @@ export const createCurrentTime = (date: Date, minutes: number): Date => {
 };
 
 export const formatTime = (time: Date): string => {
-  return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
 };
 
 export const isDayAvailable = (
