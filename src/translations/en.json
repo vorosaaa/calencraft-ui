@@ -129,6 +129,8 @@
     "thankYouDescription": "Thank you for choosing Calencraft. I am excited to continue developing and expanding the platform to serve you better!"
   },
   "calendar": {
+    "delete": "Delete",
+    "details": "Details",
     "view": "View",
     "client_view": "Client",
     "provider_view": "Provider",
