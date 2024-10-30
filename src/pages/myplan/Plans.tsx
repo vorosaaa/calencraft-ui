@@ -12,8 +12,8 @@ import {
 import { SubscriptionType } from "../../types/enums";
 import { useMe } from "../../queries/queries";
 import { useTranslation } from "react-i18next";
-import { AutoMode, Check, Close } from "@mui/icons-material";
-import { config } from "../../config/config";
+import { Check, Close } from "@mui/icons-material";
+import { colors } from "../../theme/colors";
 
 type Props = {
   handleNext: (type: SubscriptionType) => void;
@@ -25,7 +25,9 @@ export const Plans = ({ handleNext }: Props) => {
   const planDetails = [
     {
       type: SubscriptionType.NO_SUBSCRIPTION,
+      color: colors.subscriptionOrange,
       title: t("subscriptions.free.title"),
+      price: t("subscriptions.free.price"),
       advantages: [
         t("subscriptions.free.features.trial"),
         t("subscriptions.free.features.not_available"),
@@ -33,9 +35,11 @@ export const Plans = ({ handleNext }: Props) => {
     },
     {
       type: SubscriptionType.STANDARD,
+      color: colors.subscriptionGreen,
       title: t("subscriptions.standard.title"),
       price: t("subscriptions.standard.price"),
       advantages: [
+        t("subscriptions.standard.features.trial"),
         t("subscriptions.standard.features.automatic_email_handling"),
         t("subscriptions.standard.features.available"),
         t("subscriptions.standard.features.calendar"),
@@ -43,6 +47,7 @@ export const Plans = ({ handleNext }: Props) => {
     },
     {
       type: SubscriptionType.PROFESSIONAL,
+      color: colors.subscriptionPurple,
       title: t("subscriptions.premium.title"),
       price: t("subscriptions.premium.price"),
       advantages: [],
@@ -52,24 +57,37 @@ export const Plans = ({ handleNext }: Props) => {
   const hasTheSamePlan = (type: SubscriptionType) =>
     meData?.user?.subscriptionType === type;
 
+  const isTrialActive = () =>
+    meData?.user?.subscriptionType === SubscriptionType.TRIAL;
+
   const onPlanClick = (type: SubscriptionType) => {
     if (hasTheSamePlan(type)) return;
     handleNext(type);
   };
-  return config.MODE === "development" || config.MODE === "test" ? (
-    <DevelopmentPage />
-  ) : (
+  return (
     <Container disableGutters>
-      <Typography
-        variant="h4"
-        align="center"
-        gutterBottom
-        sx={{ mt: 2, mb: 4 }}
-      >
+      <Typography variant="h4" align="center" gutterBottom sx={{ mt: 2 }}>
         {t("subscriptions.title")}
       </Typography>
+      {isTrialActive() && (
+        <Container
+          disableGutters
+          sx={{
+            backgroundColor: colors.subscriptionGreen,
+            display: "flex",
+            padding: 1,
+            borderRadius: 2,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Check sx={{ mr: 1 }} fontSize="small" color="inherit" />
+          <Typography variant="body1">{t("subscriptions.trial")}</Typography>
+        </Container>
+      )}
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ mt: isTrialActive() ? 2 : 4 }}>
         {planDetails.map((plan, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Paper
@@ -77,26 +95,29 @@ export const Plans = ({ handleNext }: Props) => {
               elevation={8}
               sx={{
                 textAlign: "center",
+                borderRadius: 2,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                padding: 3,
                 opacity: isPlanProfessional(plan.type) ? 0.35 : 1,
                 height: "100%",
+                paddingBottom: 2,
               }}
             >
               <Container disableGutters>
-                <Typography variant="h6" gutterBottom>
-                  {plan.title}
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: "bold" }}
-                  variant="h5"
-                  gutterBottom
+                <Container
+                  sx={{
+                    backgroundColor: plan.color,
+                    borderRadius: 2,
+                    padding: 2,
+                  }}
                 >
-                  {plan.price}
-                </Typography>
-                <List sx={{ mt: plan.price ? 0 : 6 }}>
+                  <Typography variant="h6">{plan.title}</Typography>
+                  <Typography sx={{ fontWeight: "bold" }} variant="h5">
+                    {plan.price}
+                  </Typography>
+                </Container>
+                <List sx={{ marginRight: 2, marginLeft: 2, marginTop: 1 }}>
                   {plan.advantages.map((advantage, i) => (
                     <ListItem divider key={advantage + i} sx={{ paddingX: 0 }}>
                       <ListItemIcon>
@@ -112,6 +133,7 @@ export const Plans = ({ handleNext }: Props) => {
                   ))}
                 </List>
               </Container>
+
               <Button
                 variant="contained"
                 color={hasTheSamePlan(plan.type) ? "success" : "primary"}
@@ -141,31 +163,3 @@ export const Plans = ({ handleNext }: Props) => {
 
 const isPlanProfessional = (type: SubscriptionType) =>
   type === SubscriptionType.PROFESSIONAL;
-
-const DevelopmentPage = () => {
-  const { t } = useTranslation();
-  return (
-    <Container maxWidth="md">
-      <Paper elevation={3} sx={{ p: 4, mt: 2 }}>
-        <Typography sx={{ textAlign: "center" }} variant="h5" gutterBottom>
-          {t("development.title")}{" "}
-          <AutoMode color="success" style={{ verticalAlign: "middle" }} />
-        </Typography>
-        <Typography sx={{ mt: 4 }} variant="body1">
-          {t("development.description")}
-        </Typography>
-        <Typography sx={{ mt: 2 }} variant="body1">
-          {t("development.suggestion")}
-        </Typography>
-        <Typography variant="body1">
-          <a
-            href="mailto:hello@calencraft.com"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            hello@calencraft.com
-          </a>
-        </Typography>
-      </Paper>
-    </Container>
-  );
-};

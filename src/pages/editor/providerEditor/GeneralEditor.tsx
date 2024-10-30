@@ -52,7 +52,6 @@ export const GeneralEditor = ({
   const [isBillingAddressDifferent, setIsBillingAddressDifferent] =
     useState(false);
   const {
-    subscriptionType,
     name,
     slug,
     description,
@@ -60,7 +59,6 @@ export const GeneralEditor = ({
     billingAddress,
     serviceCategory,
     phoneNumber,
-    emailStatus,
     socials,
   } = formData;
 
@@ -117,11 +115,7 @@ export const GeneralEditor = ({
         handlePictureChange={handlePictureChange}
       />
       <Container>
-        <Warning
-          subscriptionType={subscriptionType}
-          emailStatus={emailStatus}
-          openVerificationModal={navigateToVerification}
-        />
+        <Warning openVerificationModal={navigateToVerification} />
         <ProviderPersonalContent
           name={name}
           slug={slug}

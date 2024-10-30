@@ -7,6 +7,7 @@ export enum VerificationMode {
 export enum SubscriptionType {
   NO_SUBSCRIPTION = "NO_SUBSCRIPTION",
   STANDARD = "STANDARD",
+  TRIAL = "TRIAL",
   PROFESSIONAL = "PROFESSIONAL",
 }
 

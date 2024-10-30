@@ -50,6 +50,7 @@ export const UserForm = ({
           type="tel"
           value={userState.phoneNumber}
           onChange={handleChange}
+          required
         />
       </form>
       <NavigatorContainer>
@@ -57,7 +58,7 @@ export const UserForm = ({
           {t("profile.back")}
         </Button>
         <Button
-          disabled={!userState.name || !validateEmail(userState.email)}
+          disabled={!userState.name || !validateEmail(userState.email) || !userState.phoneNumber}
           variant="outlined"
           onClick={handleNext}
         >

@@ -43,7 +43,7 @@ export const BookingDetails = () => {
   );
 
   if (isLoading || !booking || !meData) return <p>Loading...</p>;
-  const userIsProvider = meData.user.id === booking.provider.id;
+  const userIsProvider = meData.user.id === booking.provider?.id;
 
   const handleCancellation = () => setOpenDeleteDialog(true);
   const handleCloseDeleteDialog = () => setOpenDeleteDialog(false);
