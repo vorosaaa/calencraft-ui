@@ -199,6 +199,7 @@
     "fixed_time": "Fixed, one time occasion. The service will be available only once in the interval.",
     "phone_number": "Phone Number",
     "no_plan": "You do not have an active subscription. Other users will not see your profile.",
+    "trial": "You are in the trial period for the next {{days}} days.",
     "verify_email": "Verify your email address",
     "change_cover": "Change Cover",
     "personal_information": "General",
@@ -352,6 +353,7 @@
   },
   "bookingDetails": {
     "provider": "Provider",
+    "no_data": "No data",
     "date": "Date",
     "time": "Time",
     "description": "Description",
@@ -513,11 +515,12 @@
   "subscriptions": {
     "title": "Choose a Subscription!",
     "select": "Select",
+    "trial": "Trial period active. You can try out all the benefits of the Standard Subscription for free.",
     "active": "Active",
     "cancel": "Cancel",
     "free": {
       "title": "Free Trial",
-      "price": "Free",
+      "price": "0 forints per month",
       "features": {
         "trial": "You can try out the available services",
         "free": "Free",
@@ -528,7 +531,7 @@
       "title": "Standard Subscription",
       "price": "1,000 forints per month",
       "features": {
-        "trial": "First month free",
+        "trial": "First 14 days free",
         "automatic_email_handling": "Automatic email handling",
         "available": "Your profile will be available to others",
         "calendar": "Calendar management"

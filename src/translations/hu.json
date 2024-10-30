@@ -199,6 +199,7 @@
     "fixed_time": "Fix, egyszeri időpont. A szolgáltatás csak egyszer elérhető az intervallumban. Például: csoportos óra 16:00-18:00. Ellenkező esetben több óra is előfordulhat a nap folyamán.",
     "phone_number": "Telefonszám",
     "no_plan": "Nincs aktív előfizetésed. A profilod nem lesz látható mások számára.",
+    "trial": "Még {{days}} napig ingyenes próbaverzióban vagy.",
     "verify_email": "Erősítsd meg az e-mail címed",
     "change_cover": "Borítókép módosítása",
     "personal_information": "Általános",
@@ -353,6 +354,7 @@
   },
   "bookingDetails": {
     "provider": "Szolgáltató",
+    "no_data": "Nincs elérhető adat",
     "date": "Dátum",
     "time": "Időpont",
     "description": "Leírás",
@@ -514,12 +516,13 @@
   },
   "subscriptions": {
     "title": "Válassz előfizetést!",
+    "trial": "Próbaverzió aktív. A Standard előfizetés minden előnyét élvezheted 14 napig ingyen.",
     "select": "Választás",
     "active": "Aktív",
     "cancel": "Lemondás",
     "free": {
       "title": "Ingyenes próbaverzió",
-      "price": "Ingyenes",
+      "price": "0 forint havonta",
       "features": {
         "trial": "Kipróbálhatod az elérhető szolgáltatásokat",
         "free": "Ingyenes",
@@ -530,7 +533,7 @@
       "title": "Standard előfizetés",
       "price": "1.000 forint havonta",
       "features": {
-        "trial": "Első hónap ingyenes",
+        "trial": "Első 14 nap ingyenes",
         "automatic_email_handling": "Automatikus e-mail kezelés",
         "available": "A profilod elérhető lesz mások számára",
         "calendar": "Naptárkezelés"

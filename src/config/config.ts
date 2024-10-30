@@ -8,5 +8,6 @@ export const config = {
     STANDARD: process.env.REACT_APP_STANDARD_PRICE || 1000,
     PROFESSIONAL: process.env.REACT_APP_PROFESSIONAL_PRICE || 5000,
     NO_SUBSCRIPTION: process.env.REACT_APP_NO_SUBSCRIPTION_PRICE || 1,
+    TRIAL: process.env.REACT_APP_TRIAL_PRICE || 1,
   },
 };

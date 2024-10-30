@@ -134,7 +134,6 @@ export const ProfileEditor = () => {
     if (!formData) return;
     const form = new FormData();
     form.append("name", formData.name);
-    console.log(formData.phoneNumber);
     form.append("phoneNumber", formData.phoneNumber);
     form.append("description", formData.description);
     form.append("address", JSON.stringify(formData.address));
@@ -161,7 +160,7 @@ export const ProfileEditor = () => {
   useEffect(() => {
     if (meData) {
       setFormData({
-        slug: meData.user.slug,
+        slug: meData.user.slug || "",
         subscriptionType: meData.user.subscriptionType,
         emailStatus: meData.user.emailStatus,
         isProvider: meData.user.isProvider,

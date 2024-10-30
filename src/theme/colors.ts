@@ -1,4 +1,5 @@
 export const colors = {
+  black: "#000000",
   dark: "#62624f",
   grey: "#bdbdbd",
   lightGrey: "#e0e0e0",
@@ -11,4 +12,7 @@ export const colors = {
   steelBlue: "rgb(70, 130, 180)",
   primaryGreen: "#aed581",
   secondaryGreen: "#5c4f4f",
+  subscriptionGreen: "rgb(170,222,153)",
+  subscriptionOrange: "rgb(240,190,136)",
+  subscriptionPurple: "rgb(190,132,242)",
 };
