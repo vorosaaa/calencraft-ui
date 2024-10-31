@@ -13,6 +13,36 @@ export const PrivacyPolicyPage = () => {
           {t("privacyPolicy.intro")}
         </Typography>
         <Typography variant="h6" fontWeight="bold" gutterBottom>
+          {t("privacyPolicy.company")}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {t("privacyPolicy.company_content")}
+        </Typography>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          {t("privacyPolicy.providers")}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {t("privacyPolicy.providers_content")}
+        </Typography>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          {t("privacyPolicy.clients")}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {t("privacyPolicy.clients_content")}
+        </Typography>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          {t("privacyPolicy.booking")}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {t("privacyPolicy.booking_content")}
+        </Typography>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          {t("privacyPolicy.services")}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {t("privacyPolicy.services_content")}
+        </Typography>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
           {t("privacyPolicy.data_collection")}
         </Typography>
         <Typography variant="body1" paragraph>
