@@ -39,7 +39,6 @@ export const Plans = ({ handleNext }: Props) => {
       title: t("subscriptions.standard.title"),
       price: t("subscriptions.standard.price"),
       advantages: [
-        t("subscriptions.standard.features.trial"),
         t("subscriptions.standard.features.automatic_email_handling"),
         t("subscriptions.standard.features.available"),
         t("subscriptions.standard.features.calendar"),

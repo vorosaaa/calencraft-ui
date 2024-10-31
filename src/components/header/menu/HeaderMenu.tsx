@@ -34,7 +34,7 @@ export const BrowserMenu = ({
 
   const pages = useMemo(() => {
     return [
-      { text: "header.book", url: "/search" },
+      //{ text: "header.book", url: "/search" },
       isLoggedIn() && { text: "header.calendar", url: "/calendar" },
       isLoggedIn() &&
         data?.user?.isProvider &&
@@ -77,7 +77,7 @@ export const MobileMenu = ({
 
   const pages = useMemo(() => {
     return [
-      { text: "header.book", url: "/search" },
+      //{ text: "header.book", url: "/search" },
       isLoggedIn() && { text: "header.calendar", url: "/calendar" },
       isLoggedIn() &&
         data?.user?.isProvider &&
