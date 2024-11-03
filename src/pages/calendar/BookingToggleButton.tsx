@@ -10,8 +10,8 @@ export const BookingToggleButton = (props: ToggleButtonGroupProps) => {
   const { bookingView, setBookingView } = useBookingView();
 
   const handleViewChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newView: "calendar" | "dataGrid",
+    _event: React.MouseEvent<HTMLElement>,
+    newView: "calendar" | "dataGrid"
   ) => {
     setBookingView(newView);
   };

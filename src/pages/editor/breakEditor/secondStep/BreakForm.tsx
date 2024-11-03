@@ -21,7 +21,7 @@ type Props = {
   handleBack: () => void;
   handleChange: (
     key: keyof BreakStateType,
-    value: string | number | BreakType | RepeatType | string[],
+    value: string | number | BreakType | RepeatType | string[]
   ) => void;
 };
 
@@ -60,8 +60,8 @@ export const BreakForm = ({
   }, []);
 
   const handleTypeChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newType: BreakType,
+    _event: React.MouseEvent<HTMLElement>,
+    newType: BreakType
   ) => handleChange("type", newType);
 
   return (

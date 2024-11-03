@@ -51,16 +51,18 @@ export const ProfileEditor = () => {
   const { mutate: updateMe } = useMutation(updateProfile, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      data.success
-        ? enqueueSuccess(t(`messages.success.${data.message}`))
-        : enqueueError(t(`messages.errors.${data.message}`));
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
     },
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
 
   const { mutate: updateProfilePicture } = useMutation(uploadProfilePicture, {
-    onSuccess: (data: any) => {
+    onSuccess: (_data: any) => {
       // Empty function
     },
     onError: (error: any) =>
@@ -68,7 +70,7 @@ export const ProfileEditor = () => {
   });
 
   const { mutate: updateCoverPicture } = useMutation(uploadCoverPicture, {
-    onSuccess: (data: any) => {
+    onSuccess: (_data: any) => {
       // Empty function
     },
     onError: (error: any) =>
@@ -122,7 +124,7 @@ export const ProfileEditor = () => {
 
   const handlePictureChange = (
     key: keyof Pictures,
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { files } = event.target;
     setPictureData({ ...pictureData, [key]: files?.[0] || null });

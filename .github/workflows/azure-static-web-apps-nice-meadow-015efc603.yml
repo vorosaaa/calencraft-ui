@@ -11,13 +11,13 @@ on:
 
 env:
   CI: false
-  REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
-  REACT_APP_NODE_ENV: ${{ secrets.REACT_APP_NODE_ENV }}
-  REACT_APP_STRIPE_PUBLIC_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLIC_KEY }}
-  REACT_APP_STANDARD_PRICE: ${{ vars.REACT_APP_STANDARD_PRICE }}
-  REACT_APP_PROFESSIONAL_PRICE: ${{ vars.REACT_APP_PROFESSIONAL_PRICE }}
-  REACT_APP_NO_SUBSCRIPTION_PRICE: ${{ vars.REACT_APP_NO_SUBSCRIPTION_PRICE }}
-  REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
+  VITE_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
+  VITE_NODE_ENV: ${{ secrets.REACT_APP_NODE_ENV }}
+  VITE_STRIPE_PUBLIC_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLIC_KEY }}
+  VITE_STANDARD_PRICE: ${{ vars.REACT_APP_STANDARD_PRICE }}
+  VITE_PROFESSIONAL_PRICE: ${{ vars.REACT_APP_PROFESSIONAL_PRICE }}
+  VITE_NO_SUBSCRIPTION_PRICE: ${{ vars.REACT_APP_NO_SUBSCRIPTION_PRICE }}
+  VITE_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
 
 jobs:
   build_and_deploy_job:
@@ -40,7 +40,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "build" # Built app content directory - optional
+          output_location: "dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

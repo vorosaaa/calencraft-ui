@@ -39,7 +39,7 @@ export const Root = () => {
         const { latitude, longitude } = position.coords;
         axios
           .get(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           )
           .then((response: any) => {
             const location = response.data.address;

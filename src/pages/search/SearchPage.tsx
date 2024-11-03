@@ -42,7 +42,7 @@ export const SearchPage = () => {
   // Functions
   const updateTemporarySearchObject = (
     key: keyof SearchObject,
-    value?: string | CountryCode,
+    value?: string | CountryCode
   ) => {
     setTemporarySearchObject((prevState) => ({
       ...prevState,
@@ -63,9 +63,9 @@ export const SearchPage = () => {
         searchObject.name,
         location.searchCity,
         location.searchCountry,
-        searchObject.category,
+        searchObject.category
       ),
-    { enabled: !isLocationLoading },
+    { enabled: !isLocationLoading }
   );
 
   // Handlers
@@ -149,7 +149,7 @@ const SearchForm = ({
         options={Object.values(ServiceCategory)}
         getOptionLabel={(option) => t(`service_types.${option}`)}
         value={category}
-        onChange={(event, newValue) =>
+        onChange={(_event, newValue) =>
           updateTemporarySearch("category", newValue || undefined)
         }
         renderInput={(params) => (
