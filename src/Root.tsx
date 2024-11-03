@@ -34,19 +34,30 @@ export const Root = () => {
   const { setSearchCountry, setSearchCity, setIsLoading } = useGeoLocation();
 
   useEffect(() => {
-    axios
-      .get("https://ipapi.co/json/")
-      .then((response: any) => {
-        if (response.data.country_code in CountryCode) {
-          setSearchCountry(response.data.country_code);
-        }
-        if (response.data.city) {
-          setSearchCity(response.data.city);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        axios
+          .get(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+          )
+          .then((response: any) => {
+            const location = response.data.address;
+            const city = location.city || location.town || location.village;
+            const country = location.country_code?.toUpperCase();
+
+            if (country in CountryCode) {
+              setSearchCountry(country);
+            }
+            if (city) {
+              setSearchCity(city);
+            }
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
       });
+    }
 
     const randomGradient = generateRandomGradient();
     setBackground(randomGradient);
