@@ -19,7 +19,7 @@ type Props = {
   handleSubmit: () => void;
   handlePictureChange: (
     key: keyof Pictures,
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => void;
 };
 
@@ -29,7 +29,7 @@ export const ProviderEditor = (props: Props) => {
   const { t } = useTranslation();
   const isMobile = useCheckMobileScreen();
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
     window.scrollTo(0, 0);
   };

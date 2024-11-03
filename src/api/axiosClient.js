@@ -12,7 +12,6 @@ const axiosClient = axios.create({
 });
 
 const onRequest = (config) => {
-  // eslint-disable-next-line no-undef
   const token = JSON.parse(localStorage.getItem("token"));
   config.headers.Authorization = token ? `Bearer ${token}` : null;
   return config;

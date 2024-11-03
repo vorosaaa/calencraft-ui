@@ -35,9 +35,11 @@ export const EmailEditor = () => {
   const { mutate } = useMutation(saveEmail, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      data.success
-        ? enqueueSuccess(t(`messages.success.${data.message}`))
-        : enqueueError(t(`messages.errors.${data.message}`));
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
     },
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
@@ -187,7 +189,7 @@ export const EmailEditor = () => {
       <Tabs
         sx={{ mb: 2, mt: 2 }}
         value={tabIndex}
-        onChange={(event, newValue) => handleChange(newValue)}
+        onChange={(_event, newValue) => handleChange(newValue)}
         variant="fullWidth"
         indicatorColor="primary"
       >

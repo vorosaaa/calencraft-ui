@@ -62,9 +62,11 @@ export const NewBookingPage = () => {
   const { mutate, isLoading } = useMutation(createManualBooking, {
     onSuccess: (data: any) => {
       setBookingState(initialBooking);
-      data.success
-        ? enqueueSuccess(t(`messages.success.${data.message}`))
-        : enqueueError(t(`messages.errors.${data.message}`));
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
     },
     onError: (error: any) => {
       if (error.response.data.message === "EMAIL_FAILED") {
@@ -99,7 +101,7 @@ export const NewBookingPage = () => {
   const handleUserChange = (
     index: number,
     field: keyof User,
-    value: string,
+    value: string
   ) => {
     setBookingState((prevState) => {
       const newUsers = [...prevState.users];

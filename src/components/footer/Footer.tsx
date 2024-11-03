@@ -29,7 +29,11 @@ export const Footer = () => {
               <Typography sx={{ cursor: "pointer" }} variant="h6">
                 <a
                   href="/termsofservice"
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{
+                    textDecoration: "none",
+                    pointerEvents: "none",
+                    color: "inherit",
+                  }}
                 >
                   {t("footer.termsOfService")}
                 </a>
@@ -44,7 +48,11 @@ export const Footer = () => {
               <Typography sx={{ cursor: "pointer" }} variant="h6">
                 <a
                   href="/privacy"
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{
+                    textDecoration: "none",
+                    pointerEvents: "none",
+                    color: "inherit",
+                  }}
                 >
                   {t("footer.privacyPolicy")}
                 </a>

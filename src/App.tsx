@@ -44,23 +44,25 @@ const QueryClientLoader = () => {
             onError: (error: any) => {
               if (error.response.data.message !== "NO_TOKEN") {
                 enqueueError(
-                  t(`messages.errors.${error.response.data.message}`),
+                  t(`messages.errors.${error.response.data.message}`)
                 );
               }
             },
           },
           mutations: {
             onSuccess: (data: any) => {
-              data.success
-                ? enqueueSuccess(t(`messages.success.${data.message}`))
-                : enqueueError(t(`messages.errors.${data.message}`));
+              if (data.success) {
+                enqueueSuccess(t(`messages.success.${data.message}`));
+              } else {
+                enqueueError(t(`messages.errors.${data.message}`));
+              }
             },
             onError: (error: any) => {
               enqueueError(t(`messages.errors.${error.response.data.message}`));
             },
           },
         },
-      }),
+      })
   );
   return (
     <QueryClientProvider client={queryClient}>

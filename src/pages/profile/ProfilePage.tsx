@@ -7,13 +7,12 @@ import { UserProfileBody } from "./body/UserProfileBody";
 import { getUser } from "../../api/userApi";
 import { SubscriptionType } from "../../types/enums";
 import { Skeleton } from "@mui/material";
-import { config } from "../../config/config";
 
 export const ProfilePage: React.FC = () => {
   const { identifier } = useParams();
 
   const { data, isLoading } = useQuery("user", () =>
-    getUser(identifier as string),
+    getUser(identifier as string)
   );
 
   if (!data || isLoading) return <LoadingView />;
@@ -22,8 +21,7 @@ export const ProfilePage: React.FC = () => {
     <Container>
       <ProfileHeader user={data} />
       {data.isProvider &&
-      (config.MODE !== "production" ||
-        data.subscription !== SubscriptionType.NO_SUBSCRIPTION) ? (
+      data.subscription !== SubscriptionType.NO_SUBSCRIPTION ? (
         <ProviderProfileBody user={data} />
       ) : (
         <UserProfileBody user={data} />
