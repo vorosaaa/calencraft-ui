@@ -35,30 +35,34 @@ export const Root = () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        axios
-          .get(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-          )
-          .then((response: any) => {
-            const location = response.data.address;
-            const city = location.city || location.town || location.village;
-            const country = location.country_code?.toUpperCase();
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          axios
+            .get(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+            )
+            .then((response: any) => {
+              const location = response.data.address;
+              const city = location.city || location.town || location.village;
+              const country = location.country_code?.toUpperCase();
 
-            if (country in CountryCode) {
-              setSearchCountry(country);
-            }
-            if (city) {
-              setSearchCity(city);
-            }
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-      });
+              if (country in CountryCode) {
+                setSearchCountry(country);
+              }
+              if (city) {
+                setSearchCity(city);
+              }
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        },
+        (_error) => {
+          setIsLoading(false);
+        },
+      );
     }
-
     const randomGradient = generateRandomGradient();
     setBackground(randomGradient);
   }, []);
