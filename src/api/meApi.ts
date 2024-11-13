@@ -33,3 +33,18 @@ export const uploadCoverPicture = async (form: FormData) => {
   });
   return response.data;
 };
+
+export const getClients = async () => {
+  const response = await axiosClient.get("/api/user/client");
+  return response.data;
+};
+
+export const blockClient = async (id: string) => {
+  const response = await axiosClient.put(`/api/user/client/${id}/block`);
+  return response.data;
+};
+
+export const unblockClient = async (id: string) => {
+  const response = await axiosClient.delete(`/api/user/client/${id}/block`);
+  return response.data;
+};

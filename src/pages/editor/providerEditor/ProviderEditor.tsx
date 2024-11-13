@@ -8,6 +8,7 @@ import { SessionTypeEditorStepper } from "../sessionEditor/SessionEditorStepper"
 import { BreakEditorStepper } from "../breakEditor/BreakEditorStepper";
 import { EmailEditor } from "../emailEditor/EmailEditor";
 import { Pictures } from "../../../types/pictures";
+import { ClientEditor } from "../clientEditor/ClientEditor";
 
 type Props = {
   formData: FormState;
@@ -19,7 +20,7 @@ type Props = {
   handleSubmit: () => void;
   handlePictureChange: (
     key: keyof Pictures,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
 };
 
@@ -64,6 +65,7 @@ export const ProviderEditor = (props: Props) => {
           <Tab label={t("editor.sessions")} />
           <Tab label={t("editor.breaks")} />
           <Tab label={t("editor.email")} />
+          <Tab label={t("editor.clients")} />
         </Tabs>
       </Box>
       <Box flexGrow={1}>
@@ -71,6 +73,7 @@ export const ProviderEditor = (props: Props) => {
         {activeTab === 1 && <SessionTypeEditorStepper formState={formData} />}
         {activeTab === 2 && <BreakEditorStepper />}
         {activeTab === 3 && <EmailEditor />}
+        {activeTab === 4 && <ClientEditor />}
       </Box>
     </Box>
   );
