@@ -458,7 +458,10 @@
       "emailNotificationsDescription": "Ne maradj le egyetlen fontos információról sem! A Calencraft automatikusan értesítéseket küld a foglalásaidról és az időpontjaidról, hogy mindig naprakész legyél.",
       "emailNotificationsDescription2": "Személyre szabhatod az e-mail sablonjaidat, amelyek az ügyfelek számára kerülnek kiküldésre.",
       "noMoreNoShows": "Nincs több elmaradt foglalás",
-      "noMoreNoShowsDescription": "Kezeld könnyedén a foglalásaidat és az időpontjaidat, és ne aggódj az ügyfelek miatt. Minden fontos információ egy helyen, hogy mindig naprakész legyél."
+      "noMoreNoShowsDescription": "Kezeld könnyedén a foglalásaidat és az időpontjaidat, és ne aggódj az ügyfelek miatt. Minden fontos információ egy helyen, hogy mindig naprakész legyél.",
+      "userManagement": "Felhasználókezelés",
+      "userManagementDescription": "Kezeld az ügyfeleidet és a foglalásaikat egy helyen. Mindig naprakész lehetsz az ügyfeleid adataival és a foglalásaikkal kapcsolatban.",
+      "userManagementDescription2": "Szükség esetén könnyedén blokkolhatod azokat az ügyfeleket, akikkel problémába ütköztél, vagy akik nem viselkedtek megfelelően."
     },
     "whyChooseTitle": "Miért szeretik a Calencraftot?",
     "reasons": {

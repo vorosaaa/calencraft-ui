@@ -457,7 +457,10 @@
       "emailNotificationsDescription": "Never miss an important detail! Calencraft automatically sends notifications about your bookings and appointments, keeping you informed at all times.",
       "emailNotificationsDescription2": "Customize the email templates that are sent to your clients.",
       "noMoreNoShows": "No More No-Shows",
-      "noMoreNoShowsDescription": "Easily manage your bookings and appointments, and don't worry about your clients. All important information in one place so you can stay organized."
+      "noMoreNoShowsDescription": "Easily manage your bookings and appointments, and don't worry about your clients. All important information in one place so you can stay organized.",
+      "userManagement": "User Management",
+      "userManagementDescription": "Manage your clients and their bookings in one place. Stay up-to-date with your clients' information and bookings.",
+      "userManagementDescription2": "Easily block clients if you encounter issues or if they behave inappropriately."
     },
     "whyChooseTitle": "Why do people love Calencraft?",
     "reasons": {

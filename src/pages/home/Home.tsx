@@ -108,6 +108,14 @@ export const Home: React.FC = () => {
       )}
       <Divider variant="middle" />
       {renderFeatureSection(
+        "userManagement",
+        "userManagementDescription",
+        "/images/users.png",
+        true,
+        "userManagementDescription2",
+      )}
+      <Divider variant="middle" />
+      {renderFeatureSection(
         "subscriptions",
         "subscriptionsDescription",
         "/images/plans.png",
