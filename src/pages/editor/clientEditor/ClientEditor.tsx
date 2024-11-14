@@ -119,12 +119,10 @@ export const ClientEditor = () => {
         hideable: false,
         disableColumnMenu: true,
         width: 70,
-        renderCell: (params: GridRenderCellParams) => (
-          <Avatar
-            alt={`${params.row.name} ${params.row.lastName}`}
-            src={params.row.picUrl}
-          />
-        ),
+        renderCell: (params: GridRenderCellParams) =>
+          params.row.picUrl && (
+            <Avatar alt={`${params.row.name}`} src={params.row.picUrl} />
+          ),
       },
       {
         field: "name",
