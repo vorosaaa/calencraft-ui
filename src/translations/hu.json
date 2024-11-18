@@ -461,7 +461,10 @@
       "noMoreNoShowsDescription": "Kezeld könnyedén a foglalásaidat és az időpontjaidat, és ne aggódj az ügyfelek miatt. Minden fontos információ egy helyen, hogy mindig naprakész legyél.",
       "userManagement": "Felhasználókezelés",
       "userManagementDescription": "Kezeld az ügyfeleidet és a foglalásaikat egy helyen. Mindig naprakész lehetsz az ügyfeleid adataival és a foglalásaikkal kapcsolatban.",
-      "userManagementDescription2": "Szükség esetén könnyedén blokkolhatod azokat az ügyfeleket, akikkel problémába ütköztél, vagy akik nem viselkedtek megfelelően."
+      "userManagementDescription2": "Szükség esetén könnyedén blokkolhatod azokat az ügyfeleket, akikkel problémába ütköztél, vagy akik nem viselkedtek megfelelően.",
+      "help": "Segítünk",
+      "helpDescription": "Bármilyen kérdésed vagy problémád van, ne habozz felvenni velünk a kapcsolatot. A Calencraft csapata mindig itt van, hogy segítsen neked.",
+      "helpDescription2": "Sőt mi több, segítünk a profilod összeállításában. Ne habozz, kérdezz bátran!"
     },
     "whyChooseTitle": "Miért szeretik a Calencraftot?",
     "reasons": {
