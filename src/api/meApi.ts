@@ -17,16 +17,20 @@ export const updateProfile = async (form: FormData) => {
 };
 
 export const uploadProfilePicture = async (form: FormData) => {
-  const response = await axiosClient.put("/api/user/picture", form, {
-    headers: {
-      "Content-Type": "multipart/form-data",
+  const response = await axiosClient.put(
+    "/api/user/picture?type=profile",
+    form,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     },
-  });
+  );
   return response.data;
 };
 
 export const uploadCoverPicture = async (form: FormData) => {
-  const response = await axiosClient.put("/api/user/cover", form, {
+  const response = await axiosClient.put("/api/user/picture?type=cover", form, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
