@@ -28,9 +28,11 @@ import { useMemo, useState } from "react";
 import { enqueueError, enqueueSuccess } from "../../../enqueueHelper";
 import { Lock, LockOpen } from "@mui/icons-material";
 import "./ClientEditor.css"; // Import the CSS file
+import { useCheckMobileScreen } from "../../../hooks/screenHook";
 
 export const ClientEditor = () => {
   //Hooks
+  const isMobile = useCheckMobileScreen();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const client = useQueryClient();
@@ -93,7 +95,6 @@ export const ClientEditor = () => {
   );
 
   //Functions
-
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     navigate(`/profile/${params.row.id}`);
   };
@@ -140,7 +141,6 @@ export const ClientEditor = () => {
         field: "socials",
         headerName: t("client.table.socials"),
         disableColumnMenu: true,
-
         flex: 1,
         renderCell: (params: GridRenderCellParams) => {
           if (params.row.socials) {
@@ -234,6 +234,27 @@ export const ClientEditor = () => {
     [t],
   );
 
+  const columnVisibilityModel = useMemo(() => {
+    if (isMobile) {
+      return {
+        avatar: false,
+        name: true,
+        email: false,
+        socials: false,
+        phoneNumber: true,
+        isBlocked: true,
+      };
+    }
+    return {
+      avatar: true,
+      name: true,
+      email: true,
+      socials: true,
+      phoneNumber: true,
+      isBlocked: true,
+    };
+  }, [isMobile]);
+
   return (
     <Container sx={{ mt: 4 }}>
       <BlockModal
@@ -258,6 +279,7 @@ export const ClientEditor = () => {
         loading={isLoading}
         rows={data?.resultList || []}
         autoHeight
+        columnVisibilityModel={columnVisibilityModel}
         columns={columns}
         rowCount={data?.size || 0}
         pageSizeOptions={[5, 10, 20]}
