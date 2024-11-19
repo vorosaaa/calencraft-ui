@@ -24,7 +24,7 @@
   "booking": {
     "required": "This field is required",
     "title": "Create a booking",
-    "name": "Name",
+    "name": "Name of the service",
     "email": "Email",
     "startTime": "Start Time",
     "endTime": "End Time",

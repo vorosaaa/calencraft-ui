@@ -24,7 +24,7 @@
   "booking": {
     "required": "Kötelező mező",
     "title": "Foglalás létrehozása",
-    "name": "Név",
+    "name": "Szolgáltatás neve",
     "email": "Email",
     "startTime": "Kezdő időpont",
     "endTime": "Befejező időpont",

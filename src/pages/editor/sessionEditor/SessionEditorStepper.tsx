@@ -94,7 +94,8 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
   };
 
   const onSessionClick = (type: SessionType) => {
-    setSelectedSession(type);
+    const validFrom = Number(type.validFrom);
+    setSelectedSession({ ...type, validFrom });
     handleNext();
   };
 
