@@ -108,10 +108,18 @@ export const Home: React.FC = () => {
       )}
       <Divider variant="middle" />
       {renderFeatureSection(
+        "userManagement",
+        "userManagementDescription",
+        "/images/users.png",
+        false,
+        "userManagementDescription2",
+      )}
+      <Divider variant="middle" />
+      {renderFeatureSection(
         "subscriptions",
         "subscriptionsDescription",
         "/images/plans.png",
-        false,
+        true,
         "subscriptionsDescription2",
       )}
       <Divider variant="middle" />
@@ -119,7 +127,7 @@ export const Home: React.FC = () => {
         "simpleScheduling",
         "simpleSchedulingDescription",
         "/images/booking.png",
-        true,
+        false,
         "simpleSchedulingDescription2",
       )}
       <Divider variant="middle" />
@@ -128,8 +136,16 @@ export const Home: React.FC = () => {
         "emailNotifications",
         "emailNotificationsDescription",
         "/images/email.jpg",
-        false,
+        true,
         "emailNotificationsDescription2",
+      )}
+      <Divider variant="middle" />
+      {renderFeatureSection(
+        "help",
+        "helpDescription",
+        "/images/support.png",
+        false,
+        "helpDescription2",
       )}
       <Divider variant="middle" />
 

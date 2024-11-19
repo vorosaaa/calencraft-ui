@@ -12,6 +12,7 @@ import { Avatar, LinearProgress } from "@mui/material";
 import { UserProfile } from "../../types/user";
 import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
+import { useMemo } from "react";
 
 interface ProviderTableProps {
   providers: UserProfile[];
@@ -59,19 +60,20 @@ export const ProviderTable = ({
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     navigate(`/profile/${params.row.slug || params.row.id}`);
   };
-
-  const translatedColumns = columns
-    .filter((column) => !isMobile || column.field !== "description")
-    .map((column, index) => ({
-      ...column,
-      valueGetter: (params: GridValueGetterParams) =>
-        column.field === "type"
-          ? t(`service_types.${params.row.type}`)
-          : column.field === "address"
-            ? params.row.address?.city
-            : params.value,
-      headerName: index === 0 ? "" : t(`${column.headerName}`),
-    }));
+  const translatedColumns = useMemo(() => {
+    return columns
+      .filter((column) => !isMobile || column.field !== "description")
+      .map((column, index) => ({
+        ...column,
+        valueGetter: (params: GridValueGetterParams) =>
+          column.field === "type"
+            ? t(`service_types.${params.row.type}`)
+            : column.field === "address"
+              ? params.row.address?.city
+              : params.value,
+        headerName: index === 0 ? "" : t(`${column.headerName}`),
+      }));
+  }, [isMobile, t]);
 
   return (
     <DataGrid

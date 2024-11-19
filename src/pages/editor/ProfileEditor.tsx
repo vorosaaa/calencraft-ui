@@ -124,7 +124,7 @@ export const ProfileEditor = () => {
 
   const handlePictureChange = (
     key: keyof Pictures,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { files } = event.target;
     setPictureData({ ...pictureData, [key]: files?.[0] || null });
@@ -152,7 +152,7 @@ export const ProfileEditor = () => {
     }
     if (pictureData.cover) {
       const coverForm = new FormData();
-      coverForm.append("cover", pictureData.cover);
+      coverForm.append("picture", pictureData.cover);
       updateCoverPicture(coverForm); // Update the cover picture
     }
     form.append("socials", formData.socials || "");

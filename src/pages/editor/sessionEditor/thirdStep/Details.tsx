@@ -259,7 +259,6 @@ const DatePickerComponent = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
-        disablePast
         sx={{ width: "100%" }}
         label={t("editor.valid_from")}
         value={Number(selectedDate)}

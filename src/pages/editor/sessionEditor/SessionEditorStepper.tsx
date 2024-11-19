@@ -58,9 +58,11 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
   const { mutate: deleteSessionType } = useMutation(deleteType, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      data.success
-        ? enqueueSuccess(t(`messages.success.${data.message}`))
-        : enqueueError(t(`messages.errors.${data.message}`));
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
     },
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
@@ -68,9 +70,11 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
   const { mutate: saveType } = useMutation(savesTypes, {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      data.success
-        ? enqueueSuccess(t(`messages.success.${data.message}`))
-        : enqueueError(t(`messages.errors.${data.message}`));
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
       setActiveStep(0);
     },
     onError: (error: any) =>
@@ -90,7 +94,8 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
   };
 
   const onSessionClick = (type: SessionType) => {
-    setSelectedSession(type);
+    const validFrom = Number(type.validFrom);
+    setSelectedSession({ ...type, validFrom });
     handleNext();
   };
 

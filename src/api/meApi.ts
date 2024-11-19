@@ -17,7 +17,20 @@ export const updateProfile = async (form: FormData) => {
 };
 
 export const uploadProfilePicture = async (form: FormData) => {
-  const response = await axiosClient.put("/api/user/picture", form, {
+  const response = await axiosClient.put(
+    "/api/user/picture?type=profile",
+    form,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return response.data;
+};
+
+export const uploadCoverPicture = async (form: FormData) => {
+  const response = await axiosClient.put("/api/user/picture?type=cover", form, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -25,11 +38,17 @@ export const uploadProfilePicture = async (form: FormData) => {
   return response.data;
 };
 
-export const uploadCoverPicture = async (form: FormData) => {
-  const response = await axiosClient.put("/api/user/cover", form, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const getClients = async () => {
+  const response = await axiosClient.get("/api/user/client");
+  return response.data;
+};
+
+export const blockClient = async (id: string) => {
+  const response = await axiosClient.put(`/api/user/client/${id}/block`);
+  return response.data;
+};
+
+export const unblockClient = async (id: string) => {
+  const response = await axiosClient.delete(`/api/user/client/${id}/block`);
   return response.data;
 };

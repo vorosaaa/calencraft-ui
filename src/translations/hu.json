@@ -1,8 +1,30 @@
 {
+  "client": {
+    "title": "Ügyfeleim",
+    "block": {
+      "title": "Felhasználó blokkolása",
+      "confirmation": "Biztosan blokkolni szeretné ezt a felhasználót: {{name}}?",
+      "cancel": "Mégse",
+      "confirm": "Blokkolás"
+    },
+    "unblock": {
+      "title": "Felhasználó blokkolásának feloldása",
+      "confirmation": "Biztosan fel szeretné oldani ezt a felhasználót: {{name}}?",
+      "cancel": "Mégse",
+      "confirm": "Feloldás"
+    },
+    "table": {
+      "name": "Név",
+      "email": "E-mail",
+      "phone": "Telefonszám",
+      "socials": "Közösségi média",
+      "status": "Státusz"
+    }
+  },
   "booking": {
     "required": "Kötelező mező",
     "title": "Foglalás létrehozása",
-    "name": "Név",
+    "name": "Szolgáltatás neve",
     "email": "Email",
     "startTime": "Kezdő időpont",
     "endTime": "Befejező időpont",
@@ -31,6 +53,8 @@
   },
   "messages": {
     "success": {
+      "USER_BLOCKED": "Felhasználó blokkolva",
+      "USER_UNBLOCKED": "Felhasználó feloldva",
       "AUTH_SUCCESS": "Sikeres bejelentkezés",
       "BREAK_DELETED": "A szünet sikeresen törölve",
       "SESSION_DELETED": "Sikeres törlés",
@@ -51,6 +75,7 @@
       "BREAK_UPDATED": "Szünet frissítve",
       "SESSION_UPDATED": "Alkalom frissítve",
       "USER_FOUND": "Felhasználó megtalálva",
+      "CLIENTS_FOUND": "Ügyfelek megtalálva",
       "PROVIDERS_FOUND": "Szolgáltatók megtalálva",
       "PROFILE_UPDATED": "Profil frissítve",
       "EMAIL_UPDATED": "E-mail frissítve",
@@ -61,6 +86,11 @@
       "PASSWORD_RESET_SUCCESS": "A jelszó sikeresen visszaállítva"
     },
     "errors": {
+      "INVALID_METHOD": "Érvénytelen kérés",
+      "INVALID_FILE_TYPE": "Érvénytelen fájlformátum. Elfogadott formátumok: .jpg, .jpeg, .png, .heic",
+      "INVALID_FILE_FORMAT": "Érvénytelen fájlformátum",
+      "NO_FILE_UPLOADED": "Nincs fájl feltöltve",
+      "USER_BLOCKED_BY_PROVIDER": "A foglalás nem lehetséges. A szolgáltató blokkolt.",
       "INVALID_SLUGH_LENGTH": "Az azonosító túl hosszú. Az azonosító legfeljebb 50 karakter hosszú lehet",
       "SLUG_ALREADY_EXISTS": "Az azonosító már foglalt",
       "INVALID_SLUG": "Érvénytelen azonosító, csak betűket, számokat és kötőjeleket tartalmazhat",
@@ -191,6 +221,7 @@
       "add_new_section": "Új bekezdés hozzáadása",
       "save": "Mentés"
     },
+    "clients": "Ügyfelek",
     "confirm_delete": "Törlés megerősítése",
     "are_you_sure": "Biztosan törölni szeretné ezt az elemet: {{item}}?",
     "delete": "Törlés",
@@ -427,7 +458,13 @@
       "emailNotificationsDescription": "Ne maradj le egyetlen fontos információról sem! A Calencraft automatikusan értesítéseket küld a foglalásaidról és az időpontjaidról, hogy mindig naprakész legyél.",
       "emailNotificationsDescription2": "Személyre szabhatod az e-mail sablonjaidat, amelyek az ügyfelek számára kerülnek kiküldésre.",
       "noMoreNoShows": "Nincs több elmaradt foglalás",
-      "noMoreNoShowsDescription": "Kezeld könnyedén a foglalásaidat és az időpontjaidat, és ne aggódj az ügyfelek miatt. Minden fontos információ egy helyen, hogy mindig naprakész legyél."
+      "noMoreNoShowsDescription": "Kezeld könnyedén a foglalásaidat és az időpontjaidat, és ne aggódj az ügyfelek miatt. Minden fontos információ egy helyen, hogy mindig naprakész legyél.",
+      "userManagement": "Felhasználókezelés",
+      "userManagementDescription": "Kezeld az ügyfeleidet és a foglalásaikat egy helyen. Mindig naprakész lehetsz az ügyfeleid adataival és a foglalásaikkal kapcsolatban.",
+      "userManagementDescription2": "Szükség esetén könnyedén blokkolhatod azokat az ügyfeleket, akikkel problémába ütköztél, vagy akik nem viselkedtek megfelelően.",
+      "help": "Segítünk",
+      "helpDescription": "Bármilyen kérdésed vagy problémád van, ne habozz felvenni velünk a kapcsolatot. A Calencraft csapata mindig itt van, hogy segítsen neked.",
+      "helpDescription2": "Sőt mi több, segítünk a profilod összeállításában. Ne habozz, kérdezz bátran!"
     },
     "whyChooseTitle": "Miért szeretik a Calencraftot?",
     "reasons": {

@@ -9,6 +9,7 @@ import {
 import { UserProfile } from "../../../types/user";
 import { useTranslation } from "react-i18next";
 import { Box, Link, Typography } from "@mui/material";
+import { useMemo } from "react";
 
 type Props = {
   user: UserProfile;
@@ -18,7 +19,10 @@ export const ProviderProfileBody = ({ user }: Props) => {
   const { description, email, phone, socials } = user;
   const isMobile = useCheckMobileScreen();
   const { t } = useTranslation();
-  const parsedSocials = socials?.length ? JSON.parse(socials) : null;
+
+  const parsedSocials = useMemo(() => {
+    return socials?.length ? JSON.parse(socials) : null;
+  }, [socials]);
 
   return (
     <BottomContainer
