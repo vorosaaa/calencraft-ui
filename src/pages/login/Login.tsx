@@ -11,7 +11,6 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { login, loginWithGoogle } from "../../api/authApi";
 import { FormParent, SubmitButton } from "./Login.css";
-import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
 import { useVerificationModalHook } from "../../hooks/verificationHook";
@@ -24,6 +23,7 @@ import {
   GoogleLogin,
   googleLogout,
 } from "@react-oauth/google";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const Login = () => {
   const { t } = useTranslation();
@@ -37,19 +37,21 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { mutate: googleLogin } = useMutation(loginWithGoogle, {
+  const { mutate: googleLogin } = useMutation({
+    mutationFn: loginWithGoogle,
     onSuccess: (data) => {
       saveAuth(data.token);
-      queryClient.invalidateQueries("me");
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/");
     },
   });
-  const { mutate } = useMutation(login, {
+  const { mutate } = useMutation({
+    mutationFn: login,
     onSuccess: (data) => {
       saveAuth(data.token);
       setEmail("");
       setPassword("");
-      queryClient.invalidateQueries("me");
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/");
     },
   });

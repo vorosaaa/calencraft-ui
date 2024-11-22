@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import { LoadingHeader } from "./ProfileEditorHeader";
 import {
   updateProfile,
@@ -16,6 +15,7 @@ import { FormState } from "../../types/formState";
 import { useTranslation } from "react-i18next";
 import { ProviderEditor } from "./providerEditor/ProviderEditor";
 import { Pictures } from "../../types/pictures";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const initialData: FormState = {
   emailStatus: EmailStatus.CONFIRMED,
@@ -43,12 +43,15 @@ export const ProfileEditor = () => {
   });
 
   //Queries
-  const { data: meData, isLoading: meDataLoading } = useMe({
-    onError: () => navigate("/"),
-  });
-
+  const { data: meData, isLoading: meDataLoading, error } = useMe();
+  useEffect(() => {
+    if (error) {
+      navigate("/");
+    }
+  }, [error]);
   //Mutations
-  const { mutate: updateMe } = useMutation(updateProfile, {
+  const { mutate: updateMe } = useMutation({
+    mutationFn: updateProfile,
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       if (data.success) {
@@ -61,7 +64,8 @@ export const ProfileEditor = () => {
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
 
-  const { mutate: updateProfilePicture } = useMutation(uploadProfilePicture, {
+  const { mutate: updateProfilePicture } = useMutation({
+    mutationFn: uploadProfilePicture,
     onSuccess: (_data: any) => {
       // Empty function
     },
@@ -69,7 +73,8 @@ export const ProfileEditor = () => {
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
 
-  const { mutate: updateCoverPicture } = useMutation(uploadCoverPicture, {
+  const { mutate: updateCoverPicture } = useMutation({
+    mutationFn: uploadCoverPicture,
     onSuccess: (_data: any) => {
       // Empty function
     },

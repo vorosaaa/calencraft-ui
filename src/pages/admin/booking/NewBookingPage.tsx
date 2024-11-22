@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import { Delete } from "@mui/icons-material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { useMutation } from "react-query";
 import { createManualBooking } from "../../../api/bookingApi";
 import {
   enqueueError,
@@ -23,6 +22,7 @@ import {
   enqueueWarning,
 } from "../../../enqueueHelper";
 import { colors } from "../../../theme/colors";
+import { useMutation } from "@tanstack/react-query";
 
 interface User {
   name: string;
@@ -59,7 +59,8 @@ export const NewBookingPage = () => {
   const [bookingState, setBookingState] =
     useState<BookingState>(initialBooking);
 
-  const { mutate, isLoading } = useMutation(createManualBooking, {
+  const { mutate, isPending } = useMutation({
+    mutationFn: createManualBooking,
     onSuccess: (data: any) => {
       setBookingState(initialBooking);
       if (data.success) {
@@ -101,7 +102,7 @@ export const NewBookingPage = () => {
   const handleUserChange = (
     index: number,
     field: keyof User,
-    value: string
+    value: string,
   ) => {
     setBookingState((prevState) => {
       const newUsers = [...prevState.users];
@@ -263,7 +264,7 @@ export const NewBookingPage = () => {
             color="primary"
             onClick={handleCreateBooking}
           >
-            {isLoading ? (
+            {isPending ? (
               <CircularProgress size={24} sx={{ color: colors.white }} />
             ) : (
               t("booking.create")

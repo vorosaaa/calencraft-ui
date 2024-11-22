@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/authHook";
 import { BrowserLogo, MobileLogo } from "./logo/Logo";
 import { BrowserMenu, MobileMenu } from "./menu/HeaderMenu";
 import LanguageSelector from "./language-selector/LanguageSelector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HeaderAvatar } from "./avatar/HeaderAvatar";
 import { AuthMenu } from "./auth/AuthMenu";
 import { useBackgroundHook } from "../../hooks/backgroundHook";
@@ -13,17 +13,23 @@ import i18n, { dynamicActivate } from "../../i18n";
 
 export const Header = () => {
   const [language, setLanguage] = useState<string>(i18n.language);
+
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
     dynamicActivate(newLanguage);
   };
 
-  const { isLoggedIn } = useAuth();
-  const { data } = useMe();
+  const { isLoggedIn, removeAuth } = useAuth();
+  const { data, error } = useMe();
+
+  useEffect(() => {
+    if (error) {
+      removeAuth();
+    }
+  }, [error, removeAuth]);
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorElNav(event.currentTarget);
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>

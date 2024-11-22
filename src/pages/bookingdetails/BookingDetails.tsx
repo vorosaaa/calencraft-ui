@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -9,13 +9,13 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { useMutation, useQuery } from "react-query";
 import { deleteBooking, getBooking } from "../../api/bookingApi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMe } from "../../queries/queries";
 import { enqueueSuccess } from "../../enqueueHelper";
 import { DeleteDialog } from "./DeleteDialog";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const BookingDetails = () => {
   const { t } = useTranslation();
@@ -26,21 +26,27 @@ export const BookingDetails = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const { data: meData } = useMe();
-  const { data: booking, isLoading } = useQuery(
-    "booking",
-    () => getBooking(id as string),
-    { onError: () => navigate("/") },
-  );
-  const { mutate, isLoading: deleteIsLoading } = useMutation(
-    "deleteBooking",
-    deleteBooking,
-    {
-      onSuccess: () => {
-        enqueueSuccess(t("bookingDetails.modals.delete.success"));
-        navigate("/calendar");
-      },
+  const {
+    data: booking,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["booking"],
+    queryFn: () => getBooking(id as string),
+  });
+  const { mutate, isPending: deleteIsLoading } = useMutation({
+    mutationFn: deleteBooking,
+    onSuccess: () => {
+      enqueueSuccess(t("bookingDetails.modals.delete.success"));
+      navigate("/calendar");
     },
-  );
+  });
+
+  useEffect(() => {
+    if (isError) {
+      navigate("/");
+    }
+  }, [isError, navigate]);
 
   if (isLoading || !booking || !meData) return <p>Loading...</p>;
   const userIsProvider = meData.user.id === booking.provider?.id;

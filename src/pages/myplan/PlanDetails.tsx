@@ -4,7 +4,6 @@ import {
   PaymentElement,
   Elements,
 } from "@stripe/react-stripe-js";
-import { useMutation, useQueryClient } from "react-query";
 import {
   Backdrop,
   Button,
@@ -25,6 +24,7 @@ import { AddressAccordionContent } from "../editor/accordions/AddressAccordionCo
 import { Address } from "../../types/user";
 import { loadStripe } from "@stripe/stripe-js";
 import { config } from "../../config/config";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   type: SubscriptionType;
@@ -70,12 +70,13 @@ const DeleteContent = ({ handleBack }: DeleteProps) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const { mutateAsync } = useMutation(deleteSubscription, {
+  const { mutateAsync } = useMutation({
+    mutationFn: deleteSubscription,
     onSuccess: (data: any) => {
       data.success
         ? enqueueSuccess(t(`messages.success.${data.message}`))
         : enqueueError(t(`messages.errors.${data.message}`)),
-        queryClient.invalidateQueries("me");
+        queryClient.invalidateQueries({ queryKey: ["me"] });
     },
     onError: (error: any) => enqueueError(error.response.data.message),
   });
@@ -121,9 +122,10 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const [address, setAddress] = useState<Address | undefined>();
   const [hasMissingFields, setHasMissingFields] = useState(false);
 
-  const { mutate, isLoading } = useMutation(subscribe, {
+  const { mutate, isPending } = useMutation({
+    mutationFn: subscribe,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries("me");
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       data.success
         ? setSuccessOpen(true)
         : enqueueError(t(`messages.errors.${data.message}`));
@@ -181,7 +183,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
           zIndex: (theme) => theme.zIndex.drawer + 1,
           flexDirection: "column",
         }}
-        open={isLoading}
+        open={isPending}
       >
         <CircularProgress color="inherit" />
         <Typography variant="h5">
@@ -234,7 +236,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
           variant="contained"
           color="primary"
           onClick={handleSubscription}
-          disabled={isLoading}
+          disabled={isPending}
         >
           {t("subscriptions.details.subscribe")}
         </Button>

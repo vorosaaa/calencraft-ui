@@ -15,9 +15,9 @@ import { Clear, ExpandLess, ExpandMore, Info } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { PreviewModal } from "./PreviewModal";
 import { useMe } from "../../../queries/queries";
-import { useMutation, useQueryClient } from "react-query";
 import { saveEmail } from "../../../api/userApi";
 import { enqueueError, enqueueSuccess } from "../../../enqueueHelper";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const EmailEditor = () => {
   const { t } = useTranslation();
@@ -32,7 +32,8 @@ export const EmailEditor = () => {
 
   // Query
   const { data } = useMe();
-  const { mutate } = useMutation(saveEmail, {
+  const { mutate } = useMutation({
+    mutationFn: saveEmail,
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       if (data.success) {

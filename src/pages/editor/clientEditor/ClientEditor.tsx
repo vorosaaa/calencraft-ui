@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { blockClient, getClients, unblockClient } from "../../../api/meApi";
 import {
   Dialog,
@@ -29,6 +28,7 @@ import { enqueueError, enqueueSuccess } from "../../../enqueueHelper";
 import { Lock, LockOpen } from "@mui/icons-material";
 import "./ClientEditor.css"; // Import the CSS file
 import { useCheckMobileScreen } from "../../../hooks/screenHook";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const ClientEditor = () => {
   //Hooks
@@ -44,55 +44,53 @@ export const ClientEditor = () => {
   );
 
   //Queries and mutations
-  const { data, isLoading } = useQuery("client", getClients, {
+  const { data, isLoading } = useQuery({
+    queryKey: ["client"],
+    queryFn: getClients,
     staleTime: 60000,
   });
-  const { mutate: block, isLoading: isBlockLoading } = useMutation(
-    blockClient,
-    {
-      onError: (error: any) => {
-        client.invalidateQueries("client");
-        enqueueError(t(`messages.errors.${error.response.data.message}`));
-        setIsBlockOpen(false);
-        setSelectedClient(null);
-        setSelectedClientName(null);
-      },
-      onSuccess: (data) => {
-        client.invalidateQueries("client");
-        setIsBlockOpen(false);
-        setSelectedClient(null);
-        setSelectedClientName(null);
-        if (data.success) {
-          enqueueSuccess(t(`messages.success.${data.message}`));
-        } else {
-          enqueueError(t(`messages.errors.${data.message}`));
-        }
-      },
+  const { mutate: block, isPending: isBlockLoading } = useMutation({
+    mutationFn: blockClient,
+    onError: (error: any) => {
+      client.invalidateQueries({ queryKey: ["client"] });
+      enqueueError(t(`messages.errors.${error.response.data.message}`));
+      setIsBlockOpen(false);
+      setSelectedClient(null);
+      setSelectedClientName(null);
     },
-  );
-  const { mutate: unBlock, isLoading: isUnblockLoading } = useMutation(
-    unblockClient,
-    {
-      onError: (error: any) => {
-        client.invalidateQueries("client");
-        enqueueError(t(`messages.errors.${error.response.data.message}`));
-        setIsUnblockOpen(false);
-        setSelectedClient(null);
-        setSelectedClientName(null);
-      },
-      onSuccess: (data) => {
-        client.invalidateQueries("client");
-        setIsUnblockOpen(false);
-        setSelectedClient(null);
-        setSelectedClientName(null);
-        if (data.success) {
-          enqueueSuccess(t(`messages.success.${data.message}`));
-        } else {
-          enqueueError(t(`messages.errors.${data.message}`));
-        }
-      },
+    onSuccess: (data) => {
+      client.invalidateQueries({ queryKey: ["client"] });
+      setIsBlockOpen(false);
+      setSelectedClient(null);
+      setSelectedClientName(null);
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
     },
-  );
+  });
+  const { mutate: unBlock, isPending: isUnblockLoading } = useMutation({
+    mutationFn: unblockClient,
+    onError: (error: any) => {
+      client.invalidateQueries({ queryKey: ["client"] });
+      enqueueError(t(`messages.errors.${error.response.data.message}`));
+      setIsUnblockOpen(false);
+      setSelectedClient(null);
+      setSelectedClientName(null);
+    },
+    onSuccess: (data) => {
+      client.invalidateQueries({ queryKey: ["client"] });
+      setIsUnblockOpen(false);
+      setSelectedClient(null);
+      setSelectedClientName(null);
+      if (data.success) {
+        enqueueSuccess(t(`messages.success.${data.message}`));
+      } else {
+        enqueueError(t(`messages.errors.${data.message}`));
+      }
+    },
+  });
 
   //Functions
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {

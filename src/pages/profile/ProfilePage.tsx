@@ -1,19 +1,20 @@
 import { Container } from "./css/ProfileHeader.css";
 import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProviderProfileBody } from "./body/ProviderProfileBody";
 import { UserProfileBody } from "./body/UserProfileBody";
 import { getUser } from "../../api/userApi";
 import { SubscriptionType } from "../../types/enums";
 import { Skeleton } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 export const ProfilePage: React.FC = () => {
   const { identifier } = useParams();
 
-  const { data, isLoading } = useQuery("user", () =>
-    getUser(identifier as string)
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(identifier as string),
+  });
 
   if (!data || isLoading) return <LoadingView />;
 

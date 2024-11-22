@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Grid, CssBaseline, Divider, Box } from "@mui/material";
 import { registerWithGoogle, register } from "../../api/authApi";
-import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "../../hooks/authHook";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +14,7 @@ import { useVerificationModalHook } from "../../hooks/verificationHook";
 import { VerificationMode } from "../../types/enums";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type FormState = {
   confirmPassword: string;
@@ -62,18 +62,20 @@ export const RegistrationForm = () => {
   const [error, setError] = useState<ErrorState>(initialError);
   const [currentStep, setCurrentStep] = useState(1); // 1 for select, 2 for form
 
-  const { mutate: googleRegister } = useMutation(registerWithGoogle, {
+  const { mutate: googleRegister } = useMutation({
+    mutationFn: registerWithGoogle,
     onSuccess: (data) => {
       saveAuth(data.token);
-      queryClient.invalidateQueries("me");
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/");
     },
   });
-  const { mutate: registerUser } = useMutation(register, {
+  const { mutate: registerUser } = useMutation({
+    mutationFn: register,
     onSuccess: (data) => {
       setFormState(initialFormState);
       saveAuth(data.token);
-      queryClient.invalidateQueries("me");
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       setVerification(
         VerificationMode.VERIFICATION,
         VerificationMode.VERIFICATION,
