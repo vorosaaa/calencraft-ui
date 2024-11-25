@@ -5,13 +5,11 @@ import {
   Container,
   IconButton,
   TextField,
-  Tab,
-  Tabs,
   Box,
   Typography,
   Collapse,
 } from "@mui/material";
-import { Clear, ExpandLess, ExpandMore, Info } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, Info } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { PreviewModal } from "./PreviewModal";
 import { useMe } from "../../../queries/queries";
@@ -22,12 +20,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export const EmailEditor = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const [header, setHeader] = useState("");
+  const [emailTemplate, setEmailTemplate] = useState("");
   const [expanded, setExpanded] = useState(false);
-  const [bodySections, setBodySections] = useState<string[]>([""]);
-  const [footer, setFooter] = useState("");
-  const [activeInput, setActiveInput] = useState<HTMLInputElement | null>(null);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [activeInput, setActiveInput] = useState<HTMLTextAreaElement | null>(
+    null,
+  );
   const [previewOpen, setPreviewOpen] = useState(false);
 
   // Query
@@ -48,16 +45,14 @@ export const EmailEditor = () => {
 
   const onSave = () => {
     mutate({
-      emailHeader: header,
-      emailBody: bodySections,
-      emailFooter: footer,
+      emailTemplate: emailTemplate,
     });
   };
 
   useEffect(() => {
     const handleFocusChange = (event: FocusEvent) => {
       const target = event.target as HTMLElement;
-      if (target instanceof HTMLInputElement) {
+      if (target instanceof HTMLTextAreaElement) {
         setActiveInput(target);
       }
     };
@@ -69,31 +64,11 @@ export const EmailEditor = () => {
     };
   }, []);
   useEffect(() => {
-    setHeader(data.user.emailHeader);
-    setBodySections(data.user.emailBody);
-    setFooter(data.user.emailFooter);
+    setEmailTemplate(data.user.emailTemplate);
   }, [data]);
 
   const handlePreviewOpen = () => setPreviewOpen(true);
   const handlePreviewClose = () => setPreviewOpen(false);
-
-  // Function to handle adding a new section to the body
-  const addNewSection = () => {
-    setBodySections([...bodySections, ""]);
-  };
-
-  // Function to handle changing a body section
-  const handleBodySectionChange = (index: number, value: string) => {
-    const updatedSections = [...bodySections];
-    updatedSections[index] = value;
-    setBodySections(updatedSections);
-  };
-
-  // Function to handle removing a body section
-  const removeSection = (index: number) => {
-    const updatedSections = bodySections.filter((_, i) => i !== index);
-    setBodySections(updatedSections);
-  };
 
   // Function to handle adding a shorthand to the input field
   const addShorthand = (shorthand: string) => {
@@ -110,17 +85,7 @@ export const EmailEditor = () => {
       currentValue.substring(end);
 
     input.setSelectionRange(start + shorthand.length, start + shorthand.length);
-
-    if (input.name === "header") {
-      setHeader(newValue);
-    } else if (input.name.startsWith("body")) {
-      const index = parseInt(input.name.split("-")[1]);
-      const updatedSections = [...bodySections];
-      updatedSections[index] = newValue;
-      setBodySections(updatedSections);
-    } else if (input.name === "footer") {
-      setFooter(newValue);
-    }
+    setEmailTemplate(newValue);
 
     input.dispatchEvent(new Event("input", { bubbles: true }));
   };
@@ -132,10 +97,6 @@ export const EmailEditor = () => {
     { value: "$start", text: "editor.email_editor.start" },
     { value: "$end", text: "editor.email_editor.end" },
   ];
-
-  const handleChange = (newValue: number) => {
-    setTabIndex(newValue);
-  };
 
   return (
     <Container sx={{ mt: 4 }}>
@@ -166,9 +127,7 @@ export const EmailEditor = () => {
       <PreviewModal
         open={previewOpen}
         handleClose={handlePreviewClose}
-        header={header}
-        bodySections={bodySections}
-        footer={footer}
+        template={emailTemplate}
       />
       <div
         style={{
@@ -187,60 +146,15 @@ export const EmailEditor = () => {
           </div>
         ))}
       </div>
-      <Tabs
-        sx={{ mb: 2, mt: 2 }}
-        value={tabIndex}
-        onChange={(_event, newValue) => handleChange(newValue)}
-        variant="fullWidth"
-        indicatorColor="primary"
-      >
-        <Tab label={t("editor.email_editor.header")} />
-        <Tab label={t("editor.email_editor.body")} />
-        <Tab label={t("editor.email_editor.footer")} />
-      </Tabs>
-      <Box>
-        {tabIndex === 0 && (
-          <TextField
-            name="header"
-            fullWidth
-            value={header}
-            onChange={(e) => setHeader(e.target.value)}
-          />
-        )}
-        {tabIndex === 1 && (
-          <Box id="body-tab-content">
-            {bodySections.map((section, index) => (
-              <TextField
-                sx={{ mb: 1 }}
-                key={index}
-                fullWidth
-                name={`body-${index}`}
-                value={section}
-                onChange={(e) => handleBodySectionChange(index, e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      color="primary"
-                      onClick={() => removeSection(index)}
-                      sx={{ padding: 0 }}
-                    >
-                      <Clear sx={{ fontSize: "1.2em" }} />
-                    </IconButton>
-                  ),
-                }}
-              />
-            ))}
-          </Box>
-        )}
-        {tabIndex === 2 && (
-          <TextField
-            name="footer"
-            fullWidth
-            value={footer}
-            onChange={(e) => setFooter(e.target.value)}
-          />
-        )}
-      </Box>
+      <TextField
+        sx={{ mt: 2 }}
+        fullWidth
+        multiline
+        rows={10}
+        inputProps={{ maxLength: 3000 }}
+        value={emailTemplate}
+        onChange={(e) => setEmailTemplate(e.target.value)}
+      />
       <Container
         disableGutters
         sx={{
@@ -252,11 +166,6 @@ export const EmailEditor = () => {
         <Button variant="outlined" onClick={handlePreviewOpen}>
           {t("editor.email_editor.preview")}
         </Button>
-        {tabIndex === 1 && (
-          <Button variant="outlined" onClick={addNewSection}>
-            {t("editor.email_editor.add_new_section")}
-          </Button>
-        )}
         <Button
           sx={{ alignSelf: "flex-end" }}
           variant="contained"
