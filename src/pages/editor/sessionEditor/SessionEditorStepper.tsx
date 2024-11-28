@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { SessionSelector } from "./firstStep/SessionSelector";
 import { Details } from "./thirdStep/Details";
-import { useMutation, useQueryClient } from "react-query";
 import { deleteType, savesTypes } from "../../../api/providerApi";
 import { SessionForm } from "./secondStep/SessionForm";
 import { useTranslation } from "react-i18next";
@@ -21,6 +20,7 @@ import { enqueueError, enqueueSuccess } from "../../../enqueueHelper";
 import { useMe } from "../../../queries/queries";
 import { FormState } from "../../../types/formState";
 import { adjustTimes, handleLengthInMinutesChange } from "./sessionEditorUtils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const initialType = {
   name: "",
@@ -55,7 +55,8 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
     useState<SessionType>(initialType);
 
   const { data } = useMe();
-  const { mutate: deleteSessionType } = useMutation(deleteType, {
+  const { mutate: deleteSessionType } = useMutation({
+    mutationFn: deleteType,
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       if (data.success) {
@@ -67,7 +68,8 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
-  const { mutate: saveType } = useMutation(savesTypes, {
+  const { mutate: saveType } = useMutation({
+    mutationFn: savesTypes,
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       if (data.success) {

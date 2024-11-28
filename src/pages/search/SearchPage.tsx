@@ -11,7 +11,6 @@ import {
 import { Fragment, useState } from "react";
 import { SearchContainer } from "./css/ProviderList.css";
 import { ProviderTable } from "./ProviderTable";
-import { useQuery } from "react-query";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 import { ServiceCategory, CountryCode } from "../../types/enums";
@@ -19,6 +18,7 @@ import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { countries } from "../../types/countries";
 import { useGeoLocation } from "../../hooks/locationHook";
 import { getProviders } from "../../api/providerApi";
+import { useQuery } from "@tanstack/react-query";
 
 type SearchObject = {
   name?: string;
@@ -42,7 +42,7 @@ export const SearchPage = () => {
   // Functions
   const updateTemporarySearchObject = (
     key: keyof SearchObject,
-    value?: string | CountryCode
+    value?: string | CountryCode,
   ) => {
     setTemporarySearchObject((prevState) => ({
       ...prevState,
@@ -54,19 +54,19 @@ export const SearchPage = () => {
   };
 
   // Queries
-  const { data, isLoading } = useQuery(
-    ["providers", searchObject, paginationDetails],
-    () =>
+  const { data, isLoading } = useQuery({
+    queryKey: ["providers", searchObject, paginationDetails],
+    queryFn: () =>
       getProviders(
         paginationDetails.page,
         paginationDetails.pageSize,
         searchObject.name,
         location.searchCity,
         location.searchCountry,
-        searchObject.category
+        searchObject.category,
       ),
-    { enabled: !isLocationLoading }
-  );
+    enabled: !isLocationLoading,
+  });
 
   // Handlers
   const handleSearchSubmit = () => {

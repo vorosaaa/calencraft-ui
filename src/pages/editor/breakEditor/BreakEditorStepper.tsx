@@ -9,7 +9,6 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
-import { useMutation, useQueryClient } from "react-query";
 import { deleteBreak, saveBreaks } from "../../../api/providerApi";
 import { useTranslation } from "react-i18next";
 import { BreakSelector } from "./firstStep/BreakSelector";
@@ -19,6 +18,7 @@ import { Details } from "./thirdStep/Details";
 import { enqueueError, enqueueSuccess } from "../../../enqueueHelper";
 import { BreakType, RepeatType } from "../../../types/enums";
 import { useMe } from "../../../queries/queries";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const initialType = {
   name: "",
@@ -48,7 +48,8 @@ export const BreakEditorStepper = () => {
     useState<BreakStateType>(initialType);
 
   const { data } = useMe();
-  const { mutate: deleteBreakType } = useMutation(deleteBreak, {
+  const { mutate: deleteBreakType } = useMutation({
+    mutationFn: deleteBreak,
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       if (data.success) {
@@ -60,7 +61,8 @@ export const BreakEditorStepper = () => {
     onError: (error: any) =>
       enqueueError(t(`messages.errors.${error.response.data.message}`)),
   });
-  const { mutate } = useMutation(saveBreaks, {
+  const { mutate } = useMutation({
+    mutationFn: saveBreaks,
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
       if (data.success) {

@@ -8,7 +8,6 @@ import { UserForm } from "./thirdStep/UserForm";
 import { VerificationPage } from "./fourthStep/Verification";
 import { confirmBooking } from "../../../../api/bookingApi";
 import { UserProfile } from "../../../../types/user";
-import { useMutation } from "react-query";
 import { useTranslation } from "react-i18next";
 import {
   enqueueError,
@@ -19,6 +18,7 @@ import { UserState } from "../../../../types/userState";
 import { BookingState } from "../../../../types/booking";
 import { useMe } from "../../../../queries/queries";
 import { RepeatType } from "../../../../types/enums";
+import { useMutation } from "@tanstack/react-query";
 
 type Props = {
   provider: UserProfile;
@@ -64,7 +64,8 @@ export const BookingStepper = ({ provider }: Props) => {
   }, [data]);
 
   //Mutations
-  const { mutate, isLoading } = useMutation(confirmBooking, {
+  const { mutate, isPending } = useMutation({
+    mutationFn: confirmBooking,
     onSuccess: (data: any) => {
       setActiveStep(0);
       setSelectedDate(new Date());
@@ -190,7 +191,7 @@ export const BookingStepper = ({ provider }: Props) => {
             formData={formData}
             onBack={handleBack}
             onConfirm={handleConfirmation}
-            isLoading={isLoading}
+            isLoading={isPending}
           />
         );
       default:

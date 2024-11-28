@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { deleteBooking, getMyBookings } from "../../api/bookingApi";
 import { Container, Skeleton } from "@mui/material";
 import { MyBookingsPicker } from "./MyBookingsPicker";
@@ -7,11 +6,11 @@ import { MyBookingsCalendar } from "./MyBookingsCalendar";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 import { useNavigate } from "react-router-dom";
 import { useBookingView } from "../../hooks/viewHook";
-import { CalencraftAxiosError } from "../../types/axiosTypes";
 import { useMe } from "../../queries/queries";
 import { enqueueSuccess } from "../../enqueueHelper";
 import { useTranslation } from "react-i18next";
 import { DeleteDialog } from "../bookingdetails/DeleteDialog";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const Calendar = () => {
   const navigate = useNavigate();
@@ -30,38 +29,35 @@ export const Calendar = () => {
     end: Date | null;
   }>({ start: null, end: null });
 
-  const { data: meData, isLoading: isMeLoading } = useMe({
-    onError: (error: CalencraftAxiosError) => {
-      if (error.response.data.message === "NO_TOKEN") {
-        navigate("/");
-      }
+  const { data: meData, isLoading: isMeLoading, isError, error } = useMe();
+
+  const { data: bookings, isLoading } = useQuery({
+    queryKey: ["mybookings", dateRange, calendarType],
+    queryFn: () => getMyBookings(dateRange.start, dateRange.end, calendarType),
+    refetchIntervalInBackground: true,
+    refetchInterval: 1000 * 60,
+  });
+
+  const { mutate, isPending: deleteIsLoading } = useMutation({
+    mutationFn: deleteBooking,
+    onSuccess: () => {
+      enqueueSuccess(t("bookingDetails.modals.delete.success"));
+      queryClient.invalidateQueries({
+        queryKey: ["mybookings", dateRange, calendarType],
+      });
+    },
+    onSettled: () => {
+      setDeleteBookingId("");
+      setReason("");
+      setOpenDeleteDialog(false);
     },
   });
 
-  const { data: bookings, isLoading } = useQuery(
-    ["mybookings", dateRange, calendarType],
-    () => getMyBookings(dateRange.start, dateRange.end, calendarType),
-    {
-      refetchIntervalInBackground: true,
-      refetchInterval: 1000 * 60,
-    },
-  );
-
-  const { mutate, isLoading: deleteIsLoading } = useMutation(
-    "deleteBooking",
-    deleteBooking,
-    {
-      onSuccess: () => {
-        enqueueSuccess(t("bookingDetails.modals.delete.success"));
-        queryClient.invalidateQueries(["mybookings", dateRange, calendarType]);
-      },
-      onSettled: () => {
-        setDeleteBookingId("");
-        setReason("");
-        setOpenDeleteDialog(false);
-      },
-    },
-  );
+  useEffect(() => {
+    if (isError && error.response.data.message === "NO_TOKEN") {
+      navigate("/");
+    }
+  }, [isError, error]);
 
   const onBookingClick = (id: string) => navigate(`/booking/${id}`);
   const handleCloseDeleteDialog = () => setOpenDeleteDialog(false);

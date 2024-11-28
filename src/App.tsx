@@ -1,7 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useMemo } from "react";
 import { RecoilRoot } from "recoil";
 import { Root } from "./Root";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import "./i18n";
 import { SnackbarProvider, closeSnackbar } from "notistack";
@@ -11,6 +10,12 @@ import { Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { config } from "./config/config";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export const App = () => {
   return (
@@ -35,19 +40,33 @@ export const App = () => {
 
 const QueryClientLoader = () => {
   const { t } = useTranslation();
-  const [queryClient] = useState(
+  const queryClient = useMemo(
     () =>
       new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => {
+            if (error instanceof AxiosError) {
+              const axiosError = error as AxiosError;
+              if (
+                axiosError.response?.data &&
+                typeof axiosError.response.data === "object"
+              ) {
+                const errorMessage = (
+                  axiosError.response?.data as { message: string }
+                ).message;
+                console.log(errorMessage);
+                if (errorMessage !== "NO_TOKEN") {
+                  enqueueError(t(`messages.errors.${errorMessage}`));
+                }
+              }
+            } else {
+              enqueueError(t(`messages.errors.${error.message}`));
+            }
+          },
+        }),
         defaultOptions: {
           queries: {
             retry: false,
-            onError: (error: any) => {
-              if (error.response.data.message !== "NO_TOKEN") {
-                enqueueError(
-                  t(`messages.errors.${error.response.data.message}`)
-                );
-              }
-            },
           },
           mutations: {
             onSuccess: (data: any) => {
@@ -62,7 +81,8 @@ const QueryClientLoader = () => {
             },
           },
         },
-      })
+      }),
+    [t],
   );
   return (
     <QueryClientProvider client={queryClient}>

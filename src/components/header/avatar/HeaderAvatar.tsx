@@ -11,6 +11,7 @@ import { useAuth } from "../../../hooks/authHook";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMe } from "../../../queries/queries";
+import { useEffect } from "react";
 
 type Props = {
   anchorElUser: HTMLElement | null;
@@ -26,7 +27,13 @@ export const HeaderAvatar = ({
   const { removeAuth } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data } = useMe({ onError: removeAuth });
+  const { data, error } = useMe();
+
+  useEffect(() => {
+    if (error) {
+      removeAuth();
+    }
+  }, [error, removeAuth]);
 
   if (!data?.user)
     return (

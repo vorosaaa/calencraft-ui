@@ -1,11 +1,10 @@
 import { BookyDatePicker } from "./BookyDatePicker";
 import { TimeSlots } from "./slot/TimeSlots";
-import { useQuery } from "react-query";
 import { getProviderBookings } from "../../../../../api/userApi";
 import { SessionType } from "../../../../../types/sessionType";
 import { Button, Container, Typography } from "@mui/material";
 import { UserProfile } from "../../../../../types/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   calculateEndTime,
   createCurrentTime,
@@ -28,6 +27,7 @@ import {
 import { TimeSlot } from "../../../../../types/timeSlot";
 import { SessionCard } from "./SessionCard";
 import { BookingType, RepeatType } from "../../../../../types/enums";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   provider: UserProfile;
@@ -56,13 +56,17 @@ export const DateSelector = ({
   if (!selectedSession) return <></>;
 
   // Get bookings and breaks for the selected day and provider
-  useQuery(
-    ["providerBookings", { id: provider.id, date: date.getTime() }],
-    () => getProviderBookings({ id: provider.id, date: date.getTime() }),
-    {
-      onSuccess: (data) => generatePossibleStartTimes(data),
-    },
-  );
+  const { data, isSuccess } = useQuery({
+    queryKey: ["providerBookings", { id: provider.id, date: date.getTime() }],
+    queryFn: () =>
+      getProviderBookings({ id: provider.id, date: date.getTime() }),
+  });
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      generatePossibleStartTimes(data);
+    }
+  }, [data, isSuccess]);
 
   const handleBackClick = () => {
     // Reset the selected start time

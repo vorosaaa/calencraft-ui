@@ -81,7 +81,7 @@ export const GeneralEditor = ({
     setIsBillingAddressDifferent(event.target.checked);
   };
 
-  const { mutate, isLoading: isDeleteLoading } = useDeleteMutation();
+  const { mutate, isPending: isDeleteLoading } = useDeleteMutation();
 
   const navigateToVerification = () => {
     setVerification(

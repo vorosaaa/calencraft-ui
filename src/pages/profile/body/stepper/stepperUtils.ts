@@ -16,7 +16,11 @@ export const createCurrentTime = (date: Date, minutes: number): Date => {
 };
 
 export const formatTime = (time: Date): string => {
-  return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+  return time.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 };
 
 export const isDayAvailable = (
@@ -45,9 +49,9 @@ export const hasBookingConflict = (
 
     // Construct a Date object for the booking start time
     const bookingStartTime = new Date(bookingDate);
-    bookingStartTime.setHours(bookingStartHour, bookingStartMinute, 0); // Set hours and minutes
+    bookingStartTime.setHours(bookingStartHour, bookingStartMinute, 0, 0); // Set hours and minutes
     const bookingEndTime = new Date(bookingDate);
-    bookingEndTime.setHours(bookingEndHour, bookingEndMinute, 0); // Set hours and minutes
+    bookingEndTime.setHours(bookingEndHour, bookingEndMinute, 0, 0); // Set hours and minutes
 
     // Convert booking start and end times to milliseconds
     const bookingStartMs = bookingStartTime.getTime();
@@ -73,6 +77,15 @@ export const hasBookingConflict = (
       booking.name === sessionType.name &&
       sessionType.maxCapacity &&
       booking.users.length < sessionType.maxCapacity;
+
+    if (isStartTimeConflict) {
+      console.log("Conflict detected:");
+      console.log("startTime millisec: ", startTime.getTime());
+      console.log("bookingStart millisec: ", bookingStartTime.getTime());
+      console.log("bookingEnd: ", bookingEndTime);
+      console.log("isStartTimeConflict: ", isStartTimeConflict);
+      console.log("isEndTimeConflict: ", isEndTimeConflict);
+    }
 
     // Return true if there is a conflict (booking overlap or group session not full)
     return isStartTimeConflict || isEndTimeConflict || isGroupSessionConflict;

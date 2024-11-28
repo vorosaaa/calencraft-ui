@@ -18,11 +18,13 @@ import ScrollToTopButton from "./components/scrollToTop/ScrollToTopButton";
 export const Root = () => {
   const { removeAuth } = useAuth();
   useVerificationModalHook();
-  useValidateToken({
-    onError: () => {
+  const { error } = useValidateToken();
+
+  useEffect(() => {
+    if (error) {
       removeAuth();
-    },
-  });
+    }
+  }, [error]);
 
   const location = useLocation();
   const hideHeaderFooter =

@@ -1,5 +1,4 @@
 import { Button, Grid, CssBaseline, Typography } from "@mui/material";
-import { useMutation, useQueryClient } from "react-query";
 import {
   resetPassword,
   sendVerificationEmail,
@@ -18,6 +17,7 @@ import { enqueueError, enqueueSuccess } from "../../enqueueHelper";
 import { useMe } from "../../queries/queries";
 import { CustomCarousel } from "../../components/auth/CustomCarousel";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const Verification = () => {
   const { t } = useTranslation();
@@ -36,7 +36,8 @@ export const Verification = () => {
 
   const { data } = useMe();
 
-  const { mutate, isLoading } = useMutation(sendVerificationEmail, {
+  const { mutate, isPending } = useMutation({
+    mutationFn: sendVerificationEmail,
     onSuccess: (data: any) => {
       setVerificationMode(VerificationMode.VERIFICATION);
       setCountdown(10);
@@ -49,10 +50,11 @@ export const Verification = () => {
       enqueueError(t(`messages.errors.${error.response.data.message}`));
     },
   });
-  const { mutate: mutateVerify } = useMutation(verifyEmail, {
+  const { mutate: mutateVerify } = useMutation({
+    mutationFn: verifyEmail,
     onSuccess: (data: any) => {
       if (originalMode === VerificationMode.VERIFICATION) {
-        queryClient.invalidateQueries("me");
+        queryClient.invalidateQueries({ queryKey: ["me"] });
         setVerificationCode("");
         navigate("/myprofile");
       } else {
@@ -62,10 +64,11 @@ export const Verification = () => {
     },
   });
 
-  const { mutate: mutateReset } = useMutation(resetPassword, {
+  const { mutate: mutateReset } = useMutation({
+    mutationFn: resetPassword,
     onSuccess: (data: any) => {
       saveAuth(data.token);
-      queryClient.invalidateQueries("me");
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       navigateToHome();
     },
   });
@@ -131,14 +134,14 @@ export const Verification = () => {
         {mode === VerificationMode.FORGOT_PASSWORD && (
           <ForgotPasswordComponent
             email={email}
-            isLoading={isLoading}
+            isLoading={isPending}
             setEmail={setEmail}
             handleSendEmail={handleSendEmail}
           />
         )}
         {mode === VerificationMode.VERIFICATION && (
           <CodeVerificationComponent
-            isLoading={isLoading}
+            isLoading={isPending}
             countDown={countdown}
             verificationCode={verificationCode}
             setVerificationCode={setVerificationCode}
