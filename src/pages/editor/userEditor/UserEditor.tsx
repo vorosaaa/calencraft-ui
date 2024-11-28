@@ -41,7 +41,7 @@ export const UserEditor = ({
   const navigate = useNavigate();
   const { setVerification } = useVerificationModalHook();
 
-  const { mutate, isLoading: isDeleteLoading } = useDeleteMutation();
+  const { mutate, isPending: isDeleteLoading } = useDeleteMutation();
 
   const handleSocialsChange = (newSocials: string | undefined) => {
     setFormData({ ...formData, socials: newSocials });
