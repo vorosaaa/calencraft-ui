@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StartButton,
   Section,
@@ -15,15 +15,27 @@ import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../hooks/screenHook";
 
 const images = [
-  { image: "/images/barber.jpeg", title: "Calendar Management" },
-  { image: "/images/fitness.jpeg", title: "Subscriptions" },
-  { image: "/images/cosmetics.jpeg", title: "Email Notifications" },
+  { image: "/images/barber.webp", title: "Calendar Management" },
+  { image: "/images/fitness.webp", title: "Subscriptions" },
+  { image: "/images/cosmetics.webp", title: "Email Notifications" },
 ];
 
 export const Home: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useCheckMobileScreen();
+
+  useEffect(() => {
+    const imagesToPreload = ["/images/calendar.webp", "/images/barber.webp"];
+
+    imagesToPreload.forEach((image) => {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.href = image;
+      link.as = "image";
+      document.head.appendChild(link);
+    });
+  }, []);
 
   // Reusable render function with optional reverse layout
   const renderFeatureSection = (
@@ -97,20 +109,20 @@ export const Home: React.FC = () => {
       {renderFeatureSection(
         "calendarManagement",
         "calendarManagementDescription",
-        "/images/calendar.jpg",
+        "/images/calendar.webp",
       )}
       <Divider variant="middle" />
       {renderFeatureSection(
         "noMoreNoShows",
         "noMoreNoShowsDescription",
-        "/images/question.png",
+        "/images/question.webp",
         true,
       )}
       <Divider variant="middle" />
       {renderFeatureSection(
         "userManagement",
         "userManagementDescription",
-        "/images/users.png",
+        "/images/users.webp",
         false,
         "userManagementDescription2",
       )}
@@ -118,7 +130,7 @@ export const Home: React.FC = () => {
       {renderFeatureSection(
         "subscriptions",
         "subscriptionsDescription",
-        "/images/plans.png",
+        "/images/plans.webp",
         true,
         "subscriptionsDescription2",
       )}
@@ -126,7 +138,7 @@ export const Home: React.FC = () => {
       {renderFeatureSection(
         "simpleScheduling",
         "simpleSchedulingDescription",
-        "/images/booking.png",
+        "/images/booking.webp",
         false,
         "simpleSchedulingDescription2",
       )}
@@ -135,7 +147,7 @@ export const Home: React.FC = () => {
       {renderFeatureSection(
         "emailNotifications",
         "emailNotificationsDescription",
-        "/images/email.jpg",
+        "/images/email.webp",
         true,
         "emailNotificationsDescription2",
       )}
@@ -143,7 +155,7 @@ export const Home: React.FC = () => {
       {renderFeatureSection(
         "help",
         "helpDescription",
-        "/images/support.png",
+        "/images/support.webp",
         false,
         "helpDescription2",
       )}
