@@ -1,9 +1,9 @@
 import Carousel from "react-material-ui-carousel";
 
 const carouselImages = [
-  "/images/barber.jpeg",
-  "/images/fitness.jpeg",
-  "/images/cosmetics.jpeg",
+  "/images/barber.webp",
+  "/images/fitness.webp",
+  "/images/cosmetics.webp",
 ];
 
 const CarouselCard = ({ src }: { src: string }) => (
