@@ -16,6 +16,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { Helmet } from "react-helmet";
 
 export const App = () => {
   return (
@@ -87,6 +88,10 @@ const QueryClientLoader = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <Helmet>
+          <title>{t("title")}</title>
+          <meta name="description" content={t("description")} />
+        </Helmet>
         <Root />
       </BrowserRouter>
     </QueryClientProvider>
