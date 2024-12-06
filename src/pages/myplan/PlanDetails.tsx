@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useMe } from "../../queries/queries";
 import { AddressAccordionContent } from "../editor/accordions/AddressAccordionContent";
 import { Address } from "../../types/user";
-import { loadStripe } from "@stripe/stripe-js";
+import { Stripe } from "@stripe/stripe-js";
 import { config } from "../../config/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -31,9 +31,9 @@ type Props = {
   handleBack: () => void;
 };
 
-const stripePromise = loadStripe(config.STRIPE_PUBLIC_KEY);
-
 export const PlanDetails = ({ type, handleBack }: Props) => {
+  const [stripe, setStripe] = useState<Stripe | null>(null);
+
   let amount = config.SUBSCRIPTION_AMOUNTS[type];
   if (typeof amount === "string") {
     amount = parseInt(amount.replace(/\./g, ""), 10);
@@ -43,9 +43,27 @@ export const PlanDetails = ({ type, handleBack }: Props) => {
   if (isNaN(amount) || amount < 0) {
     throw new Error("Invalid subscription amount");
   }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    import("@stripe/stripe-js").then(({ loadStripe }) => {
+      if (isMounted) {
+        loadStripe(config.STRIPE_PUBLIC_KEY).then((stripeInstance) => {
+          setStripe(stripeInstance);
+        });
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      setStripe(null);
+    };
+  }, []);
+
   return (
     <Elements
-      stripe={stripePromise}
+      stripe={stripe}
       options={{
         mode: "payment",
         currency: "huf",
