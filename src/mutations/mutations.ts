@@ -14,7 +14,7 @@ export const useDeleteMutation = () => {
     mutationFn: deleteUser,
     onSuccess: (data: any) => {
       removeAuth();
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.clear();
       enqueueSuccess(t(`messages.success.${data.message}`));
       navigate("/");
     },

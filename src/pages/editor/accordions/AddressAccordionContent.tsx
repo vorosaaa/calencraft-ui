@@ -42,6 +42,7 @@ export const AddressAccordionContent = ({
               component="li"
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...props}
+              key={option.code}
             >
               <img
                 loading="lazy"
