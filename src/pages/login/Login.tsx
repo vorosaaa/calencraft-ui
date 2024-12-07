@@ -42,7 +42,7 @@ export const Login = () => {
     onSuccess: (data) => {
       saveAuth(data.token);
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      navigate("/");
+      navigate("/calendar");
     },
   });
   const { mutate } = useMutation({
@@ -52,7 +52,7 @@ export const Login = () => {
       setEmail("");
       setPassword("");
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      navigate("/");
+      navigate("/calendar");
     },
   });
 

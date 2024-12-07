@@ -9,19 +9,17 @@ export const BrowserLogo = () => {
   const onClickTitle = () => navigate("/");
 
   return (
-    <>
-      <Title
-        variant="h6"
-        noWrap
-        sx={{
-          mr: 2,
-          display: { xs: "none", md: "flex" },
-        }}
-        onClick={onClickTitle}
-      >
-        {NAME}
-      </Title>
-    </>
+    <Title
+      variant="h6"
+      noWrap
+      sx={{
+        mr: 2,
+        display: { xs: "none", md: "flex" },
+      }}
+      onClick={onClickTitle}
+    >
+      {NAME}
+    </Title>
   );
 };
 
@@ -31,18 +29,16 @@ export const MobileLogo = () => {
 
   const onClickTitle = () => navigate("/");
   return (
-    <>
-      <Title
-        variant="subtitle1"
-        noWrap
-        sx={{
-          mr: 2,
-          display: { xs: "flex", md: "none" },
-        }}
-        onClick={onClickTitle}
-      >
-        {NAME}
-      </Title>
-    </>
+    <Title
+      variant="subtitle1"
+      noWrap
+      sx={{
+        mr: 2,
+        display: { xs: "flex", md: "none" },
+      }}
+      onClick={onClickTitle}
+    >
+      {NAME}
+    </Title>
   );
 };

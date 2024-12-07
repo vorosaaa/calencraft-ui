@@ -66,7 +66,7 @@ export const UserEditor = ({
   };
 
   return (
-    <Container disableGutters sx={{ marginBottom: 2, width: "100%" }}>
+    <Container disableGutters sx={{ marginBottom: 6, width: "100%" }}>
       <DeleteModal
         open={deleteOpen}
         handleClose={() => setDeleteOpen(false)}

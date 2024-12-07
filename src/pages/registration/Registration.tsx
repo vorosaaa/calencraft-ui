@@ -67,7 +67,7 @@ export const RegistrationForm = () => {
     onSuccess: (data) => {
       saveAuth(data.token);
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      navigate("/");
+      navigate("/myprofile");
     },
   });
   const { mutate: registerUser } = useMutation({

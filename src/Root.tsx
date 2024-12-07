@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 import ScrollToTopButton from "./components/scrollToTop/ScrollToTopButton";
 
 export const Root = () => {
-  const { removeAuth } = useAuth();
+  const { removeAuth, isLoggedIn } = useAuth();
   useVerificationModalHook();
   const { error } = useValidateToken();
 
@@ -42,7 +42,7 @@ export const Root = () => {
       <div style={{ minHeight: "100vh" }}>
         <BookyRoutes />
       </div>
-      {!hideHeaderFooter && <Footer />}
+      {!hideHeaderFooter && !isLoggedIn() && <Footer />}
       <ScrollToTopButton />
     </ThemeProvider>
   );

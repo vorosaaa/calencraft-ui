@@ -22,7 +22,7 @@ export const BookyRoutes = () => {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/search" element={<SearchPage />} />
+        {/*<Route path="/search" element={<SearchPage />} />*/}
         <Route path="/admin/booking" element={<NewBookingPage />} />
         <Route path="/profile/:identifier" element={<ProfilePage />} />
         <Route path="/myprofile" element={<ProfileEditor />} />

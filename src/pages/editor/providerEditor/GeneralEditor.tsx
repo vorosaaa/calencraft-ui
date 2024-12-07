@@ -102,7 +102,7 @@ export const GeneralEditor = ({
   };
 
   return (
-    <Container disableGutters>
+    <Container disableGutters sx={{ marginBottom: 6 }}>
       <DeleteModal
         open={deleteOpen}
         handleClose={() => setDeleteOpen(false)}
