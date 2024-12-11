@@ -18,9 +18,9 @@ import { useTranslation } from "react-i18next";
 import { RepeatType } from "../../../types/enums";
 import { enqueueError, enqueueSuccess } from "../../../enqueueHelper";
 import { useMe } from "../../../queries/queries";
-import { FormState } from "../../../types/formState";
 import { adjustTimes, handleLengthInMinutesChange } from "./sessionEditorUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Address } from "../../../types/user";
 
 const initialType = {
   name: "",
@@ -42,9 +42,7 @@ const steps = [
   "editor.details_session",
 ];
 
-type Props = { formState: FormState };
-
-export const SessionTypeEditorStepper = ({ formState }: Props) => {
+export const SessionTypeEditorStepper = () => {
   const queryClient = useQueryClient();
   const isMobile = useCheckMobileScreen();
   const { t } = useTranslation();
@@ -164,7 +162,7 @@ export const SessionTypeEditorStepper = ({ formState }: Props) => {
       case 1:
         return (
           <SessionForm
-            formState={formState}
+            address={data.user.address as Address}
             sessionType={selectedSession}
             handleBack={handleBack}
             handleChange={handleSessionDataChange}

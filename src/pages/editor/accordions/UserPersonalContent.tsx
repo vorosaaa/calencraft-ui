@@ -1,54 +1,54 @@
 import { Grid, TextField } from "@mui/material";
-import { ChangeEvent } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-type Props = {
-  name: string;
-  phoneNumber: string;
-  description: string;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
-
-export const UserPersonalContent = ({
-  name,
-  phoneNumber,
-  description,
-  handleInputChange,
-}: Props) => {
+export const UserPersonalContent = () => {
   const { t } = useTranslation();
+  const { control } = useFormContext();
   return (
     <Grid container spacing={2} sx={{ mb: 2 }}>
       <Grid item xs={12}>
-        <TextField
-          variant="outlined"
-          fullWidth
-          label={t("editor.name")}
+        <Controller
           name="name"
-          value={name}
-          onChange={handleInputChange}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              variant="outlined"
+              fullWidth
+              label={t("editor.name")}
+              {...field}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          variant="outlined"
-          fullWidth
-          rows={4}
-          multiline
-          label={t("editor.description")}
+        <Controller
           name="description"
-          value={description}
-          onChange={handleInputChange}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              variant="outlined"
+              fullWidth
+              rows={4}
+              multiline
+              label={t("editor.description")}
+              {...field}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          label={t("editor.phone_number")}
-          variant="outlined"
-          fullWidth
+        <Controller
           name="phoneNumber"
-          type="tel"
-          value={phoneNumber}
-          onChange={handleInputChange}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              variant="outlined"
+              fullWidth
+              label={t("editor.phone_number")}
+              {...field}
+            />
+          )}
         />
       </Grid>
     </Grid>

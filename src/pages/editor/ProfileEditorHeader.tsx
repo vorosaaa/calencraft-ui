@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pictures } from "../../types/pictures";
 import { useMe } from "../../queries/queries";
+import { useFormContext } from "react-hook-form";
+import { FormState } from "../../types/formState";
 
 type Props = {
   pictures: Pictures;
-  coverPosition: string;
-  setCoverPosition: (position: string) => void;
   handlePictureChange: (
     key: keyof Pictures,
     e: React.ChangeEvent<HTMLInputElement>,
@@ -23,16 +23,16 @@ type Props = {
 
 export const ProfileEditorHeader = ({
   pictures,
-  coverPosition,
-  setCoverPosition,
   handlePictureChange,
 }: Props) => {
+  const { watch, setValue } = useFormContext<FormState>();
   const { cover, profilePicture } = pictures;
   const { data: meData } = useMe();
   const { t } = useTranslation();
   const [dragging, setDragging] = useState(false);
   const [preloadedCoverUrl, setPreloadedCoverUrl] = useState("");
 
+  const coverPosition = watch("coverPosition") as string;
   useEffect(() => {
     if (cover) {
       const reader = new FileReader();
@@ -51,7 +51,9 @@ export const ProfileEditorHeader = ({
       const rect = e.currentTarget.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
-      setCoverPosition(`${x}% ${y}%`);
+
+      //@ts-ignore
+      setValue("coverPosition", `${x}% ${y}%`);
     }
   };
   return (

@@ -55,7 +55,9 @@ const QueryClientLoader = () => {
                 const errorMessage = (
                   axiosError.response?.data as { message: string }
                 ).message;
+
                 console.log(errorMessage);
+
                 if (errorMessage !== "NO_TOKEN") {
                   enqueueError(t(`messages.errors.${errorMessage}`));
                 }
@@ -78,6 +80,7 @@ const QueryClientLoader = () => {
               }
             },
             onError: (error: any) => {
+              console.log("hallo");
               enqueueError(t(`messages.errors.${error.response.data.message}`));
             },
           },

@@ -223,6 +223,14 @@
       "add_new_section": "Új bekezdés hozzáadása",
       "save": "Mentés"
     },
+    "errors": {
+      "username_required": "A felhasználónév megadása kötelező.",
+      "name_required": "A név megadása kötelező.",
+      "slug_too_long": "Az azonosító maximum 50 karakter lehet.",
+      "slug_invalid_characters": "Az azonosító csak betűket, számokat és kötőjeleket tartalmazhat.",
+      "invalid_phone": "Érvénytelen telefonszám.",
+      "description_too_long": "A leírás maximum 600 karakter lehet."
+    },
     "clients": "Ügyfelek",
     "confirm_delete": "Törlés megerősítése",
     "are_you_sure": "Biztosan törölni szeretné ezt az elemet: {{item}}?",

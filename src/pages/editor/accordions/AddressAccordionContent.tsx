@@ -1,30 +1,30 @@
-import React from "react";
 import { Autocomplete, Box, Grid, TextField } from "@mui/material";
 import { Address } from "../../../types/user";
 import { useTranslation } from "react-i18next";
 import { CountryType } from "../../../types/country";
 import { countries } from "../../../types/countries";
+import { useFormContext } from "react-hook-form";
 
 type Props = {
-  name: string;
+  name: "address" | "billingAddress";
   address: Address | null;
   hasMissingFields?: boolean;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const AddressAccordionContent = ({
   name,
   address,
   hasMissingFields,
-  handleInputChange,
 }: Props) => {
   const { t } = useTranslation();
+  const { setValue } = useFormContext();
 
   const setCountry = (country: CountryType | null) => {
-    const event = {
-      target: { name: name + ".country", value: country?.code || null },
-    } as React.ChangeEvent<HTMLInputElement>;
-    handleInputChange(event);
+    setValue(name, { ...address, country: country?.code || null });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(name, { ...address, [e.target.name]: e.target.value });
   };
   return (
     <Grid container spacing={2}>
@@ -57,7 +57,6 @@ export const AddressAccordionContent = ({
           renderInput={(params) => (
             <TextField
               {...params}
-              name={`${name}.country`}
               label={t("editor.country")}
               error={!address?.country && hasMissingFields}
               helperText={
@@ -78,7 +77,7 @@ export const AddressAccordionContent = ({
           variant="outlined"
           fullWidth
           label={t("editor.zip")}
-          name={`${name}.zipCode`}
+          name={`zipCode`}
           value={address?.zipCode}
           onChange={handleInputChange}
           error={!address?.zipCode && hasMissingFields}
@@ -94,7 +93,7 @@ export const AddressAccordionContent = ({
           variant="outlined"
           fullWidth
           label={t("editor.city")}
-          name={`${name}.city`}
+          name={`city`}
           value={address?.city}
           onChange={handleInputChange}
           error={!address?.city && hasMissingFields}
@@ -110,7 +109,7 @@ export const AddressAccordionContent = ({
           variant="outlined"
           fullWidth
           label={t("editor.street")}
-          name={`${name}.street`}
+          name={`street`}
           value={address?.street}
           onChange={handleInputChange}
           error={!address?.street && hasMissingFields}

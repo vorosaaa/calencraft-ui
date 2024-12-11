@@ -11,11 +11,11 @@ import { NavigatorContainer } from "../../css/ProfileEditor.css";
 import { useTranslation } from "react-i18next";
 import { colors } from "../../../../theme/colors";
 import { countries } from "../../../../types/countries";
-import { FormState } from "../../../../types/formState";
 import { ChangeEvent, useState } from "react";
+import { Address } from "../../../../types/user";
 
 type Props = {
-  formState: FormState;
+  address?: Address;
   sessionType: SessionType;
   handleBack: () => void;
   handleNext: () => void;
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export const SessionForm = ({
-  formState,
+  address,
   sessionType,
   handleBack,
   handleNext,
@@ -31,7 +31,6 @@ export const SessionForm = ({
 }: Props) => {
   const { t } = useTranslation();
   const { name, description, maxCapacity, price } = sessionType;
-  const { address } = formState;
   const [localPrice, setLocalPrice] = useState<number | string>(price || 0);
   const [localMaxCapacity, setLocalMaxCapacity] = useState<number | string>(
     maxCapacity || 1,

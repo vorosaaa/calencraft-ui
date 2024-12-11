@@ -13,13 +13,13 @@ import { ProfileEditorHeader } from "../ProfileEditorHeader";
 import { useNavigate } from "react-router-dom";
 import { useVerificationModalHook } from "../../../hooks/verificationHook";
 import SocialsAccordionContent from "../accordions/SocialsAccordionContent";
+import { useFormContext } from "react-hook-form";
+import { Address } from "../../../types/user";
+import { useMe } from "../../../queries/queries";
 
 type Props = {
-  formData: FormState;
   pictureData: Pictures;
-  setFormData: (value: React.SetStateAction<FormState | undefined>) => void;
-  handleSubmit: () => void;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: () => void;
   handlePictureChange: (
     key: keyof Pictures,
     event: React.ChangeEvent<HTMLInputElement>,
@@ -27,25 +27,24 @@ type Props = {
 };
 
 export const UserEditor = ({
-  formData,
   pictureData,
-  setFormData,
   handlePictureChange,
-  handleSubmit,
-  handleInputChange,
+  onSubmit,
 }: Props) => {
   const { t } = useTranslation();
-  const { name, emailStatus, phoneNumber, description, address, socials } =
-    formData;
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const navigate = useNavigate();
+  const { watch } = useFormContext<Partial<FormState>>();
+
+  const { data } = useMe();
+  if (!data) return null;
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const { setVerification } = useVerificationModalHook();
 
-  const { mutate, isPending: isDeleteLoading } = useDeleteMutation();
+  const { emailStatus } = data.user;
+  const address = watch("address") as Address;
 
-  const handleSocialsChange = (newSocials: string | undefined) => {
-    setFormData({ ...formData, socials: newSocials });
-  };
+  const { mutate, isPending: isDeleteLoading } = useDeleteMutation();
 
   const handleDelete = () => {
     mutate();
@@ -60,11 +59,6 @@ export const UserEditor = ({
     navigate("/verification");
   };
 
-  const setCoverPosition = (position: string) => {
-    if (!formData) return;
-    setFormData({ ...formData, coverPosition: position });
-  };
-
   return (
     <Container disableGutters sx={{ marginBottom: 6, width: "100%" }}>
       <DeleteModal
@@ -74,8 +68,6 @@ export const UserEditor = ({
       />
       <ProfileEditorHeader
         pictures={pictureData}
-        coverPosition={formData.coverPosition}
-        setCoverPosition={setCoverPosition}
         handlePictureChange={handlePictureChange}
       />
       <Container maxWidth="md">
@@ -90,34 +82,22 @@ export const UserEditor = ({
             {t("editor.verify_email")}
           </Button>
         )}
-        <UserPersonalContent
-          name={name}
-          phoneNumber={phoneNumber}
-          description={description}
-          handleInputChange={handleInputChange}
-        />
+        <UserPersonalContent />
         <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
           <Typography variant="h6">{t("editor.socials")}</Typography>
         </Divider>
-        <SocialsAccordionContent
-          socials={socials}
-          setSocials={handleSocialsChange}
-        />
+        <SocialsAccordionContent />
         {address && (
           <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
             <Typography variant="h6">{t("editor.address")}</Typography>
           </Divider>
         )}
         {address && (
-          <AddressAccordionContent
-            name="address"
-            address={address}
-            handleInputChange={handleInputChange}
-          />
+          <AddressAccordionContent name="address" address={address} />
         )}
         <FormFooter
           isDeleteLoading={isDeleteLoading}
-          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
           handleDeleteOpen={() => setDeleteOpen(true)}
         />
       </Container>
