@@ -8,7 +8,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { SearchContainer } from "./css/ProviderList.css";
 import { ProviderTable } from "./ProviderTable";
 import { GridPaginationModel } from "@mui/x-data-grid";
@@ -19,6 +19,7 @@ import { countries } from "../../types/countries";
 import { useGeoLocation } from "../../hooks/locationHook";
 import { getProviders } from "../../api/providerApi";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 type SearchObject = {
   name?: string;
@@ -28,7 +29,13 @@ type SearchObject = {
 };
 
 export const SearchPage = () => {
-  const { isLoading: isLocationLoading, location } = useGeoLocation();
+  const {
+    isLoading: isLocationLoading,
+    location,
+    setSearchCountry,
+    setSearchCity,
+    setIsLoading,
+  } = useGeoLocation();
   const isMobile = useCheckMobileScreen();
   // States
   const [temporarySearchObject, setTemporarySearchObject] =
@@ -79,6 +86,39 @@ export const SearchPage = () => {
       category,
     });
   };
+
+  // useEffects
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          axios
+            .get(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+            )
+            .then((response: any) => {
+              const location = response.data.address;
+              const city = location.city || location.town || location.village;
+              const country = location.country_code?.toUpperCase();
+
+              if (country in CountryCode) {
+                setSearchCountry(country);
+              }
+              if (city) {
+                setSearchCity(city);
+              }
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        },
+        (_error) => {
+          setIsLoading(false);
+        },
+      );
+    }
+  }, []);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 0, pt: 4 }}>

@@ -185,7 +185,7 @@ export const Home: React.FC = () => {
         </ul>
         {/* Call to Action */}
         <StartButton
-          onClick={() => navigate("/search")}
+          onClick={() => navigate("/register")}
           variant="contained"
           color="primary"
           size="large"

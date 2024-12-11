@@ -14,13 +14,13 @@ import { colors } from "../../theme/colors";
 
 type Props = {
   isDeleteLoading: boolean;
-  handleSubmit: () => void;
+  onSubmit: any;
   handleDeleteOpen: () => void;
 };
 
 export const FormFooter = ({
   isDeleteLoading,
-  handleSubmit,
+  onSubmit,
   handleDeleteOpen,
 }: Props) => {
   const { t } = useTranslation();
@@ -47,6 +47,7 @@ export const FormFooter = ({
     handleDeleteOpen();
     handleClose();
   };
+
   return (
     <Container
       disableGutters
@@ -60,7 +61,7 @@ export const FormFooter = ({
         variant="contained"
         sx={{ px: 6 }}
         color="primary"
-        onClick={handleSubmit}
+        onClick={onSubmit}
       >
         {t("editor.submit")}
       </Button>

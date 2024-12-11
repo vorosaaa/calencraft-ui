@@ -22,18 +22,19 @@ import { useTranslation } from "react-i18next";
 import { useMe } from "../../queries/queries";
 import { AddressAccordionContent } from "../editor/accordions/AddressAccordionContent";
 import { Address } from "../../types/user";
-import { loadStripe } from "@stripe/stripe-js";
+import { Stripe } from "@stripe/stripe-js";
 import { config } from "../../config/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { FormProvider, useForm } from "react-hook-form";
 
 type Props = {
   type: SubscriptionType;
   handleBack: () => void;
 };
 
-const stripePromise = loadStripe(config.STRIPE_PUBLIC_KEY);
-
 export const PlanDetails = ({ type, handleBack }: Props) => {
+  const [stripe, setStripe] = useState<Stripe | null>(null);
+
   let amount = config.SUBSCRIPTION_AMOUNTS[type];
   if (typeof amount === "string") {
     amount = parseInt(amount.replace(/\./g, ""), 10);
@@ -43,9 +44,27 @@ export const PlanDetails = ({ type, handleBack }: Props) => {
   if (isNaN(amount) || amount < 0) {
     throw new Error("Invalid subscription amount");
   }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    import("@stripe/stripe-js").then(({ loadStripe }) => {
+      if (isMounted) {
+        loadStripe(config.STRIPE_PUBLIC_KEY).then((stripeInstance) => {
+          setStripe(stripeInstance);
+        });
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      setStripe(null);
+    };
+  }, []);
+
   return (
     <Elements
-      stripe={stripePromise}
+      stripe={stripe}
       options={{
         mode: "payment",
         currency: "huf",
@@ -76,7 +95,7 @@ const DeleteContent = ({ handleBack }: DeleteProps) => {
       data.success
         ? enqueueSuccess(t(`messages.success.${data.message}`))
         : enqueueError(t(`messages.errors.${data.message}`)),
-        queryClient.invalidateQueries({ queryKey: ["me"] });
+        queryClient.refetchQueries({ queryKey: ["me"] });
     },
     onError: (error: any) => enqueueError(error.response.data.message),
   });
@@ -121,11 +140,12 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const queryClient = useQueryClient();
   const [address, setAddress] = useState<Address | undefined>();
   const [hasMissingFields, setHasMissingFields] = useState(false);
+  const form = useForm();
 
   const { mutate, isPending } = useMutation({
     mutationFn: subscribe,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       data.success
         ? setSuccessOpen(true)
         : enqueueError(t(`messages.errors.${data.message}`));
@@ -136,8 +156,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const addressField = name.split(".")[1];
-    setAddress({ ...address, [addressField]: value });
+    setAddress({ ...address, [name]: value });
   };
 
   const checkForMissingFields = () => {
@@ -217,14 +236,16 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
           }}
         />
         {address && (
-          <Container disableGutters sx={{ mt: 3 }}>
-            <AddressAccordionContent
-              name="address"
-              address={address}
-              hasMissingFields={hasMissingFields}
-              handleInputChange={handleAddressChange}
-            />
-          </Container>
+          <FormProvider {...form}>
+            <Container disableGutters sx={{ mt: 3 }}>
+              <AddressAccordionContent
+                name="address"
+                address={address}
+                hasMissingFields={hasMissingFields}
+                handleAddressChange={handleAddressChange}
+              />
+            </Container>
+          </FormProvider>
         )}
       </Paper>
 

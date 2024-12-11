@@ -5,92 +5,95 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Tooltip,
 } from "@mui/material";
 import { ServiceCategory } from "../../../types/enums";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Info } from "@mui/icons-material";
+import { Controller, useFormContext } from "react-hook-form";
+import { FormState } from "../../../types/formState";
 
-type Props = {
-  name: string;
-  slug?: string;
-  phoneNumber: string;
-  description: string;
-  serviceCategory: string;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSelectChange: (e: SelectChangeEvent<string>) => void;
-};
-
-export const ProviderPersonalContent = ({
-  name,
-  slug,
-  phoneNumber,
-  description,
-  serviceCategory,
-  handleInputChange,
-  handleSelectChange,
-}: Props) => {
+export const ProviderPersonalContent = () => {
   const { t } = useTranslation();
+  const { control, formState } = useFormContext<Partial<FormState>>();
+  const { errors } = formState;
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
     <Grid container spacing={2} sx={{ mb: 2 }}>
       <Grid item xs={12} sm={6}>
-        <TextField
-          variant="outlined"
-          fullWidth
-          label={t("editor.name")}
+        <Controller
           name="name"
-          value={name}
-          onChange={handleInputChange}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              variant="outlined"
+              error={!!errors.name}
+              helperText={errors.name?.message}
+              fullWidth
+              label={t("editor.name")}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <TextField
-          variant="outlined"
-          fullWidth
-          label={t("editor.slug")}
+        <Controller
           name="slug"
-          placeholder={t("editor.slug_placeholder")}
-          value={slug}
-          onChange={handleInputChange}
-          inputProps={{ maxLength: 50 }}
-          InputProps={{
-            endAdornment: (
-              <Tooltip
-                title={t("editor.slug_tooltip")}
-                arrow
-                placement="left"
-                open={tooltipOpen}
-              >
-                <Box
-                  sx={{ display: "flex", justifyContent: "center" }}
-                  className="info-icon-container"
-                  onClick={() => setTooltipOpen(true)}
-                  onMouseEnter={() => setTooltipOpen(true)}
-                  onMouseLeave={() => setTooltipOpen(false)}
-                >
-                  <Info className="info-icon" color="info" />
-                </Box>
-              </Tooltip>
-            ),
-          }}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              variant="outlined"
+              fullWidth
+              error={!!errors.slug}
+              helperText={errors.slug?.message}
+              label={t("editor.slug")}
+              placeholder={t("editor.slug_placeholder")}
+              InputProps={{
+                inputProps: { maxLength: 50 },
+                endAdornment: (
+                  <Tooltip
+                    title={t("editor.slug_tooltip")}
+                    arrow
+                    placement="left"
+                    open={tooltipOpen}
+                  >
+                    <Box
+                      sx={{ display: "flex", justifyContent: "center" }}
+                      className="info-icon-container"
+                      onClick={() => setTooltipOpen(true)}
+                      onMouseEnter={() => setTooltipOpen(true)}
+                      onMouseLeave={() => setTooltipOpen(false)}
+                    >
+                      <Info className="info-icon" color="info" />
+                    </Box>
+                  </Tooltip>
+                ),
+              }}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12}>
-        <TextField
-          variant="outlined"
-          fullWidth
-          rows={4}
-          multiline
-          label={t("editor.description")}
+        <Controller
           name="description"
-          value={description}
-          onChange={handleInputChange}
-          inputProps={{ maxLength: 600 }}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              variant="outlined"
+              fullWidth
+              rows={4}
+              error={!!errors.description}
+              helperText={errors.description?.message}
+              multiline
+              label={t("editor.description")}
+              inputProps={{ maxLength: 600 }}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -98,31 +101,43 @@ export const ProviderPersonalContent = ({
           <InputLabel id="service-type-label">
             {t("editor.service_type")}
           </InputLabel>
-          <Select
-            labelId="service-type-label"
-            id="service-type"
-            value={serviceCategory || ""}
-            label={t("editor.service_type")}
-            onChange={handleSelectChange}
-            name="serviceCategory" // Add name attribute for handling input change
-          >
-            {Object.values(ServiceCategory).map((type) => (
-              <MenuItem key={type} value={type}>
-                {t(`service_types.${type}`)}
-              </MenuItem>
-            ))}
-          </Select>
+          <Controller
+            name="serviceCategory"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                labelId="service-type-label"
+                id="service-type"
+                label={t("editor.service_type")}
+                name="serviceCategory" // Add name attribute for handling input change
+              >
+                {Object.values(ServiceCategory).map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {t(`service_types.${type}`)}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
         </FormControl>
       </Grid>
       <Grid item xs={12} lg={6}>
-        <TextField
-          label={t("editor.phone_number")}
-          variant="outlined"
-          fullWidth
+        <Controller
           name="phoneNumber"
-          type="tel"
-          value={phoneNumber}
-          onChange={handleInputChange}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={t("editor.phone_number")}
+              variant="outlined"
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              fullWidth
+              name="phoneNumber"
+              type="tel"
+            />
+          )}
         />
       </Grid>
     </Grid>

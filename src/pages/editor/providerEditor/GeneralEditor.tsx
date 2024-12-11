@@ -1,13 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormState } from "../../../types/formState";
 import {
   Checkbox,
   Collapse,
   Container,
   Divider,
   FormControlLabel,
-  SelectChangeEvent,
   Typography,
 } from "@mui/material";
 import { VerificationMode } from "../../../types/enums";
@@ -22,14 +20,13 @@ import { DeleteModal } from "../modal/DeleteModal";
 import { Pictures } from "../../../types/pictures";
 import { useNavigate } from "react-router-dom";
 import SocialsAccordionContent from "../accordions/SocialsAccordionContent";
+import { Address } from "../../../types/user";
+import { useFormContext } from "react-hook-form";
+import { FormState } from "../../../types/formState";
 
 type Props = {
-  formData: FormState;
   pictureData: Pictures;
-  setFormData: (value: React.SetStateAction<FormState | undefined>) => void;
-  handleSubmit: () => void;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSelectChange: (e: SelectChangeEvent<string>) => void;
+  onSubmit: any;
   handlePictureChange: (
     key: keyof Pictures,
     event: React.ChangeEvent<HTMLInputElement>,
@@ -37,34 +34,21 @@ type Props = {
 };
 
 export const GeneralEditor = ({
-  formData,
   pictureData,
-  setFormData,
-  handleInputChange,
-  handleSelectChange,
-  handleSubmit,
   handlePictureChange,
+  onSubmit,
 }: Props) => {
   const { t } = useTranslation();
   const { setVerification } = useVerificationModalHook();
   const navigate = useNavigate();
+  const { watch } = useFormContext<Partial<FormState>>();
+
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isBillingAddressDifferent, setIsBillingAddressDifferent] =
     useState(false);
-  const {
-    name,
-    slug,
-    description,
-    address,
-    billingAddress,
-    serviceCategory,
-    phoneNumber,
-    socials,
-  } = formData;
 
-  const handleSocialsChange = (newSocials: string | undefined) => {
-    setFormData({ ...formData, socials: newSocials });
-  };
+  const address = watch("address") as Address;
+  const billingAddress = watch("billingAddress") as Address;
 
   // Effect to set the default state of the checkbox
   useEffect(() => {
@@ -95,14 +79,8 @@ export const GeneralEditor = ({
     mutate();
     setDeleteOpen(false);
   };
-
-  const setCoverPosition = (position: string) => {
-    if (!formData) return;
-    setFormData({ ...formData, coverPosition: position });
-  };
-
   return (
-    <Container disableGutters>
+    <Container disableGutters sx={{ marginBottom: 6 }}>
       <DeleteModal
         open={deleteOpen}
         handleClose={() => setDeleteOpen(false)}
@@ -110,39 +88,22 @@ export const GeneralEditor = ({
       />
       <ProfileEditorHeader
         pictures={pictureData}
-        coverPosition={formData.coverPosition}
-        setCoverPosition={setCoverPosition}
         handlePictureChange={handlePictureChange}
       />
       <Container>
         <Warning openVerificationModal={navigateToVerification} />
-        <ProviderPersonalContent
-          name={name}
-          slug={slug}
-          phoneNumber={phoneNumber}
-          description={description}
-          serviceCategory={serviceCategory}
-          handleInputChange={handleInputChange}
-          handleSelectChange={handleSelectChange}
-        />
+        <ProviderPersonalContent />
         <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
           <Typography variant="h6">{t("editor.socials")}</Typography>
         </Divider>
-        <SocialsAccordionContent
-          socials={socials}
-          setSocials={handleSocialsChange}
-        />
+        <SocialsAccordionContent />
         {address && (
           <Divider variant="middle" sx={{ mb: 4, mt: 4 }}>
             <Typography variant="h6">{t("editor.address")}</Typography>
           </Divider>
         )}
         {address && (
-          <AddressAccordionContent
-            name="address"
-            address={address}
-            handleInputChange={handleInputChange}
-          />
+          <AddressAccordionContent name="address" address={address} />
         )}
         <FormControlLabel
           sx={{ mt: 2, mb: 2 }}
@@ -161,13 +122,12 @@ export const GeneralEditor = ({
             <AddressAccordionContent
               name="billingAddress"
               address={billingAddress}
-              handleInputChange={handleInputChange}
             />
           )}
         </Collapse>
         <FormFooter
           isDeleteLoading={isDeleteLoading}
-          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
           handleDeleteOpen={() => setDeleteOpen(true)}
         />
       </Container>

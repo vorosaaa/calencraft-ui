@@ -66,8 +66,8 @@ export const RegistrationForm = () => {
     mutationFn: registerWithGoogle,
     onSuccess: (data) => {
       saveAuth(data.token);
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      navigate("/");
+      queryClient.refetchQueries({ queryKey: ["me"] });
+      navigate("/myprofile");
     },
   });
   const { mutate: registerUser } = useMutation({
@@ -75,7 +75,7 @@ export const RegistrationForm = () => {
     onSuccess: (data) => {
       setFormState(initialFormState);
       saveAuth(data.token);
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       setVerification(
         VerificationMode.VERIFICATION,
         VerificationMode.VERIFICATION,

@@ -54,7 +54,7 @@ export const Verification = () => {
     mutationFn: verifyEmail,
     onSuccess: (data: any) => {
       if (originalMode === VerificationMode.VERIFICATION) {
-        queryClient.invalidateQueries({ queryKey: ["me"] });
+        queryClient.refetchQueries({ queryKey: ["me"] });
         setVerificationCode("");
         navigate("/myprofile");
       } else {
@@ -68,7 +68,7 @@ export const Verification = () => {
     mutationFn: resetPassword,
     onSuccess: (data: any) => {
       saveAuth(data.token);
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       navigateToHome();
     },
   });

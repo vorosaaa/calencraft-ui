@@ -32,7 +32,7 @@ export const EmailEditor = () => {
   const { mutate } = useMutation({
     mutationFn: saveEmail,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       if (data.success) {
         enqueueSuccess(t(`messages.success.${data.message}`));
       } else {

@@ -52,14 +52,14 @@ export const ClientEditor = () => {
   const { mutate: block, isPending: isBlockLoading } = useMutation({
     mutationFn: blockClient,
     onError: (error: any) => {
-      client.invalidateQueries({ queryKey: ["client"] });
+      client.refetchQueries({ queryKey: ["client"] });
       enqueueError(t(`messages.errors.${error.response.data.message}`));
       setIsBlockOpen(false);
       setSelectedClient(null);
       setSelectedClientName(null);
     },
     onSuccess: (data) => {
-      client.invalidateQueries({ queryKey: ["client"] });
+      client.refetchQueries({ queryKey: ["client"] });
       setIsBlockOpen(false);
       setSelectedClient(null);
       setSelectedClientName(null);
@@ -73,14 +73,14 @@ export const ClientEditor = () => {
   const { mutate: unBlock, isPending: isUnblockLoading } = useMutation({
     mutationFn: unblockClient,
     onError: (error: any) => {
-      client.invalidateQueries({ queryKey: ["client"] });
+      client.refetchQueries({ queryKey: ["client"] });
       enqueueError(t(`messages.errors.${error.response.data.message}`));
       setIsUnblockOpen(false);
       setSelectedClient(null);
       setSelectedClientName(null);
     },
     onSuccess: (data) => {
-      client.invalidateQueries({ queryKey: ["client"] });
+      client.refetchQueries({ queryKey: ["client"] });
       setIsUnblockOpen(false);
       setSelectedClient(null);
       setSelectedClientName(null);

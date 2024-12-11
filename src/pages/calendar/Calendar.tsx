@@ -42,7 +42,7 @@ export const Calendar = () => {
     mutationFn: deleteBooking,
     onSuccess: () => {
       enqueueSuccess(t("bookingDetails.modals.delete.success"));
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: ["mybookings", dateRange, calendarType],
       });
     },

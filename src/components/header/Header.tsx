@@ -51,7 +51,7 @@ export const Header = () => {
       <CssBaseline />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <BrowserLogo />
+          {!isLoggedIn() && <BrowserLogo />}
           <BrowserMenu
             isLoggedIn={isLoggedIn}
             data={data}
@@ -65,7 +65,7 @@ export const Header = () => {
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}
           />
-          <MobileLogo />
+          {!isLoggedIn() && <MobileLogo />}
 
           {isLoggedIn() ? (
             <HeaderAvatar

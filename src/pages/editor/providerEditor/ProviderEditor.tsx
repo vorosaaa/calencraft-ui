@@ -1,6 +1,5 @@
-import React, { ChangeEvent, useState } from "react";
-import { SelectChangeEvent, Tab, Tabs, Box } from "@mui/material";
-import { FormState } from "../../../types/formState";
+import React, { useState } from "react";
+import { Tab, Tabs, Box } from "@mui/material";
 import { GeneralEditor } from "./GeneralEditor";
 import { useTranslation } from "react-i18next";
 import { useCheckMobileScreen } from "../../../hooks/screenHook";
@@ -11,21 +10,15 @@ import { Pictures } from "../../../types/pictures";
 import { ClientEditor } from "../clientEditor/ClientEditor";
 
 type Props = {
-  formData: FormState;
   pictureData: Pictures;
-  setFormData: (value: React.SetStateAction<FormState | undefined>) => void;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSelectChange: (e: SelectChangeEvent<string>) => void;
-  setCoverPosition: (position: string) => void;
-  handleSubmit: () => void;
   handlePictureChange: (
     key: keyof Pictures,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
+  onSubmit: any;
 };
 
 export const ProviderEditor = (props: Props) => {
-  const { formData } = props;
   const [activeTab, setActiveTab] = useState(0);
   const { t } = useTranslation();
   const isMobile = useCheckMobileScreen();
@@ -34,7 +27,6 @@ export const ProviderEditor = (props: Props) => {
     setActiveTab(newValue);
     window.scrollTo(0, 0);
   };
-
   return (
     <Box
       display="flex"
@@ -70,7 +62,7 @@ export const ProviderEditor = (props: Props) => {
       </Box>
       <Box flexGrow={1}>
         {activeTab === 0 && <GeneralEditor {...props} />}
-        {activeTab === 1 && <SessionTypeEditorStepper formState={formData} />}
+        {activeTab === 1 && <SessionTypeEditorStepper />}
         {activeTab === 2 && <BreakEditorStepper />}
         {activeTab === 3 && <EmailEditor />}
         {activeTab === 4 && <ClientEditor />}

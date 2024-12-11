@@ -78,15 +78,6 @@ export const hasBookingConflict = (
       sessionType.maxCapacity &&
       booking.users.length < sessionType.maxCapacity;
 
-    if (isStartTimeConflict) {
-      console.log("Conflict detected:");
-      console.log("startTime millisec: ", startTime.getTime());
-      console.log("bookingStart millisec: ", bookingStartTime.getTime());
-      console.log("bookingEnd: ", bookingEndTime);
-      console.log("isStartTimeConflict: ", isStartTimeConflict);
-      console.log("isEndTimeConflict: ", isEndTimeConflict);
-    }
-
     // Return true if there is a conflict (booking overlap or group session not full)
     return isStartTimeConflict || isEndTimeConflict || isGroupSessionConflict;
   });

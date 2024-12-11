@@ -1,26 +1,33 @@
 import { Grid, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SocialPlatform } from "../../../types/enums";
 import { SocialProfile } from "../../../types/socialProfile";
-
-type SocialsAccordionContentProps = {
-  socials: string | undefined;
-  setSocials: (socials: string | undefined) => void;
-};
+import { useFormContext } from "react-hook-form";
+import { FormState } from "../../../types/formState";
+import { useCheckMobileScreen } from "../../../hooks/screenHook";
 
 const createInitialSocialsFrom = (socials?: string) => {
   try {
-    const parsedSocials = socials ? JSON.parse(socials) : [];
+    const parsedSocials =
+      typeof socials === "object"
+        ? []
+        : (JSON.parse(socials || "[]") as SocialProfile[]);
     // Ensure all platforms are represented even if some socials are missing
     return Object.keys(SocialPlatform).map((platform) => {
       const existingSocial = parsedSocials.find(
         (social: SocialProfile) => social.platform === platform,
       );
-      return existingSocial || { platform, username: "", link: "" };
+      return (
+        existingSocial || {
+          platform: platform as SocialPlatform,
+          username: "",
+          link: "",
+        }
+      );
     });
   } catch (error) {
-    console.error("Error parsing socials:", error);
+    console.error("Error parsing socials: " + error);
     return createInitialSocials();
   }
 };
@@ -33,59 +40,89 @@ const createInitialSocials = () => {
   }));
 };
 
-const SocialsAccordionContent = ({
-  socials,
-  setSocials,
-}: SocialsAccordionContentProps) => {
-  const [socialsState, setSocialsState] = useState<SocialProfile[]>(
-    createInitialSocials(),
+const SocialsAccordionContent = () => {
+  const isMobile = useCheckMobileScreen();
+  const [errors, setErrors] = useState<Record<number, string>>({});
+  const { watch, setValue } = useFormContext<Partial<FormState>>();
+
+  const socials = watch("socials") as string;
+  const socialState = useMemo(
+    () => createInitialSocialsFrom(socials),
+    [socials],
   );
 
   useEffect(() => {
-    setSocialsState(createInitialSocialsFrom(socials));
-  }, [socials]);
+    const initialValues = createInitialSocialsFrom(socials);
+    //@ts-ignore
+    setValue("socials", JSON.stringify(initialValues));
+  }, []);
 
   const handleSocialChange = (
     index: number,
     key: keyof SocialProfile,
-    value: string,
+    value: string | SocialPlatform,
   ) => {
-    const updatedSocials = [...socialsState];
-    if (key === "platform") {
-      updatedSocials[index][key] = value as SocialPlatform;
-    } else {
-      updatedSocials[index][key] = value;
+    const updatedSocials = [...socialState];
+    updatedSocials[index] = {
+      ...updatedSocials[index],
+      [key]: value,
+    };
+
+    if (key === "link" && value && !updatedSocials[index].username) {
+      setErrors((prev) => ({
+        ...prev,
+        [index]: t("editor.errors.username_required"),
+      }));
+    } else if (key === "username") {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[index];
+        return newErrors;
+      });
     }
-    setSocialsState(updatedSocials);
+
+    if (key === "username") {
+      if (!value && updatedSocials[index].link) {
+        setErrors((prev) => ({
+          ...prev,
+          [index]: t("editor.errors.username_required"),
+        }));
+      } else {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[index];
+          return newErrors;
+        });
+      }
+    }
 
     // Check if all socials have empty username and link
-    const areAllFieldsEmpty = updatedSocials.every(
-      (social) => !social.username && !social.link,
-    );
+    const areAllFieldsEmpty =
+      updatedSocials?.every((social) => !social.username && !social.link) ??
+      true;
 
     if (areAllFieldsEmpty) {
-      setSocials(undefined); // Set socials to undefined if all fields are empty
-      return;
+      return undefined;
     }
-    // Only keep socials that have at least a username
-    const socialsWithUsername = updatedSocials.filter(
-      (social) => social.username,
-    );
-    setSocials(JSON.stringify(socialsWithUsername));
+    return JSON.stringify(updatedSocials);
   };
 
   const { t } = useTranslation();
 
   return (
     <Grid container spacing={2}>
-      {socialsState.map((social, index) => (
-        <Grid container item spacing={2} key={index} alignItems="center">
+      {socialState?.map((social, index) => (
+        <Grid container item spacing={2} key={index} alignItems="flex-start">
           {/* Platform Logo */}
           <Grid
             item
             xs={12}
             sm={0.8}
-            sx={{ display: "flex", justifyContent: "center" }}
+            sx={{
+              marginTop: isMobile ? 0 : 2,
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
             <img
               src={`https://simpleicons.org/icons/${social.platform.toLowerCase()}.svg`}
@@ -98,11 +135,19 @@ const SocialsAccordionContent = ({
           <Grid item xs={12} sm={3.2}>
             <TextField
               fullWidth
-              label={t("editor.username")}
               value={social.username}
-              onChange={(e) =>
-                handleSocialChange(index, "username", e.target.value)
-              }
+              label={t("editor.username")}
+              error={!!errors[index]}
+              helperText={errors[index]}
+              onChange={(e) => {
+                const transformedValues = handleSocialChange(
+                  index,
+                  "username",
+                  e.target.value,
+                );
+                //@ts-ignore
+                setValue("socials", transformedValues);
+              }}
             />
           </Grid>
 
@@ -112,9 +157,15 @@ const SocialsAccordionContent = ({
               fullWidth
               label="Link"
               value={social.link}
-              onChange={(e) =>
-                handleSocialChange(index, "link", e.target.value)
-              }
+              onChange={(e) => {
+                const transformedValues = handleSocialChange(
+                  index,
+                  "link",
+                  e.target.value,
+                );
+                //@ts-ignore
+                setValue("socials", transformedValues);
+              }}
             />
           </Grid>
         </Grid>
