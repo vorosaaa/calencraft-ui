@@ -4,7 +4,6 @@ import { Home } from "../pages/home/Home";
 import { ProfileEditor } from "../pages/editor/ProfileEditor";
 import { BookingDetails } from "../pages/bookingdetails/BookingDetails";
 import { ProfilePage } from "../pages/profile/ProfilePage";
-import { SearchPage } from "../pages/search/SearchPage";
 import { MyPlansPage } from "../pages/myplan/MyPlansPage";
 import { TermsOfServicePage } from "../pages/termsofservice/TermsOfServicePage";
 import { PrivacyPolicyPage } from "../pages/privacypolicy/PrivacyPolicyPage";
