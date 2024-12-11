@@ -54,14 +54,15 @@ export const AddressAccordionContent = ({
               component="li"
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...props}
-              key={option.code}
+              key={option.code + option.label}
             >
               <img
+                key={"img" + option.code + option.label}
                 loading="lazy"
                 width="20"
                 srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
                 src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                alt=""
+                alt={option.code}
               />
               {t(`countries.${option.code}`) || option.label} ({option.code})
             </Box>

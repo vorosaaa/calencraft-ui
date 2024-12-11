@@ -25,6 +25,7 @@ import { Address } from "../../types/user";
 import { Stripe } from "@stripe/stripe-js";
 import { config } from "../../config/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { FormProvider, useForm } from "react-hook-form";
 
 type Props = {
   type: SubscriptionType;
@@ -139,6 +140,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const queryClient = useQueryClient();
   const [address, setAddress] = useState<Address | undefined>();
   const [hasMissingFields, setHasMissingFields] = useState(false);
+  const form = useForm();
 
   const { mutate, isPending } = useMutation({
     mutationFn: subscribe,
@@ -154,8 +156,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const addressField = name.split(".")[1];
-    setAddress({ ...address, [addressField]: value });
+    setAddress({ ...address, [name]: value });
   };
 
   const checkForMissingFields = () => {
@@ -235,14 +236,16 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
           }}
         />
         {address && (
-          <Container disableGutters sx={{ mt: 3 }}>
-            <AddressAccordionContent
-              name="address"
-              address={address}
-              hasMissingFields={hasMissingFields}
-              handleAddressChange={handleAddressChange}
-            />
-          </Container>
+          <FormProvider {...form}>
+            <Container disableGutters sx={{ mt: 3 }}>
+              <AddressAccordionContent
+                name="address"
+                address={address}
+                hasMissingFields={hasMissingFields}
+                handleAddressChange={handleAddressChange}
+              />
+            </Container>
+          </FormProvider>
         )}
       </Paper>
 
