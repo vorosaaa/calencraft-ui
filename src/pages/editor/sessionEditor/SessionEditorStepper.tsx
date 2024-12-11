@@ -56,7 +56,7 @@ export const SessionTypeEditorStepper = () => {
   const { mutate: deleteSessionType } = useMutation({
     mutationFn: deleteType,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       if (data.success) {
         enqueueSuccess(t(`messages.success.${data.message}`));
       } else {
@@ -69,7 +69,7 @@ export const SessionTypeEditorStepper = () => {
   const { mutate: saveType } = useMutation({
     mutationFn: savesTypes,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       if (data.success) {
         enqueueSuccess(t(`messages.success.${data.message}`));
       } else {

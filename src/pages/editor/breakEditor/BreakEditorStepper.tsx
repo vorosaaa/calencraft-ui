@@ -51,7 +51,7 @@ export const BreakEditorStepper = () => {
   const { mutate: deleteBreakType } = useMutation({
     mutationFn: deleteBreak,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       if (data.success) {
         enqueueSuccess(t(`messages.success.${data.message}`));
       } else {
@@ -64,7 +64,7 @@ export const BreakEditorStepper = () => {
   const { mutate } = useMutation({
     mutationFn: saveBreaks,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       if (data.success) {
         enqueueSuccess(t(`messages.success.${data.message}`));
       } else {

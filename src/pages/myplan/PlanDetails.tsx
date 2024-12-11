@@ -94,7 +94,7 @@ const DeleteContent = ({ handleBack }: DeleteProps) => {
       data.success
         ? enqueueSuccess(t(`messages.success.${data.message}`))
         : enqueueError(t(`messages.errors.${data.message}`)),
-        queryClient.invalidateQueries({ queryKey: ["me"] });
+        queryClient.refetchQueries({ queryKey: ["me"] });
     },
     onError: (error: any) => enqueueError(error.response.data.message),
   });
@@ -143,7 +143,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
   const { mutate, isPending } = useMutation({
     mutationFn: subscribe,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       data.success
         ? setSuccessOpen(true)
         : enqueueError(t(`messages.errors.${data.message}`));
@@ -240,7 +240,7 @@ const PaymentComponent = ({ type, handleBack }: PaymentProps) => {
               name="address"
               address={address}
               hasMissingFields={hasMissingFields}
-              handleInputChange={handleAddressChange}
+              handleAddressChange={handleAddressChange}
             />
           </Container>
         )}

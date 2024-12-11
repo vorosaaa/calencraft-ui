@@ -46,7 +46,7 @@ export const ProfileEditor = () => {
     name: Yup.string().required(t("editor.errors.name_required")),
     slug: Yup.string()
       .max(50, t("editor.errors.slug_too_long"))
-      .matches(/^[a-z0-9-]+$/, t("editor.errors.slug_invalid_characters")),
+      .matches(/^[a-z0-9-]*$/, t("editor.errors.slug_invalid_characters")),
     phoneNumber: Yup.string().matches(
       /^\+?[0-9]*$/,
       t("editor.errors.invalid_phone"),
@@ -76,7 +76,7 @@ export const ProfileEditor = () => {
   const { mutate: updateMe } = useMutation({
     mutationFn: updateProfile,
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       if (data.success) {
         enqueueSuccess(t(`messages.success.${data.message}`));
       } else {

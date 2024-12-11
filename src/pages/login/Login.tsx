@@ -41,7 +41,7 @@ export const Login = () => {
     mutationFn: loginWithGoogle,
     onSuccess: (data) => {
       saveAuth(data.token);
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       navigate("/calendar");
     },
   });
@@ -51,7 +51,7 @@ export const Login = () => {
       saveAuth(data.token);
       setEmail("");
       setPassword("");
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.refetchQueries({ queryKey: ["me"] });
       navigate("/calendar");
     },
   });

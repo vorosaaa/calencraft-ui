@@ -9,22 +9,34 @@ type Props = {
   name: "address" | "billingAddress";
   address: Address | null;
   hasMissingFields?: boolean;
+  handleAddressChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const AddressAccordionContent = ({
   name,
   address,
   hasMissingFields,
+  handleAddressChange,
 }: Props) => {
   const { t } = useTranslation();
   const { setValue } = useFormContext();
 
   const setCountry = (country: CountryType | null) => {
-    setValue(name, { ...address, country: country?.code || null });
+    if (handleAddressChange) {
+      handleAddressChange({
+        target: { name: "country", value: country?.code || "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+    } else {
+      setValue(name, { ...address, country: country?.code || null });
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(name, { ...address, [e.target.name]: e.target.value });
+    if (handleAddressChange) {
+      handleAddressChange(e);
+    } else {
+      setValue(name, { ...address, [e.target.name]: e.target.value });
+    }
   };
   return (
     <Grid container spacing={2}>
