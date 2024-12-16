@@ -3,3 +3,6 @@ User-agent: *
 
 Disallow: /
 Allow: /index.html
+Allow: /privacy
+Allow: /contact
+Allow: /termsofservice
