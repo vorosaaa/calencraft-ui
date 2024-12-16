@@ -1,8 +1,13 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 
-Disallow: /
-Allow: /index.html
-Allow: /privacy
-Allow: /contact
-Allow: /termsofservice
+Disallow: /admin/
+Disallow: /myprofile
+Disallow: /booking/
+Disallow: /myplan
+Disallow: /verification
+Disallow: /calendar
+
+Allow: /
+
+Sitemap: https://www.calencraft.com/sitemap.xml
